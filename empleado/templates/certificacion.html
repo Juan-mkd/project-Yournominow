@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Constancia Laboral</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{% static 'empleado/css/certificacion1.css' %}">
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="logo">
+      
+    </div>
+    <h1>Constancia Laboral</h1>
+    <div class="info">
+      <p>Fecha: <span id="fecha">{{ fecha_actual }}</span></p>
+      <p>Nombre: <span id="nombre">{{ usuario.usu_nombre }}</span></p>
+      <p>Cargo: <span id="cargo">{{ usuario.usu_id_cargo }}</span></p>
+      <p>Empresa: <span id="empresa">YourNominow</span></p>
+      
+    </div>
+    <p>Por medio de la presente, hacemos constar que el(la) Sr(a). <span id="nombre">{{ usuario.usu_nombre }}</span> ha
+      laborado en
+      nuestra empresa desde el <span id="fecha-inicio">{{ usuario.usu_fecha_ingreso|date:"d/m/Y" }}</span> hasta el dia de hoy, a desempeñando el cargo de <span id="cargo">{{ usuario.usu_id_cargo }}</span>.</p>
+    <p>Durante su desempeño, el(la) Sr(a). <span id="nombre">{{ usuario.usu_nombre }}</span> ha demostrado profesionalismo,
+      compromiso y habilidades destacadas en su área de trabajo.</p>
+    <p>Extendemos esta constancia laboral para los fines que el(la) interesado(a) considere necesarios.</p>
+    <div class="footer">
+      <p>Atentamente,</p>
+      <p>S.A.S YourNomiNow</p>
+    </div>
+<form method="get" action="{% url 'constancia_pdf' %}">
+  <div id="enlace-pdf" class="pdf-hidden">
+    <button type="submit" class="btn btn-dark" name="formulario_id" >IMPRIMIR SIN SUELDO</button></a>
+  </div>
+</form>
+<form method="get" action="{% url 'constancia_pagada_pdf' %}">
+  <div id="enlace-pdf2" class="pdf-hidden">
+    <button type="submit" class="btn btn-dark" name="formulario_id" >IMPRIMIR CON SUELDO</button></a>
+</div>
+</form>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="{% static 'empleado/js/alerts.js' %}"></script>
+</body>
+</html>

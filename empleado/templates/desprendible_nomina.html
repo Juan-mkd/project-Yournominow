@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'empleado/css/desprendible.css' %}">
+</head>
+<body>
+    <a class="btn btn-primary" href="{% url 'historial_nomina' %}" role="button" id="volver">Volver</a>
+
+    <h2>Desprendible de Nomina</h2>
+
+    <table border="1" id="tabla">
+        <thead>
+            <tr>
+                <th>Trabajador/a</th>
+                <th colspan="2">Empresa</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Nombre: {{ datos_usuario.usu_nombre }}
+                    <br>
+                    Cedula: {{ datos_usuario.cedula }}
+                    <br>
+                    Correo: {{ datos_usuario.usu_correo}}
+                    <br>
+                    Cargo: {{ datos_cargo.cargo_nombre}}
+                    <br>
+                    Fecha de Antiguedad:  {{ datos_usuario.usu_fecha_ingreso }}
+                </td>
+                <td colspan="2" width="300">Nombre: {{ datos_cargo.cargo_empresa }}
+                    <br>
+                    NIT: 152222222
+                    <br>
+                    Periodo de Pago: {{ datos_nomina.nom_periodo_pago }}
+                </td>
+            </tr>
+        </tbody>
+        <thead>
+            <tr>
+                <th>Devengos</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Salario Base 
+                    <br>
+                    Subsidio Transporte
+                    <br>
+                    Subsidio Alimentacion
+                    <br>
+                    Horas Extra Diurnas
+                    <br>
+                    Horas Extra Nocturnas
+                    <br>
+                    Horas Extra Diurna Dominical/Festiva
+                    <br>
+                    Horas Extra Nocturna Dominical/Festiva
+                    <br>
+                    Bonificaciones
+                </td>
+                <td>
+                    {{ datos_nomina.nom_dias_trabajados }}
+                    <br>
+                    1
+                    <br>
+                    1
+                    <br>
+                    {{ datos_devengado.deveng_horas_extra_diur }}
+                    <br>
+                    {{ datos_devengado.deveng_horas_extra_noct }}
+                    <br>
+                    {{ datos_devengado.deveng_horas_extra_diur_domfest }}
+                    <br>
+                    {{ datos_devengado.deveng_horas_extra_noct_domfest }}
+                    <br>
+                    2
+                </td>
+                <td>
+                    {{ datos_cargo.cargo_sueldo_basico}}
+                    <br>
+                    {{ datos_devengado.deveng_subs_trans}}
+                    <br>
+                    {{ datos_devengado.deveng_subs_alim}}
+                    <br>
+                    {{ horas_extra_diurnas }}
+                    <br>
+                    {{ horas_extra_nocturnas }}
+                    <br>
+                    {{ horas_extra_diur_domfest }}
+                    <br>
+                    {{ horas_extra_noct_domfest }}
+                    <br>
+                    {{ datos_devengado.deveng_bonificacion}}
+                </td>
+            </tr>
+        </tbody>
+        <thead>
+            <tr>
+                <th colspan="2">Total Devengado</th>
+                <th> {{ total_deveng }}</th>
+            </tr>
+        </thead>
+        <thead>
+            <tr>
+                <th>Descuentos</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    Aporte Empleado Salud
+                    <br>
+                    Aporte Empleado Pension
+                    <br>
+                    Aporte Empleado SENA
+                    <br>
+                    Aporte Empleado ICBF
+                    <br>
+                    Creditos Libranza
+                    <br>
+                    Cuotas Sindicales
+                    <br>
+                    Embargos Judiciales
+                    <br>
+                    Descuentos
+                </td>
+                <td>
+                    4%
+                    <br>
+                    4%
+                    <br>
+                    4%
+                    <br>
+                    4%
+                    <br>
+                    0
+                    <br>
+                    0
+                    <br>
+                    0
+                </td>
+                <td>
+                    {{ aporte_salud }}
+                    <br>
+                    {{ aporte_pension }}
+                    <br>
+                    {{ aporte_sena }}
+                    <br>
+                    {{ aporte_icbf }}
+                    <br>
+                    {{ datos_descuento.desc_creditos_libranza}}
+                    <br>
+                    {{ datos_descuento.desc_cuotas_sindicales}}
+                    <br>
+                    {{ datos_descuento.desc_embargos_judiciales}}
+                    <br>
+                    {{  total_precio   }}
+                </td>
+            </tr>
+        </tbody>
+        <thead>
+            <tr>
+                <th colspan="2">Total Descuentos</th>
+                <th> {{ total_desc }}</th>
+            </tr>
+        </thead>
+        <thead>
+            <tr>
+                <th colspan="3">Sueldo Neto: {{ total_neto }} </th>
+            </tr>
+        </thead>
+
+    </table>
+
+
+    <div id="enlace-pdf" class="pdf-hidden">
+        <a class="btn btn-primary" href="{% url 'desprendible_nomina_pdf' %}" target="_blank" role="button" id="volver">Descargar PDF</a>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

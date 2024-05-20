@@ -1,0 +1,85 @@
+@media only screen and (min-width: 600px) {
+
+.impBoton {
+  background-color: #218838;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+  color: white;
+}
+
+body {
+  margin: 0;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(90deg, #454343 0%, #1c1c1c 100%);
+
+}
+.informacion-certificacion{
+  padding-left: 30px;
+}
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #fff; /* Fondo blanco para el contenedor */
+  padding: 20px;
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #0c0c0c; /* Azul */
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo img {
+  max-width: 200px;
+}
+
+.info {
+  margin-bottom: 20px;
+}
+
+.info p {
+  margin-bottom: 5px;
+}
+
+.footer {
+  text-align: center;
+  color: #0d0d0e; /* Azul */
+}
+
+#enlace-pdf {
+  text-align: center;
+  margin-top: 20px;
+}
+
+#enlace-pdf a {
+  color: #28a745; /* Verde */
+  text-decoration: none;
+}
+
+#enlace-pdf a:hover {
+  color: #218838; /* Verde más oscuro al pasar el mouse */
+}
+
+button.btn-certificacion{
+    background: green;
+
+}
+
+
+
+}
