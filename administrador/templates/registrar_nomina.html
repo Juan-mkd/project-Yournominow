@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Registro</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="{% static 'nomina.css' %}">
+    <!-- Font Awesome CDN link for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+</head>
+<body>
+    <form id="registroNomina" action="{% url 'procesar_nomina' %}" method="post">
+        {% csrf_token %}
+        <div class="container">
+            <h2>Registro de Nómina</h2>
+            <label for="nomina_periodo_pago">Periodo de pago:</label>
+            <input type="date" name="nomina_periodo_pago" id="nomina_periodo_pago" required>
+            <br><br>
+            <div class="buttons">
+                <button type="submit" class="btn botonDiv">Generar Nómina para Todos los Usuarios</button>
+                <a class="botonDiv" href="{% url 'registrar_novedad' %}">Reportar Novedades</a>
+                <a href="{% url 'administrador' %}" class="botonDiv">Volver</a>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
