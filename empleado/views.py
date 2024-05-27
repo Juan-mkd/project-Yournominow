@@ -141,6 +141,8 @@ def desprendible_nomina(request):
 
 
 
+
+
 def certificacion(request):
     # Recuperar el usuario autenticado
     usuario = request.user
