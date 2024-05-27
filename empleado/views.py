@@ -11,7 +11,7 @@ from django.utils import timezone
 from bs4 import BeautifulSoup
 from django.template.loader import render_to_string
 from io import BytesIO
-from reportlab.pdfgen import canvas
+
 
 
 
@@ -373,39 +373,78 @@ class ConstanciaLaboralPDFView(View):
 
 # desprendible de nomina PDF
 
-
-def generar_pdf(request):
-    # Obtener los datos necesarios para generar el PDF
+def generar_pdf(request, nomina_periodo_pago):
     usuario = request.user.cedula
-    nomina_periodo_pago = request.POST.get('nomina_periodo_pago')
-    # Resto del código para obtener los datos necesarios
+    datos_usuario = get_object_or_404(Usuario, cedula=usuario)
+    datos_cargo = get_object_or_404(Cargo, cargo_id=datos_usuario.usu_id_cargo_id)
+    valores_fijos = Valores_fijos.objects.first()
+    datos_nomina = get_object_or_404(Nomina, nom_cedula_id=usuario, nom_periodo_pago=nomina_periodo_pago)
+    datos_devengado = get_object_or_404(Devengado, deveng_cedula_id=usuario, deveng_periodo_pago=nomina_periodo_pago)
+    datos_descuento = get_object_or_404(Descuento, desc_cedula_id=usuario, desc_periodo_pago=nomina_periodo_pago)
     
-    # Crear un objeto BytesIO para almacenar el PDF generado
-    buffer = BytesIO()
+    sueldo = datos_cargo.cargo_sueldo_basico 
+    horas_diurnas = round(sueldo / 235) 
+    tot_horas_extra_diurnas = horas_diurnas * datos_devengado.deveng_horas_extra_diur * 0.25
+    tot_horas_extra_nocturnas = horas_diurnas * datos_devengado.deveng_horas_extra_noct * 0.75
+    tot_horas_extra_diur_domfest = horas_diurnas * datos_devengado.deveng_horas_extra_diur_domfest * 1
+    tot_horas_extra_noct_domfest = horas_diurnas * datos_devengado.deveng_horas_extra_noct_domfest * 1.5
+    horas_extra_diurnas = horas_diurnas * datos_devengado.deveng_horas_extra_diur + round(tot_horas_extra_diurnas)
+    horas_extra_nocturnas = horas_diurnas * datos_devengado.deveng_horas_extra_noct + round(tot_horas_extra_nocturnas)
+    horas_extra_diur_domfest = horas_diurnas * datos_devengado.deveng_horas_extra_diur_domfest + round(tot_horas_extra_diur_domfest)
+    horas_extra_noct_domfest = horas_diurnas * datos_devengado.deveng_horas_extra_noct_domfest + round(tot_horas_extra_noct_domfest)  
+    total_deveng = sueldo + datos_devengado.deveng_subs_trans + datos_devengado.deveng_subs_alim + horas_extra_diurnas + horas_extra_nocturnas + horas_extra_diur_domfest + horas_extra_noct_domfest + datos_devengado.deveng_bonificacion
+    aporte_salud = round(sueldo * valores_fijos.valor_aport_salud)
+    aporte_pension = round(sueldo * valores_fijos.valor_aport_pension)
+    aporte_sena = round(sueldo *  valores_fijos.valor_aport_sena)
+    aporte_icbf = round(sueldo * valores_fijos.valor_aport_icbf)
+    total_desc = aporte_salud + aporte_pension + datos_descuento.desc_creditos_libranza + datos_descuento.desc_cuotas_sindicales + datos_descuento.desc_embargos_judiciales + aporte_sena + aporte_icbf
+    total_neto = total_deveng - total_desc
+
+    # contar cuantas bonificaciones hay 
+    cantidad_bonificaciones = Devengado.objects.filter(deveng_cedula_id=usuario,deveng_periodo_pago=nomina_periodo_pago, deveng_bonificacion__isnull=False).count()
+    cant_creditos_libranza = Descuento.objects.filter(desc_cedula_id=usuario, desc_periodo_pago=nomina_periodo_pago, desc_creditos_libranza__isnull=False).count()
+    cant_cuotas_sindicales = Descuento.objects.filter(desc_cedula_id=usuario, desc_periodo_pago=nomina_periodo_pago, desc_cuotas_sindicales__isnull=False).count()
+    cant_embargos_judiciales = Descuento.objects.filter(desc_cedula_id=usuario, desc_periodo_pago=nomina_periodo_pago, desc_embargos_judiciales__isnull=False).count()
+    cant_descuentos = Descuento.objects.filter(desc_cedula_id=usuario, desc_periodo_pago=nomina_periodo_pago, desc_precio__isnull=False).count()
     
-    # Crear el objeto PDF usando el objeto BytesIO como salida
-    pdf = canvas.Canvas(buffer, pagesize='A4')
+    bonificacion = 0
+    deveng_bonificacion  = Devengado.objects.values_list('deveng_bonificacion', flat=True)
 
-    # Agregar el contenido al PDF
-    # ...
+    # Render HTML template
+    html_string = render_to_string('desprendible_nomina.html', {
+        'datos_usuario': datos_usuario,
+        'datos_cargo': datos_cargo,
+        'datos_devengado': datos_devengado,
+        'valores_fijos': valores_fijos,
+        'datos_nomina': datos_nomina,
+        'datos_descuento': datos_descuento,
+        'total_deveng': total_deveng,
+        'horas_extra_diurnas': horas_extra_diurnas,
+        'horas_extra_nocturnas': horas_extra_nocturnas,
+        'horas_extra_diur_domfest': horas_extra_diur_domfest,
+        'horas_extra_noct_domfest': horas_extra_noct_domfest,
+        'aporte_salud': aporte_salud,
+        'aporte_pension': aporte_pension,
+        'aporte_sena': aporte_sena,
+        'aporte_icbf': aporte_icbf,
+        'total_desc': total_desc,
+        'total_neto': total_neto,
+        'bonificacion': bonificacion,
+        'cantidad_bonificaciones': cantidad_bonificaciones,
+        'cant_creditos_libranza': cant_creditos_libranza,
+        'cant_cuotas_sindicales': cant_cuotas_sindicales,
+        'cant_embargos_judiciales': cant_embargos_judiciales,
+        'cant_descuentos': cant_descuentos,
+    })
 
-    # Ejemplo: Agregar un texto al PDF
-    pdf.drawString(100, 100, "¡Hola, este es tu desprendible de nómina!")
-
-    # Cerrar el objeto PDF
-    pdf.showPage()
-    pdf.save()
-
-    # Establecer la posición del objeto BytesIO al inicio del archivo
-    buffer.seek(0)
-
-    # Crear la respuesta HTTP con el archivo PDF adjunto
+    # Generar PDF
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="desprendible_nomina.pdf"'
-
-    # Escribir el contenido del archivo PDF en la respuesta HTTP
-    response.write(buffer.getvalue())
-
-    # Retornar la respuesta HTTP
+    
+    pisa_status = pisa.CreatePDF(
+        html_string, dest=response
+    )
+    
+    if pisa_status.err:
+        return HttpResponse('Hubo un error al generar el PDF <pre>' + html_string + '</pre>')
     return response
-
