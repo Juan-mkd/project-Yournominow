@@ -1,4 +1,4 @@
-{%load static %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +12,6 @@
     <header>
         <a class="btn btn-primary" href="{% url 'administrador' %}" role="button" id="volver">Volver</a>
         <div class="container">
-           
             <div class="card-container d-flex  ">
                 <div class="card border-left-primary shadow h-100 py-1">
                     <div class="card-body">
@@ -21,7 +20,6 @@
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                     Employee</div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_usuarios }}</div>
-
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -35,7 +33,7 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                     Nominas</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">40,000</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_nominas }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -45,51 +43,56 @@
                 </div>
             </div>
         </div>
-        
-        
     </header>
-    
     
     <main>
         <div class="container">
-
-    
-
             <div class="table-responsive">
                 <table class="table table-dark">
-                  <thead>
-                    <tr>
-                      <th>Cédula</th>
-                      <th>Nombre</th>
-                      <th>Cargo</th>
-                      <th>Sueldo</th>
-                      <th>Fecha de antiguedad</th>
-                      <th>Total descuentos</th>
-                      <th>Total devengados</th>
-                      <th>Neto</th>
-                      <th>Fecha de la nomina</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for usuario in usuarios %}
-                    <tr>
-                        <td>{{ usuario.cedula }}</td>
-                        <td>{{ usuario.usu_nombre }}</td>
-                        <td>{{ usuario.usu_id_cargo.cargo_nombre }}</td>
-                        <td>{{ usuario.usu_id_cargo.cargo_sueldo_basico }}</td>
-                        <td>{{ usuario.usu_fecha_ingreso|date:"d/m/Y" }}</td>
-                        <td>descuentos</td>
-                        <td>Devengados</td>
-                        <td>neto</td>
-                        <td>fecha nomina</td>
-                        <td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
+                    <thead>
+                        <tr>
+                            <th>Cédula</th>
+                            <th>Nombre</th>
+                            <th>Cargo</th>
+                            <th>Sueldo</th>
+                            <th>Fecha de antiguedad</th>
+                            <th>Total descuentos</th>
+                            <th>Total devengados</th>
+                            <th>Neto</th>
+                            <th>Fecha de la nomina</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for nomina in nominas %}
+                        <tr>
+                            <td>{{ nomina.nom_cedula.cedula }}</td>
+                            <td>{{ nomina.nom_cedula.usu_nombre }}</td>
+                            <td>{{ nomina.nom_cedula.usu_id_cargo.cargo_nombre }}</td>
+                            <td>{{ nomina.nom_cedula.usu_id_cargo.cargo_sueldo_basico }}</td>
+                            <td>{{ nomina.nom_cedula.usu_fecha_ingreso|date:"d/m/Y" }}</td>
+                            <td>
+                                {% for descuento in descuentos %}
+                                    {% if descuento.desc_cedula_id == nomina.nom_cedula_id and descuento.desc_periodo_pago == nomina.nom_periodo_pago%}
+                                        {{ descuento.total_descuentos }}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for devengado in devengados %}
+                                {% if devengado.deveng_cedula_id == nomina.nom_cedula_id and devengado.deveng_periodo_pago == nomina.nom_periodo_pago %}
+                                    {{ devengado.total_devengados }}
+                                {% endif %}
+                            {% endfor %}
+                                
+                            </td>
+                            <td>{{ nomina.total_neto }}</td>
+                            <td>{{ nomina.nom_periodo_pago|date:"d/m/Y" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
                 </table>
-              </div>
             </div>
-        
+        </div>
     </main>
     
     <footer></footer>

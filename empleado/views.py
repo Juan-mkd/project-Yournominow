@@ -1,5 +1,5 @@
 from django.shortcuts import render,HttpResponse,redirect,get_object_or_404
-from desprendible.models import Devengado, Descuento, Nomina
+from desprendible.models import Devengado, Descuento, Nomina,Valores_fijos
 from usuario.models import Usuario, Cargo
 from login.views import login_view
 from datetime import datetime
@@ -10,7 +10,8 @@ from django.views import View
 from django.utils import timezone
 from bs4 import BeautifulSoup
 from django.template.loader import render_to_string
-
+from io import BytesIO
+from reportlab.pdfgen import canvas
 
 
 
@@ -37,11 +38,14 @@ def desprendible_nomina(request):
     datos_usuario = Usuario.objects.get(cedula=usuario)
     
     datos_cargo = Cargo.objects.get(cargo_id=datos_usuario.usu_id_cargo_id)  # Obtener cargo del usuario
+    valores_fijos = Valores_fijos.objects.first()
+    
     sueldo = datos_cargo.cargo_sueldo_basico  # Obtener sueldo según el cargo
     
     
     
     datos_nomina = Nomina.objects.get(nom_cedula_id=usuario, nom_periodo_pago=nomina_periodo_pago)
+    
     datos_devengado = Devengado.objects.filter(deveng_cedula_id=usuario, deveng_periodo_pago=nomina_periodo_pago).first()
     datos_descuento = Descuento.objects.filter(desc_cedula_id=usuario, desc_periodo_pago=nomina_periodo_pago).first()
     
@@ -60,10 +64,23 @@ def desprendible_nomina(request):
     horas_extra_diur_domfest = horas_diurnas * datos_devengado.deveng_horas_extra_diur_domfest + round(tot_horas_extra_diur_domfest)
     horas_extra_noct_domfest = horas_diurnas * datos_devengado.deveng_horas_extra_noct_domfest + round(tot_horas_extra_noct_domfest)    
     total_deveng = sueldo + datos_devengado.deveng_subs_trans + datos_devengado.deveng_subs_alim + horas_extra_diurnas + horas_extra_nocturnas + horas_extra_diur_domfest + horas_extra_noct_domfest + datos_devengado.deveng_bonificacion
-    
+    datos_devengado.total_devengados = total_deveng
+    datos_devengado.save()
     
     total_precio = 0
     desc_precios = Descuento.objects.values_list('desc_precio', flat=True)
+    
+    # contar cuantas bonificaciones hay 
+    cantidad_bonificaciones = Devengado.objects.filter(deveng_cedula_id=usuario,deveng_periodo_pago=nomina_periodo_pago, deveng_bonificacion__isnull=False).count()
+    
+    cant_creditos_libranza = Descuento.objects.filter(desc_cedula_id=usuario, desc_periodo_pago=nomina_periodo_pago, desc_creditos_libranza__isnull=False).count()
+
+    cant_cuotas_sindicales = Descuento.objects.filter(desc_cedula_id=usuario, desc_periodo_pago=nomina_periodo_pago, desc_cuotas_sindicales__isnull=False).count()
+
+    cant_embargos_judiciales = Descuento.objects.filter(desc_cedula_id=usuario, desc_periodo_pago=nomina_periodo_pago, desc_embargos_judiciales__isnull=False).count()
+
+    cant_descuentos = Descuento.objects.filter(desc_cedula_id=usuario, desc_periodo_pago=nomina_periodo_pago, desc_precio__isnull=False).count()
+
     
     for precio in desc_precios:
         total_precio += precio
@@ -80,17 +97,24 @@ def desprendible_nomina(request):
     
     
     # Calculos descuentos
-    aporte_salud = round(sueldo * 0.04)
-    aporte_pension = round(sueldo * 0.04)
-    aporte_sena = round(sueldo * 0.04)
-    aporte_icbf = round(sueldo * 0.04)
+    aporte_salud = round(sueldo * valores_fijos.valor_aport_salud)
+    aporte_pension = round(sueldo * valores_fijos.valor_aport_pension)
+    aporte_sena = round(sueldo *  valores_fijos.valor_aport_sena)
+    aporte_icbf = round(sueldo * valores_fijos.valor_aport_icbf)
     total_desc = aporte_salud + aporte_pension + datos_descuento.desc_creditos_libranza + datos_descuento.desc_cuotas_sindicales + datos_descuento.desc_embargos_judiciales + aporte_sena + aporte_icbf
+    datos_descuento.total_descuentos = total_desc
+    datos_descuento.save()
     total_neto = total_deveng - total_desc
+    datos_nomina.total_neto = total_neto
+    datos_nomina.save()
+    
+  
     
     return render(request, "desprendible_nomina.html", {
         'datos_usuario': datos_usuario,
         'datos_cargo': datos_cargo,
         'datos_devengado': datos_devengado,
+        'valores_fijos': valores_fijos,
         'datos_nomina': datos_nomina,
         'datos_descuento': datos_descuento,
         'total_deveng': total_deveng,
@@ -106,6 +130,12 @@ def desprendible_nomina(request):
         'total_neto': total_neto,
         'total_precio': total_precio,
         'bonificacion': bonificacion,
+        'cantidad_bonificaciones': cantidad_bonificaciones,
+        'cant_creditos_libranza': cant_creditos_libranza,
+        'cant_cuotas_sindicales': cant_cuotas_sindicales,
+        'cant_embargos_judiciales': cant_embargos_judiciales,
+        'cant_descuentos': cant_descuentos,
+        
     })
 
 
@@ -334,49 +364,46 @@ class ConstanciaLaboralPDFView(View):
 
 
 
+
+
+
+
+
 # desprendible de nomina PDF
-class GenerarPDFView(View):
-    def get(self, request):
-        # Obtén los datos necesarios para el PDF
-        # Esto puede ser cualquier cosa que quieras incluir en el PDF
 
-        # Renderiza la plantilla HTML
-        template = get_template('desprendible_nomina.html')
-        context = {
-            # Pasa aquí los datos necesarios para la plantilla
-            'datos_usuario': {},  # Agrega aquí los datos del usuario
-            'datos_cargo': {},    # Agrega aquí los datos del cargo
-            'datos_devengado': {},    # Agrega aquí los datos devengados
-            'datos_nomina': {},   # Agrega aquí los datos de la nómina
-            'datos_descuento': {},    # Agrega aquí los datos de descuento
-            'total_deveng': 0,    # Agrega aquí el total devengado
-            'horas_extra_diurnas': 0,  # Agrega aquí las horas extras diurnas
-            'horas_extra_nocturnas': 0,    # Agrega aquí las horas extras nocturnas
-            'horas_extra_diur_domfest': 0, # Agrega aquí las horas extras diurnas dominicales/festivas
-            'horas_extra_noct_domfest': 0, # Agrega aquí las horas extras nocturnas dominicales/festivas
-            'aporte_salud': 0,    # Agrega aquí el aporte a la salud
-            'aporte_pension': 0,  # Agrega aquí el aporte a la pensión
-            'aporte_sena': 0,     # Agrega aquí el aporte al SENA
-            'aporte_icbf': 0,     # Agrega aquí el aporte al ICBF
-            'total_desc': 0,  # Agrega aquí el total de descuentos
-            'total_neto': 0,  # Agrega aquí el total neto
-            'total_precio': 0,  # Agrega aquí el total de precios
-            'bonificacion': 0,   # Agrega aquí la bonificación
-        }
-        html = template.render(context)
 
-        # Crea una respuesta HTTP con el PDF
-        response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="desprendible_nomina.pdf"'
+def generar_pdf(request):
+    # Obtener los datos necesarios para generar el PDF
+    usuario = request.user.cedula
+    nomina_periodo_pago = request.POST.get('nomina_periodo_pago')
+    # Resto del código para obtener los datos necesarios
+    
+    # Crear un objeto BytesIO para almacenar el PDF generado
+    buffer = BytesIO()
+    
+    # Crear el objeto PDF usando el objeto BytesIO como salida
+    pdf = canvas.Canvas(buffer, pagesize='A4')
 
-        # Genera el PDF
-        pisa_status = pisa.CreatePDF(
-            html, dest=response,
-            encoding='utf-8'
-        )
+    # Agregar el contenido al PDF
+    # ...
 
-        # Si no se pudo generar el PDF, devuelve un error
-        if pisa_status.err:
-            return HttpResponse('Error al generar el PDF')
+    # Ejemplo: Agregar un texto al PDF
+    pdf.drawString(100, 100, "¡Hola, este es tu desprendible de nómina!")
 
-        return response
+    # Cerrar el objeto PDF
+    pdf.showPage()
+    pdf.save()
+
+    # Establecer la posición del objeto BytesIO al inicio del archivo
+    buffer.seek(0)
+
+    # Crear la respuesta HTTP con el archivo PDF adjunto
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="desprendible_nomina.pdf"'
+
+    # Escribir el contenido del archivo PDF en la respuesta HTTP
+    response.write(buffer.getvalue())
+
+    # Retornar la respuesta HTTP
+    return response
+

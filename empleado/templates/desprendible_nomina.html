@@ -81,7 +81,7 @@
                     <br>
                     {{ datos_devengado.deveng_horas_extra_noct_domfest }}
                     <br>
-                    2
+                    {{ cantidad_bonificaciones }}
                 </td>
                 <td>
                     {{ datos_cargo.cargo_sueldo_basico}}
@@ -135,19 +135,21 @@
                     Descuentos
                 </td>
                 <td>
-                    4%
+                    {{ valores_fijos.valor_aport_salud }}
                     <br>
-                    4%
+                    {{ valores_fijos.valor_aport_pension }}
                     <br>
-                    4%
+                    {{ valores_fijos.valor_aport_sena }}
                     <br>
-                    4%
+                    {{ valores_fijos.valor_aport_icbf }}
                     <br>
-                    0
+                    {{cant_creditos_libranza}}
                     <br>
-                    0
+                    {{cant_cuotas_sindicales}}
                     <br>
-                    0
+                    {{ cant_embargos_judiciales}}
+                    <br>
+                    {{cant_descuentos}}
                 </td>
                 <td>
                     {{ aporte_salud }}
@@ -176,15 +178,15 @@
         </thead>
         <thead>
             <tr>
-                <th colspan="3">Sueldo Neto: {{ total_neto }} </th>
+                <th colspan="3">Sueldo Neto: {{ total_neto }}x </th>
             </tr>
         </thead>
 
     </table>
 
 
-    <div id="enlace-pdf" class="pdf-hidden">
-        <a class="btn btn-primary" href="{% url 'generar_pdf' %}" target="_blank" role="button" id="descargar-pdf">Descargar PDF</a>
+    <div id="enlace-pdf">
+        <a class="btn btn-primary" href="{% url 'generar_pdf' %}" role="button" id="descargar-pdf">Descargar PDF</a>
     </div>
     
 

@@ -14,7 +14,7 @@ class Devengado(models.Model):
     deveng_bonificacion = models.IntegerField()
     deveng_periodo_pago = models.DateField()
     deveng_fecha = models.DateField()
-    
+    total_devengados =models.IntegerField(null=True)
 
 
 
@@ -30,6 +30,7 @@ class Descuento(models.Model):
     desc_precio = models.IntegerField()
     desc_fecha_des = models.DateField()
     des_time_retardo = models.IntegerField()
+    total_descuentos = models.IntegerField(null=True)
     
     
 class Nomina(models.Model):
@@ -39,3 +40,16 @@ class Nomina(models.Model):
     nom_tipo_pago = models.CharField(max_length=200)
     nom_periodo_pago = models.DateField()
     nom_dias_trabajados = models.IntegerField()
+    total_neto = models.IntegerField(null=True)
+    
+    
+class Valores_fijos(models.Model):
+    valor_id = models.AutoField(primary_key=True)
+    valor_trasporte = models.IntegerField()
+    valor_alimentacion = models.IntegerField()
+    valor_aport_salud = models.FloatField()
+    valor_aport_pension = models.FloatField()
+    valor_aport_sena = models.FloatField()
+    valor_aport_icbf = models.FloatField()
+    
+    

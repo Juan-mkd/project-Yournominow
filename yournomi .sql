@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-03-2024 a las 21:17:08
--- Versión del servidor: 10.4.28-MariaDB
--- Versión de PHP: 8.0.28
+-- Tiempo de generación: 27-05-2024 a las 02:13:50
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `yournominow`
+-- Base de datos: `yournomi`
 --
 
 -- --------------------------------------------------------
@@ -109,7 +109,11 @@ INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALU
 (45, 'Can add nomina', 12, 'add_nomina'),
 (46, 'Can change nomina', 12, 'change_nomina'),
 (47, 'Can delete nomina', 12, 'delete_nomina'),
-(48, 'Can view nomina', 12, 'view_nomina');
+(48, 'Can view nomina', 12, 'view_nomina'),
+(49, 'Can add valores_fijos', 13, 'add_valores_fijos'),
+(50, 'Can change valores_fijos', 13, 'change_valores_fijos'),
+(51, 'Can delete valores_fijos', 13, 'delete_valores_fijos'),
+(52, 'Can view valores_fijos', 13, 'view_valores_fijos');
 
 -- --------------------------------------------------------
 
@@ -167,7 +171,12 @@ CREATE TABLE `desprendible_descuento` (
   `desc_cuotas_sindicales` int(11) NOT NULL,
   `desc_embargos_judiciales` int(11) NOT NULL,
   `desc_periodo_pago` date NOT NULL,
-  `desc_cedula_id` int(11) NOT NULL
+  `desc_tipo_descuento` longtext NOT NULL,
+  `desc_precio` int(11) NOT NULL,
+  `desc_fecha_des` date NOT NULL,
+  `desc_cedula_id` int(11) NOT NULL,
+  `des_time_retardo` int(11) NOT NULL,
+  `total_descuentos` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -186,92 +195,10 @@ CREATE TABLE `desprendible_devengado` (
   `deveng_horas_extra_noct_domfest` int(11) NOT NULL,
   `deveng_bonificacion` int(11) NOT NULL,
   `deveng_periodo_pago` date NOT NULL,
-  `deveng_cedula_id` int(11) NOT NULL
+  `deveng_fecha` date NOT NULL,
+  `deveng_cedula_id` int(11) NOT NULL,
+  `total_devengados` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `desprendible_devengado`
---
-
-INSERT INTO `desprendible_devengado` (`deveng_id`, `deveng_subs_trans`, `deveng_subs_alim`, `deveng_horas_extra_diur`, `deveng_horas_extra_noct`, `deveng_horas_extra_diur_domfest`, `deveng_horas_extra_noct_domfest`, `deveng_bonificacion`, `deveng_periodo_pago`, `deveng_cedula_id`) VALUES
-(6, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-26', 12),
-(9, 162000, 84173, 0, 10, 30, 0, 0, '2024-07-30', 12),
-(11, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-31', 12),
-(12, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-31', 14),
-(14, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-31', 12323),
-(15, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-31', 23),
-(16, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-31', 1023),
-(17, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-31', 102332),
-(18, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-31', 23213),
-(19, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-31', 123123),
-(20, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-31', 323),
-(21, 162000, 84173, 0, 10, 30, 0, 0, '2024-04-30', 12),
-(22, 162000, 84173, 0, 10, 30, 0, 0, '2024-04-30', 14),
-(23, 162000, 84173, 0, 10, 30, 0, 0, '2024-04-30', 12323),
-(24, 162000, 84173, 0, 10, 30, 0, 0, '2024-04-30', 23),
-(25, 162000, 84173, 0, 10, 30, 0, 0, '2024-04-30', 1023),
-(26, 162000, 84173, 0, 10, 30, 0, 0, '2024-04-30', 102332),
-(27, 162000, 84173, 0, 10, 30, 0, 0, '2024-04-30', 23213),
-(28, 162000, 84173, 0, 10, 30, 0, 0, '2024-04-30', 123123),
-(29, 162000, 84173, 0, 10, 30, 0, 0, '2024-04-30', 323),
-(30, 162000, 84173, 0, 10, 30, 0, 0, '2024-04-16', 12),
-(31, 162000, 84173, 0, 10, 30, 0, 0, '2024-04-16', 14),
-(32, 162000, 84173, 0, 10, 30, 0, 0, '2024-04-16', 12323),
-(33, 162000, 84173, 0, 10, 30, 0, 0, '2024-04-16', 23),
-(34, 162000, 84173, 0, 10, 30, 0, 0, '2024-04-16', 1023),
-(35, 162000, 84173, 0, 10, 30, 0, 0, '2024-04-16', 102332),
-(36, 162000, 84173, 0, 10, 30, 0, 0, '2024-04-16', 23213),
-(37, 162000, 84173, 0, 10, 30, 0, 0, '2024-04-16', 123123),
-(38, 162000, 84173, 0, 10, 30, 0, 0, '2024-04-16', 323),
-(39, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-05', 12),
-(40, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-05', 14),
-(41, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-05', 12323),
-(42, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-05', 23),
-(43, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-05', 1023),
-(44, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-05', 102332),
-(45, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-05', 23213),
-(46, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-05', 123123),
-(47, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-05', 323),
-(48, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-10', 12),
-(49, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-10', 14),
-(50, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-10', 12323),
-(51, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-10', 23),
-(52, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-10', 1023),
-(53, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-10', 102332),
-(54, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-10', 23213),
-(55, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-10', 123123),
-(56, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-10', 323),
-(57, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-24', 12),
-(58, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-24', 14),
-(59, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-24', 12323),
-(60, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-24', 23),
-(61, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-24', 1023),
-(62, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-24', 102332),
-(63, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-24', 23213),
-(64, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-24', 123123),
-(65, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-24', 323),
-(66, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-24', 123233),
-(67, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-11', 12),
-(68, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-11', 14),
-(69, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-11', 12323),
-(70, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-11', 23),
-(71, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-11', 1023),
-(72, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-11', 102332),
-(73, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-11', 23213),
-(74, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-11', 123123),
-(75, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-11', 323),
-(76, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-11', 123233),
-(77, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-14', 12),
-(78, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-14', 14),
-(79, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-14', 12323),
-(80, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-14', 23),
-(81, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-14', 1023),
-(82, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-14', 102332),
-(83, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-14', 23213),
-(84, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-14', 123123),
-(85, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-14', 323),
-(86, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-14', 123233),
-(87, 162000, 84173, 0, 10, 30, 0, 0, '2024-03-14', 123312);
 
 -- --------------------------------------------------------
 
@@ -285,90 +212,32 @@ CREATE TABLE `desprendible_nomina` (
   `nom_tipo_pago` varchar(200) NOT NULL,
   `nom_periodo_pago` date NOT NULL,
   `nom_dias_trabajados` int(11) NOT NULL,
-  `nom_cedula_id` int(11) NOT NULL
+  `nom_cedula_id` int(11) NOT NULL,
+  `total_neto` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `desprendible_valores_fijos`
+--
+
+CREATE TABLE `desprendible_valores_fijos` (
+  `valor_id` int(11) NOT NULL,
+  `valor_trasporte` int(11) NOT NULL,
+  `valor_alimentacion` int(11) NOT NULL,
+  `valor_aport_salud` double NOT NULL,
+  `valor_aport_pension` double NOT NULL,
+  `valor_aport_sena` double NOT NULL,
+  `valor_aport_icbf` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `desprendible_nomina`
+-- Volcado de datos para la tabla `desprendible_valores_fijos`
 --
 
-INSERT INTO `desprendible_nomina` (`nom_id`, `nom_fecha_creacion`, `nom_tipo_pago`, `nom_periodo_pago`, `nom_dias_trabajados`, `nom_cedula_id`) VALUES
-(11, '2024-03-26', 'Electronico', '2024-03-31', 30, 12),
-(12, '2024-03-26', 'Electronico', '2024-03-31', 30, 14),
-(14, '2024-03-26', 'Electronico', '2024-03-31', 30, 12323),
-(15, '2024-03-26', 'Electronico', '2024-03-31', 30, 23),
-(16, '2024-03-26', 'Electronico', '2024-03-31', 30, 1023),
-(17, '2024-03-26', 'Electronico', '2024-03-31', 30, 102332),
-(18, '2024-03-26', 'Electronico', '2024-03-31', 30, 23213),
-(19, '2024-03-26', 'Electronico', '2024-03-31', 30, 123123),
-(20, '2024-03-26', 'Electronico', '2024-03-31', 30, 323),
-(21, '2024-03-26', 'Electronico', '2024-04-30', 30, 12),
-(22, '2024-03-26', 'Electronico', '2024-04-30', 30, 14),
-(23, '2024-03-26', 'Electronico', '2024-04-30', 30, 12323),
-(24, '2024-03-26', 'Electronico', '2024-04-30', 30, 23),
-(25, '2024-03-26', 'Electronico', '2024-04-30', 30, 1023),
-(26, '2024-03-26', 'Electronico', '2024-04-30', 30, 102332),
-(27, '2024-03-26', 'Electronico', '2024-04-30', 30, 23213),
-(28, '2024-03-26', 'Electronico', '2024-04-30', 30, 123123),
-(29, '2024-03-26', 'Electronico', '2024-04-30', 30, 323),
-(30, '2024-03-26', 'Electronico', '2024-04-16', 30, 12),
-(31, '2024-03-26', 'Electronico', '2024-04-16', 30, 14),
-(32, '2024-03-26', 'Electronico', '2024-04-16', 30, 12323),
-(33, '2024-03-26', 'Electronico', '2024-04-16', 30, 23),
-(34, '2024-03-26', 'Electronico', '2024-04-16', 30, 1023),
-(35, '2024-03-26', 'Electronico', '2024-04-16', 30, 102332),
-(36, '2024-03-26', 'Electronico', '2024-04-16', 30, 23213),
-(37, '2024-03-26', 'Electronico', '2024-04-16', 30, 123123),
-(38, '2024-03-26', 'Electronico', '2024-04-16', 30, 323),
-(39, '2024-03-26', 'Electronico', '2024-03-05', 30, 12),
-(40, '2024-03-26', 'Electronico', '2024-03-05', 30, 14),
-(41, '2024-03-26', 'Electronico', '2024-03-05', 30, 12323),
-(42, '2024-03-26', 'Electronico', '2024-03-05', 30, 23),
-(43, '2024-03-26', 'Electronico', '2024-03-05', 30, 1023),
-(44, '2024-03-26', 'Electronico', '2024-03-05', 30, 102332),
-(45, '2024-03-26', 'Electronico', '2024-03-05', 30, 23213),
-(46, '2024-03-26', 'Electronico', '2024-03-05', 30, 123123),
-(47, '2024-03-26', 'Electronico', '2024-03-05', 30, 323),
-(48, '2024-03-26', 'Electronico', '2024-03-10', 30, 12),
-(49, '2024-03-26', 'Electronico', '2024-03-10', 30, 14),
-(50, '2024-03-26', 'Electronico', '2024-03-10', 30, 12323),
-(51, '2024-03-26', 'Electronico', '2024-03-10', 30, 23),
-(52, '2024-03-26', 'Electronico', '2024-03-10', 30, 1023),
-(53, '2024-03-26', 'Electronico', '2024-03-10', 30, 102332),
-(54, '2024-03-26', 'Electronico', '2024-03-10', 30, 23213),
-(55, '2024-03-26', 'Electronico', '2024-03-10', 30, 123123),
-(56, '2024-03-26', 'Electronico', '2024-03-10', 30, 323),
-(57, '2024-03-27', 'Electronico', '2024-03-24', 30, 12),
-(58, '2024-03-27', 'Electronico', '2024-03-24', 30, 14),
-(59, '2024-03-27', 'Electronico', '2024-03-24', 30, 12323),
-(60, '2024-03-27', 'Electronico', '2024-03-24', 30, 23),
-(61, '2024-03-27', 'Electronico', '2024-03-24', 30, 1023),
-(62, '2024-03-27', 'Electronico', '2024-03-24', 30, 102332),
-(63, '2024-03-27', 'Electronico', '2024-03-24', 30, 23213),
-(64, '2024-03-27', 'Electronico', '2024-03-24', 30, 123123),
-(65, '2024-03-27', 'Electronico', '2024-03-24', 30, 323),
-(66, '2024-03-27', 'Electronico', '2024-03-24', 30, 123233),
-(67, '2024-03-27', 'Electronico', '2024-03-11', 30, 12),
-(68, '2024-03-27', 'Electronico', '2024-03-11', 30, 14),
-(69, '2024-03-27', 'Electronico', '2024-03-11', 30, 12323),
-(70, '2024-03-27', 'Electronico', '2024-03-11', 30, 23),
-(71, '2024-03-27', 'Electronico', '2024-03-11', 30, 1023),
-(72, '2024-03-27', 'Electronico', '2024-03-11', 30, 102332),
-(73, '2024-03-27', 'Electronico', '2024-03-11', 30, 23213),
-(74, '2024-03-27', 'Electronico', '2024-03-11', 30, 123123),
-(75, '2024-03-27', 'Electronico', '2024-03-11', 30, 323),
-(76, '2024-03-27', 'Electronico', '2024-03-11', 30, 123233),
-(77, '2024-03-27', 'Electronico', '2024-03-14', 30, 12),
-(78, '2024-03-27', 'Electronico', '2024-03-14', 30, 14),
-(79, '2024-03-27', 'Electronico', '2024-03-14', 30, 12323),
-(80, '2024-03-27', 'Electronico', '2024-03-14', 30, 23),
-(81, '2024-03-27', 'Electronico', '2024-03-14', 30, 1023),
-(82, '2024-03-27', 'Electronico', '2024-03-14', 30, 102332),
-(83, '2024-03-27', 'Electronico', '2024-03-14', 30, 23213),
-(84, '2024-03-27', 'Electronico', '2024-03-14', 30, 123123),
-(85, '2024-03-27', 'Electronico', '2024-03-14', 30, 323),
-(86, '2024-03-27', 'Electronico', '2024-03-14', 30, 123233),
-(87, '2024-03-27', 'Electronico', '2024-03-14', 30, 123312);
+INSERT INTO `desprendible_valores_fijos` (`valor_id`, `valor_trasporte`, `valor_alimentacion`, `valor_aport_salud`, `valor_aport_pension`, `valor_aport_sena`, `valor_aport_icbf`) VALUES
+(1, 160000, 60000, 0.04, 0.04, 0.04, 0.04);
 
 -- --------------------------------------------------------
 
@@ -412,6 +281,7 @@ INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
 (10, 'desprendible', 'descuento'),
 (11, 'desprendible', 'devengado'),
 (12, 'desprendible', 'nomina'),
+(13, 'desprendible', 'valores_fijos'),
 (6, 'sessions', 'session'),
 (7, 'usuario', 'cargo'),
 (8, 'usuario', 'rol'),
@@ -435,38 +305,45 @@ CREATE TABLE `django_migrations` (
 --
 
 INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
-(1, 'contenttypes', '0001_initial', '2024-03-22 00:14:27.398191'),
-(2, 'auth', '0001_initial', '2024-03-22 00:14:27.946468'),
-(3, 'admin', '0001_initial', '2024-03-22 00:14:28.123666'),
-(4, 'admin', '0002_logentry_remove_auto_add', '2024-03-22 00:14:28.138672'),
-(5, 'admin', '0003_logentry_add_action_flag_choices', '2024-03-22 00:14:28.166164'),
-(6, 'contenttypes', '0002_remove_content_type_name', '2024-03-22 00:14:28.214587'),
-(7, 'auth', '0002_alter_permission_name_max_length', '2024-03-22 00:14:28.274036'),
-(8, 'auth', '0003_alter_user_email_max_length', '2024-03-22 00:14:28.289493'),
-(9, 'auth', '0004_alter_user_username_opts', '2024-03-22 00:14:28.300548'),
-(10, 'auth', '0005_alter_user_last_login_null', '2024-03-22 00:14:28.336514'),
-(11, 'auth', '0006_require_contenttypes_0002', '2024-03-22 00:14:28.340175'),
-(12, 'auth', '0007_alter_validators_add_error_messages', '2024-03-22 00:14:28.347830'),
-(13, 'auth', '0008_alter_user_username_max_length', '2024-03-22 00:14:28.362103'),
-(14, 'auth', '0009_alter_user_last_name_max_length', '2024-03-22 00:14:28.387701'),
-(15, 'auth', '0010_alter_group_name_max_length', '2024-03-22 00:14:28.401131'),
-(16, 'auth', '0011_update_proxy_permissions', '2024-03-22 00:14:28.410525'),
-(17, 'auth', '0012_alter_user_first_name_max_length', '2024-03-22 00:14:28.424547'),
-(18, 'usuario', '0001_initial', '2024-03-22 00:14:28.592017'),
-(19, 'usuario', '0002_remove_usuario_usu_antiguedad_and_more', '2024-03-22 00:14:29.687143'),
-(20, 'usuario', '0003_alter_usuario_usu_id_rol', '2024-03-22 00:14:30.040141'),
-(21, 'usuario', '0004_alter_usuario_usu_id_rol', '2024-03-22 00:14:30.398035'),
-(22, 'usuario', '0005_alter_usuario_usu_estado', '2024-03-22 00:14:30.414983'),
-(23, 'usuario', '0006_alter_usuario_usu_telefono', '2024-03-22 00:14:30.423246'),
-(24, 'usuario', '0007_usuario_last_login', '2024-03-22 00:14:30.437243'),
-(25, 'usuario', '0008_rename_usu_cedula_usuario_cedula_and_more', '2024-03-22 00:14:30.456357'),
-(26, 'usuario', '0009_alter_usuario_usu_id_rol', '2024-03-22 00:14:30.791647'),
-(27, 'usuario', '0010_alter_usuario_usu_telefono', '2024-03-22 00:14:30.798666'),
-(28, 'desprendible', '0001_initial', '2024-03-22 00:14:30.802306'),
-(29, 'desprendible', '0002_initial', '2024-03-22 00:14:30.805665'),
-(30, 'desprendible', '0003_initial', '2024-03-22 00:14:31.108250'),
-(31, 'sessions', '0001_initial', '2024-03-22 00:14:31.154369'),
-(32, 'usuario', '0011_usuario_image', '2024-03-27 19:30:48.449775');
+(1, 'contenttypes', '0001_initial', '2024-05-26 23:51:38.864566'),
+(2, 'auth', '0001_initial', '2024-05-26 23:51:39.210340'),
+(3, 'admin', '0001_initial', '2024-05-26 23:51:39.300881'),
+(4, 'admin', '0002_logentry_remove_auto_add', '2024-05-26 23:51:39.306107'),
+(5, 'admin', '0003_logentry_add_action_flag_choices', '2024-05-26 23:51:39.319091'),
+(6, 'contenttypes', '0002_remove_content_type_name', '2024-05-26 23:51:39.374296'),
+(7, 'auth', '0002_alter_permission_name_max_length', '2024-05-26 23:51:39.410195'),
+(8, 'auth', '0003_alter_user_email_max_length', '2024-05-26 23:51:39.426561'),
+(9, 'auth', '0004_alter_user_username_opts', '2024-05-26 23:51:39.433164'),
+(10, 'auth', '0005_alter_user_last_login_null', '2024-05-26 23:51:39.471974'),
+(11, 'auth', '0006_require_contenttypes_0002', '2024-05-26 23:51:39.473306'),
+(12, 'auth', '0007_alter_validators_add_error_messages', '2024-05-26 23:51:39.482533'),
+(13, 'auth', '0008_alter_user_username_max_length', '2024-05-26 23:51:39.495872'),
+(14, 'auth', '0009_alter_user_last_name_max_length', '2024-05-26 23:51:39.509810'),
+(15, 'auth', '0010_alter_group_name_max_length', '2024-05-26 23:51:39.522834'),
+(16, 'auth', '0011_update_proxy_permissions', '2024-05-26 23:51:39.531228'),
+(17, 'auth', '0012_alter_user_first_name_max_length', '2024-05-26 23:51:39.544613'),
+(18, 'usuario', '0001_initial', '2024-05-26 23:51:39.655840'),
+(19, 'usuario', '0002_remove_usuario_usu_antiguedad_and_more', '2024-05-26 23:51:39.938254'),
+(20, 'usuario', '0003_alter_usuario_usu_id_rol', '2024-05-26 23:51:40.173356'),
+(21, 'usuario', '0004_alter_usuario_usu_id_rol', '2024-05-26 23:51:40.409017'),
+(22, 'usuario', '0005_alter_usuario_usu_estado', '2024-05-26 23:51:40.411624'),
+(23, 'usuario', '0006_alter_usuario_usu_telefono', '2024-05-26 23:51:40.418933'),
+(24, 'usuario', '0007_usuario_last_login', '2024-05-26 23:51:40.429108'),
+(25, 'usuario', '0008_rename_usu_cedula_usuario_cedula_and_more', '2024-05-26 23:51:40.444900'),
+(26, 'usuario', '0009_alter_usuario_usu_id_rol', '2024-05-26 23:51:40.824117'),
+(27, 'usuario', '0010_alter_usuario_usu_telefono', '2024-05-26 23:51:40.829989'),
+(28, 'usuario', '0011_usuario_image', '2024-05-26 23:51:40.846923'),
+(29, 'desprendible', '0001_initial', '2024-05-26 23:51:40.849223'),
+(30, 'desprendible', '0002_initial', '2024-05-26 23:51:40.852403'),
+(31, 'desprendible', '0003_initial', '2024-05-26 23:51:41.027427'),
+(32, 'desprendible', '0004_remove_descuento_desc_total_parcial_des', '2024-05-26 23:51:41.038329'),
+(33, 'desprendible', '0005_descuento_des_time_retardo', '2024-05-26 23:51:41.057413'),
+(34, 'desprendible', '0006_valores_fijos', '2024-05-26 23:51:41.067025'),
+(35, 'desprendible', '0007_alter_valores_fijos_valor_aport_icbf_and_more', '2024-05-26 23:51:41.162344'),
+(36, 'desprendible', '0008_devengado_total_devengados', '2024-05-26 23:51:41.180326'),
+(37, 'desprendible', '0009_descuento_total_descuentos_nomina_total_neto', '2024-05-26 23:51:41.210737'),
+(38, 'desprendible', '0010_alter_descuento_total_descuentos_and_more', '2024-05-26 23:51:41.350740'),
+(39, 'sessions', '0001_initial', '2024-05-26 23:51:41.384262');
 
 -- --------------------------------------------------------
 
@@ -485,7 +362,7 @@ CREATE TABLE `django_session` (
 --
 
 INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
-('h1vxyezyos86jdjakxzsadv6uokfneew', '.eJyrVopPLC3JiC8tTi2Kz0xRslIyVdJBFktKTM5OzQNJ5OSnZ-bpQfnFes6pKaU5iU5QaRQ9GYnFGUANSrUANfohVQ:1rpZgh:5CBOzbPPED5xw3aanYtw90JHs426TBtSOj6AqXRM1kw', '2024-04-10 20:15:55.430593');
+('qwgbn5a8mi5a87kkns2te1wo0aq0bl41', '.eJyrVopPLC3JiC8tTi2Kz0xRslIyVNJBFktKTM5OzQNJ5OSnZ-bpQfnFes6pKaU5iU5QaRQ9GYnFGUANSrUANMohUQ:1sBNkZ:_bpjXurNyqBk9_Ng8GUJjI8Iv-BiFU_ovNv1nkiJAnE', '2024-06-09 23:58:03.606795');
 
 -- --------------------------------------------------------
 
@@ -556,17 +433,8 @@ CREATE TABLE `usuario_usuario` (
 --
 
 INSERT INTO `usuario_usuario` (`usu_id`, `cedula`, `usu_nombre`, `usu_correo`, `usu_telefono`, `password`, `usu_direccion`, `usu_fecha_ingreso`, `usu_estado`, `usu_id_cargo_id`, `usu_id_rol_id`, `last_login`, `image`) VALUES
-(5, 12, 'juan pedro perez', 'juanovalle2022123@gmail.com', 2147483647, 'pbkdf2_sha256$720000$AYWnnq5q7Hg3eGHohRaZN7$T7BQmlkdyzRevehocsXa36uYIhaVVkg1rCjG2itw3Ng=', 'calle 12547', '2024-03-24 19:38:01.117913', 'activo', 1, 1, '2024-03-27 20:15:55.427864', 'images/Screenshot_2024-03-22_150020_2rAoIkA.png'),
-(8, 14, '212', 'juan@gmail.com', 12, 'pbkdf2_sha256$720000$xm5a8ax8oJEdrhq8i1TVsh$efqR6p82ZFE61d/XgT/S1I/1q80o+dexmhAoW7krw10=', 'no me acuerdp', '2024-03-26 00:36:39.670945', 'activo', 1, 2, '2024-03-26 14:49:16.203517', NULL),
-(16, 12323, 'juan pedro perez', '3424@gmail.com', 2147483647, 'pbkdf2_sha256$720000$GziZXIsc70kanvYFQ5VRCx$TqJvuVBJ7D7WmTAuy8JMPXX34oDPhJTmGYxsosOeWGo=', 'calle 23', '2024-03-26 17:15:19.933802', 'activo', 2, 1, NULL, NULL),
-(17, 23, '32212', 'employee1321@gmail.com', 35454, 'pbkdf2_sha256$720000$VUzrWmPHrSUX3hEllnjg4z$PBP3PeB5+62ZdsBUR5s3Wr078gNQ3pVpo8OadfF/+ks=', '12321', '2024-03-26 18:06:09.631198', 'activo', 1, 1, NULL, NULL),
-(18, 1023, '21321', 'employee121321@gmail.com', 2131222121, 'pbkdf2_sha256$720000$IduLjaQMXGYGFafNOulzxk$Tb0LpxbdlFD4TtC4b8g9MxeT6dbp65c98bWcTRqDXuA=', '12321', '2024-03-26 18:08:41.348896', 'activo', 1, 1, NULL, NULL),
-(20, 102332, '21321', 'emploe121321@gmail.com', 2132121, 'pbkdf2_sha256$720000$wTg7dukxjn6O9zcnX9x1Ch$unBWr3Rv+ZocBYCSOOrftejAGYr0+RaUJL94k50XMgg=', 'fr', '2024-03-26 18:11:01.382452', 'activo', 4, 1, NULL, NULL),
-(40, 23213, '2321', '1232323@gmail.com', 3231323, 'pbkdf2_sha256$720000$eMIwpXW8c3tQpXyTGoSvkI$ECGDwxk8wbq9uUG428F3tkyxM5gim2Kf9CaNSHFl+To=', '23213', '2024-03-27 01:44:49.164687', 'activo', 1, 1, NULL, NULL),
-(41, 123123, '3213', '3234@gmail.com', 213232121, 'pbkdf2_sha256$720000$mFxAM80m5v3KfvFzLm8oqv$wXp5V39eKjB7bQvvUjhnOnV0f7XHslqNUYnhJ4sTBeU=', '12321', '2024-03-27 01:45:47.696290', 'activo', 1, 1, NULL, NULL),
-(44, 323, '3232', '323322232@gmail.com', 2147483647, 'pbkdf2_sha256$720000$CGH0IWvvCmBnFMaCtJwr23$MM97P50GcUmeHWOmoSpKnlGORUiOy2WOIHk9sKiD79M=', '323322', '2024-03-27 01:46:12.936062', 'activo', 1, 1, NULL, NULL),
-(69, 123233, '2321', 'dfkmkf@gmail.com', 2147483647, 'pbkdf2_sha256$720000$yfajqmtaMVWzaiCDkmLdYl$SRCySMUJjk2qhb5m7dWNUvSIOPpCiXUgBqYKsd8eK74=', '23213', '2024-03-27 13:32:42.233738', 'activo', 2, 2, NULL, NULL),
-(70, 123312, '3232', '3232232@gmail.com', 2147483647, 'pbkdf2_sha256$720000$Ztsxb5vTR2ZE9TO2qQL8vF$R34ekWQ1T8YiOth50ZoF0bUZxIuTsZTIgJ2e+mkys78=', '323322', '2024-03-27 16:48:27.847560', 'activo', 1, 1, NULL, NULL);
+(1, 123, 'Nicolas Martinez', 'nicolasmartinezf137@gmail.com', 123123, 'pbkdf2_sha256$720000$Y0C5D34eGZxj5ehaV8AheC$Sy7qx2MAnM8aBGMrrchE7Zlb5IGpAzKyo/wyFgAAv4M=', 'calle 123', '2024-05-26 23:51:42.289474', 'activo', 1, 1, '2024-05-26 23:58:03.603746', ''),
+(2, 147, 'JHON DOE', 'django@gmail.com', 2147483647, 'pbkdf2_sha256$720000$1StoMS4NH2LqrEF7G3V0He$yntc4Q4AMl/Rh43R3kD+BKX9dtU+jN5EoMSTqhmZ2+M=', 'calle 15', '2024-05-26 23:57:07.190769', 'activo', 3, 2, '2024-05-26 23:57:50.751544', '');
 
 --
 -- Índices para tablas volcadas
@@ -639,6 +507,12 @@ ALTER TABLE `desprendible_nomina`
   ADD KEY `desprendible_nomina_nom_cedula_id_ec440cf9_fk_usuario_u` (`nom_cedula_id`);
 
 --
+-- Indices de la tabla `desprendible_valores_fijos`
+--
+ALTER TABLE `desprendible_valores_fijos`
+  ADD PRIMARY KEY (`valor_id`);
+
+--
 -- Indices de la tabla `django_admin_log`
 --
 ALTER TABLE `django_admin_log`
@@ -707,7 +581,7 @@ ALTER TABLE `auth_group_permissions`
 -- AUTO_INCREMENT de la tabla `auth_permission`
 --
 ALTER TABLE `auth_permission`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT de la tabla `auth_user`
@@ -731,19 +605,25 @@ ALTER TABLE `auth_user_user_permissions`
 -- AUTO_INCREMENT de la tabla `desprendible_descuento`
 --
 ALTER TABLE `desprendible_descuento`
-  MODIFY `desc_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `desc_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `desprendible_devengado`
 --
 ALTER TABLE `desprendible_devengado`
-  MODIFY `deveng_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
+  MODIFY `deveng_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `desprendible_nomina`
 --
 ALTER TABLE `desprendible_nomina`
-  MODIFY `nom_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
+  MODIFY `nom_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT de la tabla `desprendible_valores_fijos`
+--
+ALTER TABLE `desprendible_valores_fijos`
+  MODIFY `valor_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `django_admin_log`
@@ -755,13 +635,13 @@ ALTER TABLE `django_admin_log`
 -- AUTO_INCREMENT de la tabla `django_content_type`
 --
 ALTER TABLE `django_content_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `django_migrations`
 --
 ALTER TABLE `django_migrations`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario_cargo`
@@ -779,7 +659,7 @@ ALTER TABLE `usuario_rol`
 -- AUTO_INCREMENT de la tabla `usuario_usuario`
 --
 ALTER TABLE `usuario_usuario`
-  MODIFY `usu_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `usu_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas

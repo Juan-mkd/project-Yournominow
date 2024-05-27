@@ -1,6 +1,6 @@
 from django.shortcuts import render,HttpResponse,redirect,get_object_or_404
 from usuario.models import Usuario,Rol,Cargo
-from desprendible.models import Devengado, Nomina,Descuento
+from desprendible.models import Devengado, Nomina,Descuento,Valores_fijos
 from django.contrib.auth.hashers import make_password
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
@@ -174,88 +174,81 @@ def registrar_nomina(request):
 
 def procesar_nomina(request):
     if request.method == 'POST':
-        # Obtener el periodo de pago del formulario
         nomina_periodo_pago = request.POST.get('nomina_periodo_pago')
 
-        # Verificar si se proporcionó un periodo de pago
         if nomina_periodo_pago:
-            # Obtener todos los usuarios
             usuarios = Usuario.objects.all()
-
-            # Definir el tipo de pago de la nómina y los días trabajados
             nomina_tipo_pago = 'Electronico'
             dias_trabajados = 30
-
-            # Variable para verificar si hay una nómina existente para este periodo
             nomina_existente = False
 
-            # Iterar sobre todos los usuarios y generar la nómina para cada uno
             for usuario in usuarios:
                 cedula = usuario.cedula
+                if not cedula:
+                    continue  # Saltar si el usuario no tiene cédula
 
-                # Verificar si ya existe una nómina para este usuario en este período
-                if not Nomina.objects.filter(nom_periodo_pago=nomina_periodo_pago, nom_cedula_id=cedula).exists():
-                    # Verificar si no hay un devengado existente para el usuario
-                    if not Devengado.objects.filter(deveng_periodo_pago=nomina_periodo_pago, deveng_cedula_id=cedula).exists():
-                        # Obtener el sueldo básico del cargo asociado al usuario
-                        sueldo_basico_cargo = usuario.usu_id_cargo.cargo_sueldo_basico
+                sueldo_basico_cargo = usuario.usu_id_cargo.cargo_sueldo_basico
+                deveng_subs_trans = 0
+                deveng_subs_alim = 0
+                valores_fijos = Valores_fijos.objects.first()
+                # Verificar si el sueldo básico es menor o igual a 2,800,000
+                if sueldo_basico_cargo <= 2800000:
+                    deveng_subs_trans = valores_fijos.valor_trasporte
+                    deveng_subs_alim = valores_fijos.valor_alimentacion
 
-                        # Definir los subsidios de transporte y alimentación según el sueldo básico
-                        if sueldo_basico_cargo <= 2800000:
-                            deveng_subs_trans = 150000
-                            deveng_subs_alim = 60000
-                        else:
-                            deveng_subs_trans = 0
-                            deveng_subs_alim = 0
+                # Buscar el registro de Devengado para el empleado en la base de datos
+                devengado, created = Devengado.objects.get_or_create(
+                    deveng_cedula_id=cedula,
+                    deveng_periodo_pago=nomina_periodo_pago,
+                    defaults={
+                        'deveng_subs_trans': deveng_subs_trans,
+                        'deveng_subs_alim': deveng_subs_alim,
+                        'deveng_horas_extra_diur': 0,
+                        'deveng_horas_extra_noct': 0,
+                        'deveng_horas_extra_diur_domfest': 0,
+                        'deveng_horas_extra_noct_domfest': 0,
+                        'deveng_bonificacion': 0,
+                        'deveng_fecha': timezone.now(),
+                        
+                    }
+                )
 
-                        # Crear y guardar el devengado para el usuario
-                        nuevo_devengado = Devengado(
-                            deveng_cedula_id=cedula,
-                            deveng_subs_trans=deveng_subs_trans,
-                            deveng_subs_alim=deveng_subs_alim,
-                            deveng_horas_extra_diur=0,
-                            deveng_horas_extra_noct=0,
-                            deveng_horas_extra_diur_domfest=0,
-                            deveng_horas_extra_noct_domfest=0,
-                            deveng_bonificacion=0,
-                            deveng_periodo_pago=nomina_periodo_pago,
-                            deveng_fecha=timezone.now()
-                        )
-                        nuevo_devengado.save()
+                # Si el registro ya existía, actualizar los subsidios
+                if not created:
+                    devengado.deveng_subs_trans = deveng_subs_trans
+                    devengado.deveng_subs_alim = deveng_subs_alim
+                    devengado.save()
 
-                    # Verificar si no hay un descuento existente para el usuario
-                    if not Descuento.objects.filter(desc_periodo_pago= nomina_periodo_pago, desc_cedula_id=cedula).exists():
-                        # Crear el descuento para el usuario
-                        nuevo_descuento = Descuento(
-                            desc_cedula_id=cedula,
-                            desc_creditos_libranza=0,
-                            desc_cuotas_sindicales=0,
-                            desc_embargos_judiciales=0,
-                            desc_periodo_pago=nomina_periodo_pago,
-                            desc_fecha_des=timezone.now(),
-                            des_time_retardo=0,
-                            desc_precio=0
-                        )
-                        nuevo_descuento.save()
+                # Crear o actualizar Descuento y Nomina
+                Descuento.objects.get_or_create(
+                    desc_periodo_pago=nomina_periodo_pago,
+                    desc_cedula_id=cedula,
+                    defaults={
+                        'desc_creditos_libranza': 0,
+                        'desc_cuotas_sindicales': 0,
+                        'desc_embargos_judiciales': 0,
+                        'desc_fecha_des': timezone.now(),
+                        'des_time_retardo': 0,
+                        'desc_precio': 0,
+                        
+                    }
+                )
 
-                    # Crear la nómina para el usuario
-                    nueva_nomina = Nomina(
-                        nom_cedula_id=cedula,
-                        nom_fecha_creacion=timezone.now(),
-                        nom_tipo_pago=nomina_tipo_pago,
-                        nom_periodo_pago=nomina_periodo_pago,
-                        nom_dias_trabajados=dias_trabajados
-                    )
-                    nueva_nomina.save()
+                Nomina.objects.get_or_create(
+                    nom_cedula_id=cedula,
+                    nom_periodo_pago=nomina_periodo_pago,
+                    defaults={
+                        'nom_fecha_creacion': timezone.now(),
+                        'nom_tipo_pago': nomina_tipo_pago,
+                        'nom_dias_trabajados': dias_trabajados,
+                        
+                    }
+                )
 
-                    # Cambiar el estado de la variable indicando que se creó un nuevo registro
-                    nomina_existente = False
-    
-            # Renderizar la página con la indicación de si la nómina existía o no
             return render(request, 'registrar_nomina.html', {'nomina_existente': nomina_existente})
 
-    # Si no se envió un formulario POST o faltan datos, redirigir a la página de registro de nómina
     return render(request, 'registrar_nomina.html')
+
 
 
 
@@ -394,15 +387,27 @@ def registrar_novedad(request):
 
 
 # informess ----------------------------------------------------------------------------------------------
+
 def informes(request):
     usuarios = Usuario.objects.all()
     cargos = Cargo.objects.all()
     total_usuarios = Usuario.objects.count()
-    
+    total_nominas = Nomina.objects.count()
+    descuentos = Descuento.objects.all()
+    valores_fijos = Valores_fijos.objects.first()  # Obtener los valores fijos (solo necesitas uno)
+
+    nominas = Nomina.objects.select_related('nom_cedula', 'nom_cedula__usu_id_cargo').all()
+    devengados = Devengado.objects.select_related('deveng_cedula').all()
+
     context = {
         'total_usuarios': total_usuarios,
         'usuarios': usuarios,
         'cargos': cargos,
+        'descuentos': descuentos,
+        'valores_fijos': valores_fijos,
+        'nominas': nominas,
+        'devengados': devengados,
+        'total_nominas':total_nominas,
     }
-    
+
     return render(request, "informes.html", context)
