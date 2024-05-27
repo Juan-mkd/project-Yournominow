@@ -31,13 +31,14 @@
                     <br>
                     Cargo: {{ datos_cargo.cargo_nombre}}
                     <br>
-                    Fecha de Antiguedad:  {{ datos_usuario.usu_fecha_ingreso }}
+                    Fecha de Antiguedad:  {{ datos_usuario.usu_fecha_ingreso|date:"d/m/Y" }}
+                    
                 </td>
                 <td colspan="2" width="300">Nombre: {{ datos_cargo.cargo_empresa }}
                     <br>
                     NIT: 152222222
                     <br>
-                    Periodo de Pago: {{ datos_nomina.nom_periodo_pago }}
+                    Periodo de Pago: {{ datos_nomina.nom_periodo_pago|date:"d/m/Y" }}
                 </td>
             </tr>
         </tbody>

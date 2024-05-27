@@ -410,6 +410,11 @@ def generar_pdf(request, nomina_periodo_pago):
     bonificacion = 0
     deveng_bonificacion  = Devengado.objects.values_list('deveng_bonificacion', flat=True)
 
+    total_precio = 0
+    desc_precios = Descuento.objects.values_list('desc_precio', flat=True)
+    for precio in desc_precios:
+        total_precio += precio
+        
     # Render HTML template
     html_string = render_to_string('desprendible_nomina.html', {
         'datos_usuario': datos_usuario,
@@ -429,6 +434,7 @@ def generar_pdf(request, nomina_periodo_pago):
         'aporte_icbf': aporte_icbf,
         'total_desc': total_desc,
         'total_neto': total_neto,
+        'total_precio':total_precio,
         'bonificacion': bonificacion,
         'cantidad_bonificaciones': cantidad_bonificaciones,
         'cant_creditos_libranza': cant_creditos_libranza,
@@ -436,6 +442,51 @@ def generar_pdf(request, nomina_periodo_pago):
         'cant_embargos_judiciales': cant_embargos_judiciales,
         'cant_descuentos': cant_descuentos,
     })
+
+    css = '''
+    <style>
+    /* Agrega aquí tus estilos CSS */
+    /* Por ejemplo: */
+    body {
+        font-family: "Arial", sans-serif;
+        font-size: 12px;
+        line-height: 1.6;
+    }
+    h2{
+        text-align: center;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    /* Agrega más estilos según lo necesites */
+    </style>
+    '''
+    
+    html_string = css + html_string
+    # Usar BeautifulSoup para eliminar los botones
+    soup = BeautifulSoup(html_string, 'html.parser')
+    
+    # Eliminar el botón de volver
+    volver_button = soup.find('a', {'id': 'volver'})
+    if volver_button:
+        volver_button.decompose()
+    
+    # Eliminar el botón de descargar
+    descargar_button = soup.find('a', {'id': 'descargar-pdf'})
+    if descargar_button:
+        descargar_button.decompose()
+
+    # Convertir el HTML de nuevo a cadena
+    html_string = str(soup)
 
     # Generar PDF
     response = HttpResponse(content_type='application/pdf')
