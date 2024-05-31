@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Constancia Laboral</title>
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'empleado/css/certificacion.css' %}">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'assets2/vendor/aos/aos.css' %}" rel="stylesheet">
+    <link href="{% static 'assets2/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets2/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'assets2/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets2/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets2/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+    <!-- Template Main CSS File -->
+    <link href="{% static 'assets2/css/style.css' %}" rel="stylesheet"> 
+</head>
+<body>
+{% if rol == 'Administrador' %}
+  {% include 'navbarAdministrador.html' %}
+{% else %}
+  {% include 'navbarEmpleado.html' %}
+{% endif %}
+  <div class="container">
+    <div class="logo">
+      
+    </div>
+    <h1>Constancia Laboral</h1>
+    <div class="info">
+      <p>Fecha: <span id="fecha">{{ fecha_actual }}</span></p>
+      <p>Nombre: <span id="nombre">{{ usuario.usu_nombre }}</span></p>
+      <p>Cargo: <span id="cargo">{{ usuario.usu_id_cargo }}</span></p>
+      <p>Empresa: <span id="empresa">YourNominow</span></p>
+      
+    </div>
+    <p>Por medio de la presente, hacemos constar que el(la) Sr(a). <span id="nombre">{{ usuario.usu_nombre }}</span> ha
+      laborado en
+      nuestra empresa desde el <span id="fecha-inicio">{{ usuario.usu_fecha_ingreso|date:"d/m/Y" }}</span> hasta el dia de hoy, a desempeñando el cargo de <span id="cargo">{{ usuario.usu_id_cargo }}</span>.</p>
+    <p>Durante su desempeño, el(la) Sr(a). <span id="nombre">{{ usuario.usu_nombre }}</span> ha demostrado profesionalismo,
+      compromiso y habilidades destacadas en su área de trabajo.</p>
+    <p>Extendemos esta constancia laboral para los fines que el(la) interesado(a) considere necesarios.</p>
+    <div class="footer">
+      <p>Atentamente,</p>
+      <p>S.A.S YourNomiNow</p>
+    </div>
+    <form method="get" action="{% url 'constancia_pdf' %}">
+      <div id="enlace-pdf" class="pdf-hidden no-print">
+        <button type="submit" class="btn btn-dark" name="formulario_id">IMPRIMIR SIN SUELDO</button>
+      </div>
+    </form>
+<form method="get" action="{% url 'constancia_pagada_pdf' %}">
+  <div id="enlace-pdf2" class="pdf-hidden">
+    <button type="submit" class="btn btn-dark" name="formulario_id" >IMPRIMIR CON SUELDO</button></a>
+</div>
+</form>
+  </div>
+  <!-- Vendor JS Files -->
+<script src="{% static 'assets2/vendor/aos/aos.js' %}"></script>
+<script src="{% static 'assets2/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'assets2/vendor/glightbox/js/glightbox.min.js' %}"></script>
+<script src="{% static 'assets2/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'assets2/vendor/swiper/swiper-bundle.min.js' %}"></script>
+<script src="{% static 'assets2/vendor/typed.js/typed.umd.js' %}"></script>
+<script src="{% static 'assets2/vendor/waypoints/noframework.waypoints.js' %}"></script>
+<script src="{% static 'assets2/vendor/php-email-form/validate.js' %}"></script>
+<!-- SweetAlert2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Template Main JS File -->
+<script src="{% static 'empleado/js/alerts.js' %}"></script>
+</body>
+</html>

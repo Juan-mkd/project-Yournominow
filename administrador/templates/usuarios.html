@@ -1,0 +1,168 @@
+{%load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD de Usuarios</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-oimAQy4UyVMxCR+gg5Vzg8oU+/WV5Ufb6wCBK6qrFFG6ajnjrMzHYwbw0yEw3IyVn6sB+YHNADgc+o3XQoQ6Rg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="{% static 'usuario.css' %}">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'assets2/vendor/aos/aos.css' %}" rel="stylesheet">
+    <link href="{% static 'assets2/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets2/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'assets2/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets2/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets2/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+<!-- Template Main CSS File -->
+    <link href="{% static 'assets2/css/style.css' %}" rel="stylesheet"> 
+</head>
+<body>
+<!-- ======= Include Navbar ======= -->
+{% include 'navbarAdministrador.html' %}
+
+        {% if request.path == '/login/administrador/usuarios/' %}
+        <div class="container2">
+            <!-- Botón para abrir el modal -->
+            <div class="d-flex justify-content-between align-items-center mt-3 ">
+                <button id="nuevoEmpleado" type="button" class="btn btn-warning button" onclick="abrirModal()">Nuevo Usuario</button><br>
+                <h2 class="title">Usuarios en la plataforma</h2>
+            </div>
+
+            <div class="table-responsive">
+                <table id="example" class="display" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Cedula</th>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Telefono</th>
+                            <th>Direccion</th>
+                            <th>Estado</th>
+                            <th>Rol</th>
+                            <th>Cargo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for usuario in usuarios %}
+                        <tr>
+                            <td>{{ usuario.cedula }}</td>
+                            <td>{{ usuario.usu_nombre }}</td>
+                            <td>{{ usuario.usu_correo }}</td>
+                            <td>{{ usuario.usu_telefono }}</td>
+                            <td>{{ usuario.usu_direccion }}</td>
+                            <td>{{ usuario.usu_estado }}</td>
+                            <td>{{ usuario.usu_id_rol }}</td>
+                            <td>{{ usuario.usu_id_cargo }}</td>
+                            <td>
+                                <a id="actualizacion" href="#" onclick="mostrarModalActualizar({{ usuario.usu_id }})"><i class="bi bi-pencil-fill"></i></a>
+                                <a id="caneca" href="#" onclick="confirmarEliminar({{ usuario.usu_id }})"><i class="bi bi-trash"></i></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+        {% endif %}
+
+
+    <!-- Modal para actualizar usuario -->
+    <div class="modal fade" id="actualizarUsuarioModal" tabindex="-1" aria-labelledby="actualizarUsuarioModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="actualizarUsuarioModalLabel">Actualizar Usuario</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <!-- Aquí se cargará el formulario de actualización de usuario -->
+            <div id="formularioActualizacionUsuario">
+                <!-- El formulario se cargará aquí mediante JavaScript -->
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Actualizar Usuario -->
+    {% if usuario and usuario.usu_id %}
+    <div style="font-size: 16px; margin-bottom: 20px; ">
+        <form method="POST" action="{% url 'actualizar_usuario' usu_id=usuario.usu_id %}">
+            {% csrf_token %}
+            <div class="actualizar">
+                <label for="cedula">Cédula:</label>
+                <input type="text" id="cedula" name="cedula" value="{{ usuario.cedula }}" style="width: 200px;" required><br>
+                <label for="name">Nombre:</label>
+                <input type="text" id="name" name="name" value="{{ usuario.usu_nombre }}" style="width: 200px;" required><br>
+                <label for="correo">Correo electrónico:</label>
+                <input type="email" id="correo" name="correo" value="{{ usuario.usu_correo }}" style="width: 200px;" required><br>
+                <label for="telefono">Teléfono:</label>
+                <input type="text" id="telefono" name="telefono" value="{{ usuario.usu_telefono }}" style="width: 200px;" required><br>
+                <label for="direccion">Dirección:</label>
+                <input type="text" id="direccion" name="direccion" value="{{ usuario.usu_direccion }}" style="width: 200px;" required><br>
+                <label for="estado">Estado:</label>
+                <select id="estado" name="estado" style="width: 200px;" required>
+                  <option value="activo" {% if usuario.usu_estado == 'activo' %}selected{% endif %}>Activo</option>
+                  <option value="inactivo" {% if usuario.usu_estado == 'inactivo' %}selected{% endif %}>Inactivo</option>
+                </select><br>
+                <label for="rol">Rol:</label>
+                <select id="rol" name="rol" style="width: 200px;">
+                <option value="">Seleccionar rol</option>
+                {% for rol in roles %}
+                <option value="{{ rol.rol_id }}" {% if rol.rol_id == usuario.usu_id_rol_id %}selected{% endif %}>{{ rol.rol_nombre }}</option>
+                {% endfor %}
+                </select>
+                <br>
+                <label for="cargo">Cargo:</label>
+                <select id="cargo" name="cargo" style="width: 200px;">
+                <option value="">Seleccionar cargo</option>
+                {% for cargo in cargos %}
+                <option value="{{ cargo.cargo_id }}" {% if cargo.cargo_id == usuario.usu_id_cargo_id %}selected{% endif %}>{{ cargo.cargo_nombre }}</option>
+                {% endfor %}
+                </select>
+                <br>
+                <button type="submit"  class="guardar">Guardar</button>
+                <button type="button" class="cancelar" onclick="exit()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+
+    {% comment %} actualizar usuarios  {% endcomment %}
+
+      <!-- ======= Footer ======= -->
+  <footer id="footer">
+    <div class="container">
+      <div class="copyright">
+        &copy; Copyright <strong><span>YourNomiNow</span></strong>
+      </div>
+    </div>
+  </footer><!-- End  Footer -->
+
+         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        
+        <script src="{% static 'js/user.js' %}"></script>
+        <script>
+            function exit() {
+                const baseUrl = window.location.origin;
+                window.location.href = `${baseUrl}/login/administrador/usuarios/`;
+            }
+        </script>
+            <script>
+                $(document).ready( function () {
+                    $('#example').DataTable();
+                });
+            </script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+@media only screen and (min-width: 1025px) {
+/* Estilos escritorio */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #071e29 !important;
+  background-size: cover;
+}
+
+.container2 {
+  display: flex;
+  align-items: center;
+  margin-left: 20vh;
+  background: #040b14;
+  border: 0.1vh solid #040b14;
+  padding: 20px;
+  border-radius: 5%;
+  box-shadow: 10px 10px 20px #040b14;
+  flex-direction: column;
+}
+
+#historialH2 {
+  text-align: center;
+  color: wheat;
+}
+
+#fecha{
+  font-size: 1em;
+  width: 8em;
+  height: 2em;
+  border: 0;
+  margin-left: 2vh;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10vh;
+}
+
+#boton{
+  font-size: large;
+  height: 50px !important;
+  color: white !important;
+  background-color: #2E2E2E !important;
+  border-radius: 20px !important;
+  border: 1px solid black !important;
+  padding: 5px !important;
+  margin-top: 10px;
+}
+
+#boton:hover{
+  color: #000000 !important;
+  background-color: yellow !important;
+}
+
+}
+
+@media only screen and (max-width: 1025px) {
+  /* Estilos escritorio */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #071e29 !important;
+    background-size: cover;
+  }
+  
+  .container2 {
+    display: flex;
+    align-items: center;
+    margin-left: 20vh;
+    background: #040b14;
+    border: 0.1vh solid #040b14;
+    padding: 20px;
+    border-radius: 5%;
+    box-shadow: 10px 10px 20px #040b14;
+    flex-direction: column;
+  }
+  
+  #historialH2 {
+    text-align: center;
+    color: wheat;
+  }
+  
+  #fecha{
+    font-size: 1em;
+    width: 8em;
+    height: 2em;
+    border: 0;
+    margin-left: 2vh;
+  }
+  
+  .buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10vh;
+  }
+  
+  #boton{
+    font-size: large;
+    height: 50px !important;
+    color: white !important;
+    background-color: #2E2E2E !important;
+    border-radius: 20px !important;
+    border: 1px solid black !important;
+    padding: 5px !important;
+    margin-top: 10px;
+  }
+
+  #boton:hover{
+    color: #000000 !important;
+    background-color: yellow !important;
+  }
+  
+  }
+
