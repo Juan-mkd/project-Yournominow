@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Usuario</title>
+</head>
+<body>
+    <h2>Editar Usuario</h2>
+    <form method="post" action="">
+        {% csrf_token %}
+        <!-- Sección para editar perfil -->
+        <label for="usu_nombre">Nombre:</label>
+        <input type="text" id="usu_nombre" name="usu_nombre" value="{{ usuario.usu_nombre }}"><br>
+        
+        <label for="usu_correo">Correo:</label>
+        <input type="email" id="usu_correo" name="usu_correo" value="{{ usuario.usu_correo }}"><br>
+        
+        <label for="usu_telefono">Teléfono:</label>
+        <input type="text" id="usu_telefono" name="usu_telefono" value="{{ usuario.usu_telefono }}"><br>
+        
+        <label for="usu_direccion">Direccion:</label>
+        <input type="text" id="usu_direccion" name="usu_direccion" value="{{ usuario.usu_direccion }}"><br>
+        
+        <button type="submit" name="submit_perfil">Actualizar Perfil</button><br>
+
+       
+
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="cerrarModal()">&times;</span>
+                <h2>Cambiar Contraseña</h2>
+                <form id="cambiar_contraseña_form" method="post" action="">
+                    {% csrf_token %}
+                    <label for="contraseña_actual">Contraseña Actual:</label>
+                    <input type="password" id="contraseña_actual" name="contraseña_actual"><br>
+                    
+                    <label for="nueva_contraseña">Nueva Contraseña:</label>
+                    <input type="password" id="nueva_contraseña" name="nueva_contraseña"><br>
+                    
+                    <label for="confirmar_contraseña">Confirmar Contraseña:</label>
+                    <input type="password" id="confirmar_contraseña" name="confirmar_contraseña"><br>
+                    <button type="submit" name="submit_contraseña">Guardar Cambios</button>
+                </form>
+                
+            </div>
+        </div>
+    </form>
+
+    <script>
+        // JavaScript para manejar el modal
+        function mostrarModal() {
+            var modal = document.getElementById("modal");
+            modal.style.display = "block";
+        }
+
+        function cerrarModal() {
+            var modal = document.getElementById("modal");
+            modal.style.display = "none";
+        }
+    </script>
+</body>
+</html>
