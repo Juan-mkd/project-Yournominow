@@ -24,7 +24,6 @@ def index(request):
     return render(request, "register.html", {'roles': roles, 'cargos': cargos})
 
 
-
 def registros(request):
     if request.method == 'POST':
         cedula = request.POST.get('cedula')
@@ -172,6 +171,7 @@ def registrar_nomina(request):
     return render(request, "registrar_nomina.html")
 
 
+
 def procesar_nomina(request):
     if request.method == 'POST':
         nomina_periodo_pago = request.POST.get('nomina_periodo_pago')
@@ -248,6 +248,10 @@ def procesar_nomina(request):
             return render(request, 'registrar_nomina.html', {'nomina_existente': nomina_existente})
 
     return render(request, 'registrar_nomina.html')
+
+
+
+
 
 
 
@@ -387,6 +391,7 @@ def registrar_novedad(request):
 
 
 # informess ----------------------------------------------------------------------------------------------
+
 
 def informes(request):
     usuarios = Usuario.objects.all()
