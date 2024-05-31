@@ -18,11 +18,13 @@
         </p>
         <div class="collapse" id="collapseExample">
           <div id="configurarUsuario" class="card card-body">
-              <a href="#">Configuración Usuario</a>
+              <a href="{% url 'perfil_usuario' %}">Configuración Usuario</a>
           </div>
-          <div id="cerrarSesion" class="card card-body">
-            <a href="{% url 'logout' %}">Cerrar Sesion</a>
-        </div>
+      </div>
+      
+      </div>
+      
+         
         </div>
       </div><!-- ======= Fin de Boton Configuración ======= -->
   
@@ -36,6 +38,13 @@
           <li><a href="{% url 'informes'  %}" class="nav-link scrollto"><i class="bx bx-book-content"></i> <span>Informes de Nómina</span></a></li>
           <li><a href="{% url 'historial_nomina' %}" class="nav-link scrollto"><i class="bx bx-server"></i> <span>Historial de Nomina</span></a></li>
           <li><a href="{% url 'certificacion' %}" class="nav-link scrollto"><i class="bx bx-envelope"></i> <span>Certificado Laboral</span></a></li>
+          <br>
+          <li>
+            <div id="cerrarSesion" class="card card-body">
+              <a href="{% url 'logout' %}">Cerrar Sesion</a>
+            </div>
+          </li>
+        
         </ul>
       </nav><!-- .nav-menu -->
     </div>

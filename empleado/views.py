@@ -499,3 +499,5 @@ def generar_pdf(request, nomina_periodo_pago):
     if pisa_status.err:
         return HttpResponse('Hubo un error al generar el PDF <pre>' + html_string + '</pre>')
     return response
+
+

@@ -4,6 +4,8 @@ from .views import ConstanciaLaboralPDFView
 from .views import ConstanciaPagadaPDFView
 
 from .views import desprendible_nomina, generar_pdf
+
+
 # from .views import generar_desprendible_nomina_pdf
 
 urlpatterns = [

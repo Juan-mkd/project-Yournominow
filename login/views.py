@@ -1,4 +1,4 @@
-from django.shortcuts import render,HttpResponse,redirect
+from django.shortcuts import render,HttpResponse,redirect,redirect,get_object_or_404
 from  usuario.models import Usuario,Rol
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import render
@@ -17,6 +17,11 @@ from django.views.decorators.cache import never_cache
 from yournominow import settings
 from django.views import View
 from django.views.decorators.csrf import csrf_protect
+
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+import re
+
 
 
 
@@ -191,5 +196,50 @@ def logout_view1(request):
     return redirect(settings.LOGIN_REDIRECT_URL)
   
   
-   
+
+
+
+
+@login_required
+def perfil_usuario(request):
+    usuario = request.user
     
+    if request.method == 'POST':
+        if 'submit_perfil' in request.POST:
+            # Procesar los datos del formulario de perfil
+            nuevo_nombre = request.POST.get('usu_nombre')
+            nuevo_correo = request.POST.get('usu_correo')
+            nuevo_telefono = request.POST.get('usu_telefono')
+            nueva_direccion = request.POST.get('usu_direccion')
+
+            usuario.usu_nombre = nuevo_nombre
+            usuario.usu_correo = nuevo_correo
+            usuario.usu_telefono = nuevo_telefono
+            usuario.usu_direccion = nueva_direccion
+
+            usuario.save()
+            messages.success(request, 'Perfil actualizado exitosamente.')
+            return redirect('perfil_usuario')
+        elif 'submit_contraseña' in request.POST:
+            # Procesar los datos del formulario de cambio de contraseña
+            contraseña_actual = request.POST.get('contraseña_actual')
+            nueva_contraseña = request.POST.get('nueva_contraseña')
+            confirmar_contraseña = request.POST.get('confirmar_contraseña')
+
+            # Verificar la contraseña actual
+            user_authenticated = authenticate(username=usuario.cedula, password=contraseña_actual)
+            if user_authenticated is None:
+                messages.error(request, 'La contraseña actual es incorrecta.')
+                return redirect('perfil_usuario')
+
+            if nueva_contraseña == confirmar_contraseña:
+                # Validar y guardar la nueva contraseña (tú lógica de validación aquí)
+                usuario.set_password(nueva_contraseña)
+                usuario.save()
+                messages.success(request, 'Contraseña cambiada exitosamente.')
+                return redirect('perfil_usuario')
+            else:
+                messages.error(request, 'Las contraseñas no coinciden.')
+                return redirect('perfil_usuario')
+
+    return render(request, 'editar_usuario.html', {'usuario': usuario})

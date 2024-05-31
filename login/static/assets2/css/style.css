@@ -217,6 +217,27 @@ h6 {
   font-size: 15px;
 }
 
+#cerrarSesion {
+  color: #000;
+  background: gray;
+  height: 40px;
+  width: 150px;
+  margin-left: 20px;
+  border-radius: 15%;
+  display: flex; /* Añade flexbox al contenedor */
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+}
+
+#cerrarSesion a {
+  text-align: center; /* No es necesario si el contenido es una sola línea */
+  color: inherit; /* Para que el color del enlace herede el color del contenedor */
+  text-decoration: none; /* Opcional, para eliminar el subrayado del enlace */
+}
+
+
+
+
 .nav-menu a i,
 .nav-menu a:focus i {
   font-size: 24px;
