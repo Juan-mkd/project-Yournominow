@@ -172,6 +172,7 @@ def registrar_nomina(request):
 
 
 
+
 def procesar_nomina(request):
     if request.method == 'POST':
         nomina_periodo_pago = request.POST.get('nomina_periodo_pago')
@@ -196,7 +197,7 @@ def procesar_nomina(request):
                     deveng_subs_trans = valores_fijos.valor_trasporte
                     deveng_subs_alim = valores_fijos.valor_alimentacion
 
-                # Buscar el registro de Devengado para el empleado en la base de datos
+                # Buscar o crear el registro de Devengado para el empleado en la base de datos
                 devengado, created = Devengado.objects.get_or_create(
                     deveng_cedula_id=cedula,
                     deveng_periodo_pago=nomina_periodo_pago,
@@ -209,7 +210,6 @@ def procesar_nomina(request):
                         'deveng_horas_extra_noct_domfest': 0,
                         'deveng_bonificacion': 0,
                         'deveng_fecha': timezone.now(),
-                        
                     }
                 )
 
@@ -219,8 +219,8 @@ def procesar_nomina(request):
                     devengado.deveng_subs_alim = deveng_subs_alim
                     devengado.save()
 
-                # Crear o actualizar Descuento y Nomina
-                Descuento.objects.get_or_create(
+                # Crear o actualizar Descuento
+                descuento, _ = Descuento.objects.get_or_create(
                     desc_periodo_pago=nomina_periodo_pago,
                     desc_cedula_id=cedula,
                     defaults={
@@ -230,24 +230,55 @@ def procesar_nomina(request):
                         'desc_fecha_des': timezone.now(),
                         'des_time_retardo': 0,
                         'desc_precio': 0,
-                        
                     }
                 )
 
-                Nomina.objects.get_or_create(
+                # Crear o actualizar Nomina
+                nomina, _ = Nomina.objects.get_or_create(
                     nom_cedula_id=cedula,
                     nom_periodo_pago=nomina_periodo_pago,
                     defaults={
                         'nom_fecha_creacion': timezone.now(),
                         'nom_tipo_pago': nomina_tipo_pago,
                         'nom_dias_trabajados': dias_trabajados,
-                        
                     }
                 )
+
+                # Calcular devengados
+                horas_diurnas = round(sueldo_basico_cargo / 235)
+                tot_horas_extra_diurnas = horas_diurnas * devengado.deveng_horas_extra_diur * 0.25
+                tot_horas_extra_nocturnas = horas_diurnas * devengado.deveng_horas_extra_noct * 0.75
+                tot_horas_extra_diur_domfest = horas_diurnas * devengado.deveng_horas_extra_diur_domfest * 1
+                tot_horas_extra_noct_domfest = horas_diurnas * devengado.deveng_horas_extra_noct_domfest * 1.5
+
+                horas_extra_diurnas = horas_diurnas * devengado.deveng_horas_extra_diur + round(tot_horas_extra_diurnas)
+                horas_extra_nocturnas = horas_diurnas * devengado.deveng_horas_extra_noct + round(tot_horas_extra_nocturnas)
+                horas_extra_diur_domfest = horas_diurnas * devengado.deveng_horas_extra_diur_domfest + round(tot_horas_extra_diur_domfest)
+                horas_extra_noct_domfest = horas_diurnas * devengado.deveng_horas_extra_noct_domfest + round(tot_horas_extra_noct_domfest)
+
+                total_deveng = sueldo_basico_cargo + devengado.deveng_subs_trans + devengado.deveng_subs_alim + horas_extra_diurnas + horas_extra_nocturnas + horas_extra_diur_domfest + horas_extra_noct_domfest + devengado.deveng_bonificacion
+                devengado.total_devengados = total_deveng
+                devengado.save()
+
+                # Calcular descuentos
+                aporte_salud = round(sueldo_basico_cargo * valores_fijos.valor_aport_salud)
+                aporte_pension = round(sueldo_basico_cargo * valores_fijos.valor_aport_pension)
+                aporte_sena = round(sueldo_basico_cargo * valores_fijos.valor_aport_sena)
+                aporte_icbf = round(sueldo_basico_cargo * valores_fijos.valor_aport_icbf)
+
+                total_desc = aporte_salud + aporte_pension + descuento.desc_creditos_libranza + descuento.desc_cuotas_sindicales + descuento.desc_embargos_judiciales + aporte_sena + aporte_icbf
+                descuento.total_descuentos = total_desc
+                descuento.save()
+
+                # Calcular total neto
+                total_neto = total_deveng - total_desc
+                nomina.total_neto = total_neto
+                nomina.save()
 
             return render(request, 'registrar_nomina.html', {'nomina_existente': nomina_existente})
 
     return render(request, 'registrar_nomina.html')
+
 
 
 
