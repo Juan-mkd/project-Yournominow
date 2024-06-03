@@ -435,6 +435,9 @@ def informes(request):
     nominas = Nomina.objects.select_related('nom_cedula', 'nom_cedula__usu_id_cargo').all()
     devengados = Devengado.objects.select_related('deveng_cedula').all()
 
+    # Calcular el total de netos a pagar
+    total_neto_a_pagar = sum(nomina.total_neto for nomina in nominas)
+
     context = {
         'total_usuarios': total_usuarios,
         'usuarios': usuarios,
@@ -443,7 +446,8 @@ def informes(request):
         'valores_fijos': valores_fijos,
         'nominas': nominas,
         'devengados': devengados,
-        'total_nominas':total_nominas,
+        'total_nominas': total_nominas,
+        'total_neto_a_pagar': total_neto_a_pagar,  # Añadir el total al contexto
     }
 
     return render(request, "informes.html", context)
