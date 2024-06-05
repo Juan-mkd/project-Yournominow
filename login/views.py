@@ -1,6 +1,6 @@
 from django.shortcuts import render,HttpResponse,redirect,redirect,get_object_or_404
 from  usuario.models import Usuario,Rol
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import check_password, make_password
 from django.shortcuts import render
 from django.core.mail import send_mail
 from django.conf import settings
@@ -20,7 +20,7 @@ from django.views.decorators.csrf import csrf_protect
 
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-import re
+
 
 
 
@@ -227,19 +227,15 @@ def perfil_usuario(request):
             confirmar_contraseña = request.POST.get('confirmar_contraseña')
 
             # Verificar la contraseña actual
-            user_authenticated = authenticate(username=usuario.cedula, password=contraseña_actual)
-            if user_authenticated is None:
-                messages.error(request, 'La contraseña actual es incorrecta.')
-                return redirect('perfil_usuario')
-
-            if nueva_contraseña == confirmar_contraseña:
-                # Validar y guardar la nueva contraseña (tú lógica de validación aquí)
-                usuario.set_password(nueva_contraseña)
-                usuario.save()
-                messages.success(request, 'Contraseña cambiada exitosamente.')
-                return redirect('perfil_usuario')
+            if check_password(contraseña_actual, usuario.password):
+                if nueva_contraseña == confirmar_contraseña:
+                    usuario.password = make_password(nueva_contraseña)
+                    usuario.save()
+                    messages.success(request, 'Contraseña cambiada exitosamente.')
+                    return redirect('perfil_usuario')
+                else:
+                    messages.error(request, 'Las contraseñas no coinciden.')
             else:
-                messages.error(request, 'Las contraseñas no coinciden.')
-                return redirect('perfil_usuario')
+                messages.error(request, 'La contraseña actual es incorrecta.')
 
     return render(request, 'editar_usuario.html', {'usuario': usuario})
