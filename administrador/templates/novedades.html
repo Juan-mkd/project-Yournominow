@@ -5,101 +5,126 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Registro </title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{% static 'novedad.css' %}">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'novedades.css' %}">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'assets2/vendor/aos/aos.css' %}" rel="stylesheet">
+    <link href="{% static 'assets2/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets2/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'assets2/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets2/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets2/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+    <!-- Template Main CSS File -->
+    <link href="{% static 'assets2/css/style.css' %}" rel="stylesheet">
 </head>
 <body>
+{% include 'navbarAdministrador.html' %}
+<h2 id="tituloRegistro" class="text-center">Registro de Novedades</h2>
+<div id="contenedorPrincipal" class="container" >
+    <div id="contenedorHoras" class="container">  
+            <form id="registroNovedad" action="{% url 'procesar_novedad' %}" method="post">
+                {% csrf_token %}
+                <h4 class="text-center">Registro de Devengados</h4>
+                <label for="cedula">Cedula Empleado:</label><br>
+                <input type="number" name="cedula" required>
+                <br>
 
-    <h1 class="text-center">Registro de Devengados</h1>
-    <a href="{% url 'registrar_nomina' %}" class="btn btn-secondary  volver">Volver</a>
-    <div class="container">
-        
-        <div class="row">
-            
-            <div class="col-md-6">
-                <form id="registroNovedad" action="{% url 'procesar_novedad' %}" method="post">
-                    {% csrf_token %}
-                    <h2 class="text-center">Registro Horas Extra</h2>
-                    <label for="cedula">Cedula Usuario:</label>
-                    <input type="number" name="cedula" required>
-                    <br><br>
+                <label for="fecha_reporte">Fecha del reporte:</label><br>
+                <input type="date" name="fecha_reporte" required>
 
-                    <label for="nomina_periodo">Fecha desprendible:</label>
-                    <input type="date" name="nomina_periodo" required>
-                    <br><br>
+                <hr>
+                <label for="cantidad">Horas Extras Diurnas:</label><br>
+                <input class="horas" type="number" name="horaDiur" id="horaDiur">
+                <br>
 
+                <label for="cantidad">Horas Extras Nocturnas:</label><br>
+                <input class="horas" type="number" name="horaNoct" id="horaNoct">
+                <br>
 
+                <label for="cantidad">Horas Extras Diurnas Domingos/Festivos:</label><br>
+                <input class="horas" type="number" name="horaDiurDomfest" id="horaDiurDomfest">
+                <br>
 
-                
-                    <label for="cantidad">Horas Extras Diurnas:</label>
-                    <input type="number" name="horaDiur" id="horaDiur">
-                    <br><br>
+                <label for="cantidad">Horas Extras Nocturnas Domingos/Festivos:</label><br>
+                <input class="horas" type="number" name="horaNoctDomfest" id="horaNoctDomfest">
+                <br>
 
-                    <label for="cantidad">Horas Extras Nocturnas:</label>
-                    <input type="number" name="horaNoct" id="horaNoct">
-                    <br><br>
-
-                    <label for="cantidad">Horas Extras Diurnas Domingos/Festivos:</label>
-                    <input type="number" name="horaDiurDomfest" id="horaDiurDomfest">
-                    <br><br>
-
-                    <label for="cantidad">Horas Extras Nocturnas Domingos/Festivos:</label>
-                    <input type="number" name="horaNoctDomfest" id="horaNoctDomfest">
-                    <br><br>
-
-                    <label for="deveng_bonificacion">Bonificaciones:</label>
-                    <input type="number" name="deveng_bonificacion">
-                    <br><br>
-                    <input type="submit" value="Registrar" class="btn ">
-                </form>
-                
-            </div>
-            <div class="col-md-6">
-                <form id="registroRetardos" action="{% url 'procesar_descuento' %}" method="post">
-                    {% csrf_token %}
-                    <h2 class="text-center">Registro de Descuentos</h2>
-                    <label for="cedula">Cedula Usuario:</label>
-                    <input type="number" name="cedula" required>
-                    <br><br>
-
-                    <label for="nomina_periodo">Fecha desprendible:</label>
-                    <input type="date" name="nomina_periodo" required>
-                    <br><br>
-                    
-
-                    <label for="Creditos">Creditos Libranza:</label>
-                    <input type="number" name="creditos_libranza" id="creditos_libranza">
-                    <br><br>
-
-                    <label for="Cuotas">Cuotas Sindicales:</label>
-                    <input type="number" name="cuotas_sindicales" id="cuotas_sindicales">
-                    <br><br>
-
-                    <label for="Embargos">Embargos Judiciales:</label>
-                    <input type="number" name="embargos_judiciales" id="embargos_judiciales">
-                    <br><br>
-
-                    
-                    <br><br>
-                    <label for="cantidad_retardo">tiempo Retardo(H)</label>
-                    <input type="number" name="cantidad_retardo" id="cantidad_retardo">
-                    <br><br>
-                    <label for="descuento_tipo">Tipo de descuento</label>
-                    <input type="text" name="descuento_tipo" id="descuento_tipo">
-                    <br><br>
-                    <label for="precio">Precio</label>
-                    <input type="number" name="precio" id="precio">
-                    <br><br> 
-
-                    <input type="submit" value="Registrar" class="btn ">
-                    
-                </form>
-                
-            </div>
-        </div>
+                <label for="deveng_bonificacion">Bonificaciones:</label><br>
+                <input type="number" name="deveng_bonificacion">
+                <br>
+                <input type="submit" value="Registrar" class="btn ">
+            </form>
     </div>
+    <div id="contenedorDescuentos" class="container"> 
 
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="{% static 'register.js' %}"></script>
+            <form id="registroRetardos" action="{% url 'procesar_descuento' %}" method="post">
+                {% csrf_token %}
+                <h4 class="text-center">Registro de Descuentos</h4>
+                
+                <label for="cedula_empleado">Cedula Empleado:</label><br>
+                <input type="number" name="cedula" required>
+                <br>
+
+                <label for="nomina_periodo">Fecha del reporte:</label><br>
+                <input type="date" name="nomina_periodo" required>
+                <hr>
+
+                <label for="Creditos">Creditos Libranza:</label><br>
+                <input type="number" name="creditos_libranza" id="creditos_libranza">
+                <br>
+
+                <label for="Cuotas">Cuotas Sindicales:</label><br>
+                <input type="number" name="cuotas_sindicales" id="cuotas_sindicales">
+                <br>
+
+                <label for="Embargos">Embargos Judiciales:</label><br>
+                <input type="number" name="embargos_judiciales" id="embargos_judiciales">
+                <br>
+                
+                <input type="submit" value="Registrar" class="btn">
+            </form>
+    </div>
+    <div id="contenedorRetardos" class="container">
+        <form action="{% url 'procesar_retardo' %}" method="post">
+        {% csrf_token %}
+        <h4 class="text-center">Registro de Retardos</h4><br>
+        <label for="cedula_retardo">Cedula Empleado:</label><br>
+        <input type="number" name="cedula" required>
+        <br>
+
+        <label for="fecha_reporte">Fecha del reporte:</label><br>
+        <input type="date" name="fecha_reporte" required>
+        <hr>
+
+        <label for="horas_retardo">Horas de retardo</label><br>
+        <input class="horas" type="number" name="horas_retardo" id="horas_retardo">
+        <br>
+
+        <label for="mensaje">Mensaje</label><br>
+        <input type="text" name="mensaje" id="mensaje">
+        <br>
+        
+        <input type="submit" value="Registrar" class="btn ">
+        </form>
+    </div>         
+</div>
+
+<!-- Vendor JS Files -->
+<script src="{% static 'assets2/vendor/aos/aos.js' %}"></script>
+<script src="{% static 'assets2/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'assets2/vendor/glightbox/js/glightbox.min.js' %}"></script>
+<script src="{% static 'assets2/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'assets2/vendor/swiper/swiper-bundle.min.js' %}"></script>
+<script src="{% static 'assets2/vendor/typed.js/typed.umd.js' %}"></script>
+<script src="{% static 'assets2/vendor/waypoints/noframework.waypoints.js' %}"></script>
+<script src="{% static 'assets2/vendor/php-email-form/validate.js' %}"></script>
+<!-- SweetAlert2 JS -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!-- Template Main JS File -->
+<script src="{% static 'register.js' %}"></script>
 </body>
 </html>

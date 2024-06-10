@@ -203,6 +203,9 @@ def logout_view1(request):
 @login_required
 def perfil_usuario(request):
     usuario = request.user
+    rol = request.user.usu_id_rol.rol_nombre
+    # Pasar los datos del usuario a la plantilla
+ 
     
     if request.method == 'POST':
         if 'submit_perfil' in request.POST:
@@ -238,4 +241,4 @@ def perfil_usuario(request):
             else:
                 messages.error(request, 'La contraseña actual es incorrecta.')
 
-    return render(request, 'editar_usuario.html', {'usuario': usuario})
+    return render(request, 'editar_usuario.html', {'usuario': usuario, 'rol': rol})

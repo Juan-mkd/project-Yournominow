@@ -9,7 +9,7 @@ from .views import desprendible_nomina, generar_pdf
 # from .views import generar_desprendible_nomina_pdf
 
 urlpatterns = [
-    path("historial_nomina/",views.index,name="historial_nomina"),
+    path("historial_nomina/",views.historial,name="historial_nomina"),
     # path("desprendible_nomina/",views.desprendible_nomina,name="desprendible_nomina"),
     path("certificacion/",views.certificacion, name="certificacion"),
     path('constancia_pdf/', ConstanciaLaboralPDFView.as_view(), name='constancia_pdf'),

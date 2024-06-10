@@ -280,12 +280,7 @@ def procesar_nomina(request):
     return render(request, 'registrar_nomina.html')
 
 
-
-
-
-
-
-
+# Novedades ----------------------------------------------------------------------------------------------
 
 @never_cache
 @login_required(login_url='login/administrador/')
@@ -294,7 +289,7 @@ def procesar_novedad(request):
     if request.method == 'POST':
         # Se obtienen los datos para ingresar en la DB
         cedula = request.POST.get('cedula')
-        fecha_periodo = request.POST.get('nomina_periodo')
+        fecha_reporte = request.POST.get('fecha_reporte')
         horaDiur = int(request.POST.get('horaDiur', 0))
         horaNoct = int(request.POST.get('horaNoct', 0))
         horaDiurDomfest = int(request.POST.get('horaDiurDomfest', 0))
@@ -308,9 +303,9 @@ def procesar_novedad(request):
         deveng_subs_alim = 0
 
         # Verificar si ya existe un registro con la misma cédula
-        if Devengado.objects.filter(deveng_cedula_id=cedula, deveng_periodo_pago=fecha_periodo).exists():
+        if Devengado.objects.filter(deveng_cedula_id=cedula, deveng_periodo_pago=fecha_reporte).exists():
             # Obtener el registro existente      
-            devengado = get_object_or_404(Devengado, deveng_cedula_id=cedula, deveng_periodo_pago=fecha_periodo)
+            devengado = get_object_or_404(Devengado, deveng_cedula_id=cedula, deveng_periodo_pago=fecha_reporte)
             devengado.deveng_horas_extra_diur += horaDiur
             devengado.deveng_horas_extra_noct += horaNoct
             devengado.deveng_horas_extra_diur_domfest += horaDiurDomfest
@@ -320,7 +315,7 @@ def procesar_novedad(request):
             # Se crea un nuevo objeto Devengado con los valores proporcionados
             devengado = Devengado(
                 deveng_cedula_id=cedula,
-                deveng_periodo_pago=fecha_periodo,
+                deveng_periodo_pago=fecha_reporte,
                 deveng_horas_extra_diur=horaDiur,
                 deveng_horas_extra_noct=horaNoct,
                 deveng_horas_extra_diur_domfest=horaDiurDomfest,
@@ -339,11 +334,6 @@ def procesar_novedad(request):
         return JsonResponse({'success': True, 'message': 'Registro exitoso!!'})
     
     
-    
-
-
-
-
 def procesar_descuento(request):
     if request.method == 'POST':
         # Datos que ingresan a la DB
@@ -368,7 +358,7 @@ def procesar_descuento(request):
             desc_cuotas_sindicales=cuotas_sindicales,
             desc_embargos_judiciales=embargos_judiciales,
             desc_precio=precio,
-            desc_tipo_descuento=descuento_tipo,
+            desc_tipo_descuento="fiscales",
             desc_fecha_des=fecha,
             des_time_retardo=des_time_retardo
         )
@@ -379,46 +369,97 @@ def procesar_descuento(request):
         # Devolver una respuesta JSON indicando el éxito del registro
         return JsonResponse({'success': True, 'message': 'Registro exitoso !!.'})
 
+def procesar_retardo(request):
+    cedula = request.POST.get('cedula')
+    fecha_reporte = request.POST.get('fecha_reporte')
+    descuentoUsuario = Descuento.objects.filter(desc_cedula_id=cedula).order_by('-desc_periodo_pago').first()
+    fecha_desprendible = descuentoUsuario.desc_periodo_pago
+    if isinstance(fecha_desprendible, str):
+        # Si 'desc_periodo_pago_mas_reciente' ya es una cadena, no necesitas convertirla
+        fecha_desprendible = datetime.strptime(fecha_desprendible, "%Y-%m-%d").date()
+    fecha_reporte = datetime.strptime(fecha_reporte, "%Y-%m-%d")
+    mes_reporte = fecha_reporte.month
+    mes_desprendible = fecha_desprendible.month
 
+    mensaje = request.POST.get('mensaje')
+    horas_retardo = int(request.POST.get('horas_retardo', 0))
+    fecha = datetime.now()
 
+    # Multiplicar retardos por 1000 para obtener el tiempo de retardo en pesos
+    des_time_retardo = horas_retardo * 5531
 
-
-
-
-
-
-
-def obtener_datos_nomina(request, nom_id):
-    nomina = Nomina.objects.get(pk=nom_id)
-    # Aquí puedes personalizar los datos que deseas enviar al cliente
-    dataNomi = {
-        'cedula': nomina.nom_cedula_id,
-        'fecha_creacion': nomina.nom_fecha_creacion,
-        'tipo_pago': nomina.nom_tipo_pago,
-        'periodo_pago': nomina.nom_periodo_pago,
-        'dias_trabajados': nomina.nom_dias_trabajados,
-    }
-    return JsonResponse(dataNomi)
-
-
-
+    # Se crea un nuevo objeto Devengado con los valores proporcionados
+    descuento = Descuento(
+        desc_cedula_id=cedula,
+        desc_periodo_pago=fecha_reporte,
+        desc_creditos_libranza=0,
+        desc_cuotas_sindicales=0,
+        desc_embargos_judiciales=0,
+        desc_precio=0,
+        desc_tipo_descuento= "retardo",
+        # desc_periodo_pago=fecha_reporte,
+        des_time_retardo=horas_retardo,  
+        desc_fecha_des=fecha        
+    )
+    # Se guarda el objeto Devengado en la base de datos
+    descuento.save()
+    return JsonResponse({'success': True, 'message': 'Registro de retardo exitoso !!.'})
 
 @login_required(login_url='login/administrador/')
 def registrar_novedad(request):
     return render (request, "novedades.html")
 
 
+def edicion_novedades(request):
+    deveng_list = Devengado.objects.all()
+    page = request.GET.get('page', 1)  # Obtener el número de página desde la URL
+    page_size = request.GET.get('pageSize', 5)  # Obtener la cantidad de usuarios por página desde la URL
 
+    paginator = Paginator(deveng_list, page_size)  # Usar el valor seleccionado por el usuario
+    try:
+        devengados = paginator.page(page)
+    except PageNotAnInteger:
+        devengados = paginator.page(1)
+    except EmptyPage:
+        devengados = paginator.page(paginator.num_pages)
+    return render (request, 'edicion_novedades.html', {'devengados': devengados})
 
+def actualizar_novedad(request, deveng_id):
+    devengado = get_object_or_404(Devengado, deveng_id=deveng_id)
 
+    if request.method == 'POST':
+        fecha_reporte = request.POST['fecha']
+        hora_extra_diur = request.POST['hora_extra_diur']
+        hora_extra_noct = request.POST['hora_extra_noct']
+        hora_extra_diur_domfest = request.POST['hora_extra_diur_domfest']
+        hora_extra_noct_domfest = request.POST['hora_extra_noct_domfest']
+        bonificaciones = request.POST['bonificaciones']
 
+        devengado.deveng_periodo_pago = fecha_reporte
+        devengado.deveng_horas_extra_diur = hora_extra_diur
+        devengado.deveng_horas_extra_noct = hora_extra_noct
+        devengado.deveng_horas_extra_diur_domfest = hora_extra_diur_domfest
+        devengado.deveng_horas_extra_noct_domfest = hora_extra_noct_domfest
+        devengado.deveng_bonificacion = bonificaciones
 
+        devengado.save()
 
+        return redirect('edicion_novedades')
 
+    return render(request, 'edicion_novedades.html', {'devengado': devengado})
 
-
-
-
+def obtener_datos_novedad(request, deveng_id):
+    devengado = Devengado.objects.get(pk=deveng_id)
+    # Aquí puedes personalizar los datos que deseas enviar al cliente
+    data = {
+        'fecha_reporte': devengado.deveng_periodo_pago,
+        'horas_diur': devengado.deveng_horas_extra_diur,
+        'horas_noct': devengado.deveng_horas_extra_noct,
+        'horas_diur_domfest': devengado.deveng_horas_extra_diur_domfest,
+        'horas_noct_domfest': devengado.deveng_horas_extra_noct_domfest,
+        'bonificacion': devengado.deveng_bonificacion,
+    }
+    return JsonResponse(data)
 
 
 # informess ----------------------------------------------------------------------------------------------
@@ -451,3 +492,6 @@ def informes(request):
     }
 
     return render(request, "informes.html", context)
+
+
+

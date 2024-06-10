@@ -7,11 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'empleado/css/desprendible.css' %}">
+    <link rel="stylesheet" href="{% static 'empleado/css/desprendibleNomina.css' %}">
 </head>
 <body>
     <a class="btn btn-primary" href="{% url 'historial_nomina' %}" role="button" id="volver">Volver</a>
-
+<div id="tablaNomina" >
     <h2>Desprendible de Nomina</h2>
 
     <table border="1" id="tabla">
@@ -74,22 +74,22 @@
                     <br>
                     1
                     <br>
-                    {{ datos_devengado.deveng_horas_extra_diur }}
+                    {{ devengado_nomina.deveng_horas_extra_diur }}
                     <br>
-                    {{ datos_devengado.deveng_horas_extra_noct }}
+                    {{ devengado_nomina.deveng_horas_extra_noct }}
                     <br>
-                    {{ datos_devengado.deveng_horas_extra_diur_domfest }}
+                    {{ devengado_nomina.deveng_horas_extra_diur_domfest }}
                     <br>
-                    {{ datos_devengado.deveng_horas_extra_noct_domfest }}
+                    {{ devengado_nomina.deveng_horas_extra_noct_domfest }}
                     <br>
                     {{ cantidad_bonificaciones }}
                 </td>
                 <td>
                     {{ datos_cargo.cargo_sueldo_basico}}
                     <br>
-                    {{ datos_devengado.deveng_subs_trans}}
+                    {{ valores_fijos.valor_trasporte}}
                     <br>
-                    {{ datos_devengado.deveng_subs_alim}}
+                    {{ valores_fijos.valor_alimentacion}}
                     <br>
                     {{ horas_extra_diurnas }}
                     <br>
@@ -99,7 +99,7 @@
                     <br>
                     {{ horas_extra_noct_domfest }}
                     <br>
-                    {{ datos_devengado.deveng_bonificacion}}
+                    {{ devengado_nomina.deveng_bonificacion}}
                 </td>
             </tr>
         </tbody>
@@ -144,13 +144,13 @@
                     <br>
                     {{ valores_fijos.valor_aport_icbf }}
                     <br>
-                    {{cant_creditos_libranza}}
                     <br>
-                    {{cant_cuotas_sindicales}}
                     <br>
-                    {{ cant_embargos_judiciales}}
+                    
                     <br>
-                    {{cant_descuentos}}
+                    
+                    <br>
+                    
                 </td>
                 <td>
                     {{ aporte_salud }}
@@ -161,11 +161,11 @@
                     <br>
                     {{ aporte_icbf }}
                     <br>
-                    {{datos_descuento.desc_creditos_libranza}}
+                    {{  descuento_nomina.desc_creditos_libranza }}
                     <br>
-                    {{ datos_descuento.desc_cuotas_sindicales}}
+                    {{ descuento_nomina.desc_cuotas_sindicales  }}
                     <br>
-                    {{ datos_descuento.desc_embargos_judiciales}}
+                    {{ descuento_nomina.desc_embargos_judiciales }}
                     <br>
                     {{  total_precio   }}
                 </td>
@@ -184,6 +184,7 @@
         </thead>
 
     </table>
+</div>
 
 
     <div id="enlace-pdf">

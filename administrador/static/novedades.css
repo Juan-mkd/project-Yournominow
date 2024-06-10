@@ -6,29 +6,40 @@ body {
     padding-top: 20px;
 }
 
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 #tituloRegistro {
-    color: white;
-    margin-left: 20vh;
+    color: rgb(255, 255, 255);
+    margin-left: 50vh;
 }
 
 #contenedorPrincipal{
-    margin-left: 40vh;
+    width: 160vh;
+    margin-left: 50vh;
     display: flex;
 }
 
 #contenedorRetardos{
-    height: 20px;
+    font-size: 1rem;
     background-color: transparent;
     padding: 0 15px; /* Agregar espacio en los lados */
     text-align: center;
 }
 
 #contenedorHoras {
-    padding: 0 15px; /* Agregar espacio en los lados */
+    width: 170vh;
+    font-size: 1rem;
+    padding: 0.1rem; /* Agregar espacio en los lados */
     text-align: center;
 }
 
 #contenedorDescuentos {
+    
+    font-size: 1rem;
     text-align: center;
     padding: 0 15px; /* Agregar espacio en los lados */
 }
@@ -38,7 +49,7 @@ form {
     border: 3px solid black;
     background-color: #040b14;
     color: #fff;
-    padding: 30px;
+    padding: 2vh;
     border-radius: 8px;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
 }
@@ -46,21 +57,30 @@ form {
 form label {
     font-weight: bold;
     color: #fff;
-    font-size: 14px;
+    font-size: 0.8rem;
+}
+
+.horas{
+    background-color: rgb(107, 107, 107);
+    color: #fff;
+    height: 5vh;
+    width: 10vh;
+    text-align: center;
+    font-size: 1rem;
 }
 
 form input[type="number"],
 form input[type="date"],
 form select {
-    padding: 12px;
-    margin-bottom: 15px;
+    height: 5vh;
+    padding: 0.4rem;
     border: 1px solid #ced4da;
     border-radius: 6px;
     box-sizing: border-box; /* Incluir el padding y el borde en el ancho */
 }
 
 form input[type="submit"] {
-    padding: 12px;
+    padding: 0.4rem;
     margin-top: 15px;
     border: none;
     border-radius: 6px;

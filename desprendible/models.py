@@ -1,5 +1,7 @@
 from django.db import models
 from usuario.models import Usuario
+from django.dispatch import receiver
+from django.db.models.signals import post_migrate
 # Create your models here.
 
 class Devengado(models.Model):
@@ -52,4 +54,11 @@ class Valores_fijos(models.Model):
     valor_aport_sena = models.FloatField()
     valor_aport_icbf = models.FloatField()
     
-    
+@receiver(post_migrate)
+def insertValores(sender, **kwargs):
+    if kwargs.get('app_config'):
+        app_name= kwargs['app_config'].name
+        if app_name == 'desprendible':
+            Valores_fijos.objects.bulk_create([
+                Valores_fijos(valor_id="1", valor_trasporte="160000 ", valor_alimentacion="0", valor_aport_salud="0.04", valor_aport_pension="0.04", valor_aport_sena="0.04", valor_aport_icbf="0.04",),
+        ])

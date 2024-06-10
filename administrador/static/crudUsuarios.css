@@ -1,0 +1,222 @@
+@media only screen and (min-width: 0px) {
+
+
+    body {
+        background: #071e29 !important;
+        background-size: cover;
+        color: #3e3e3e; /* Color de texto principal */
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .container2 {
+        padding: 0 20px; /* Espaciado interno */
+        margin-left: 49vh;
+        margin-top: 5vh;
+    }
+    
+    .title {
+        color: #ffffff;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0 auto;
+        margin-bottom: 50px;
+        margin-top: 34px;
+    }
+    
+    a {
+        color: #171818; /* Color de enlaces */
+        text-decoration: none; /* Quitar subrayado */
+    }
+    
+    #example_previous, #example_next {
+        color: white !important;
+    }
+    
+    #example td {
+        background-color: #333;
+        color: white;
+    }
+    
+    #example tr {
+        background-color: #040b14;
+    }
+    
+    #example_info {
+        color: white;
+    }
+    
+    label select {
+        color: white;
+    }
+    
+    label input {
+        color: white;
+    }
+    
+    label {
+        color: white;
+    }
+    
+    
+    
+    /* Estilos de la tabla de usuarios */
+    table {
+        font-size: 0.8rem;
+        width: 100%;
+        border-collapse: collapse;
+        overflow-x: auto; /* Permitir desplazamiento horizontal en dispositivos pequeños */
+    }
+    
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #040b14;
+        border-top: 1px solid #040b14 !important;/* Línea divisoria entre filas */
+    }
+    
+    thead {
+        background-color: #0f8841; /* Color de encabezado */
+        color: #fff; /* Color de texto en encabezado */
+    }
+    
+    tbody tr:nth-child(even) {
+        background-color: #f2f2f2; /* Color de fondo de filas pares */
+    }
+    
+    /* Estilos de paginación */
+    .pagination {
+        margin-top: 20px;
+        overflow-x: auto; /* Permitir desplazamiento horizontal */
+    }
+    
+    .step-links a {
+        color: #117e30;
+        margin-right: 10px;
+    }
+    
+    .current {
+        color: #fff;
+    }
+    
+    /* Estilos del formulario de actualización de usuario */
+    form {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+    
+    
+    
+    div.actualizar label{
+        color: #fff;
+        display: inline-block;
+        width: 150px;
+        font-size: 20px;
+        font-weight: 600;
+    }
+    
+    
+    input[type="text"],
+    input[type="email"],
+    select { 
+        padding: 5px;
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+    
+    button[type="submit"],
+    button.btn-danger,
+    .button {
+        font-size: 16px;
+        padding: 5px 10px;
+        border: none;
+        cursor: pointer;
+    }
+    
+    .modal-content {
+        background-color: gray; 
+        color: #333; 
+    }
+    
+    .modal-title {
+        color: #131413; 
+        font-weight: 500;
+        margin:  0 auto;
+        font-size: 24px;
+    }
+    .actualizar form input{
+        width: 200px;
+        margin-left: 15px;
+    }
+    
+    table td a{
+        font-size: 18px;
+        margin-left: 12px;
+    }
+    
+    #caneca{
+        color: rgb(255, 200, 0);
+    }
+    #actualizacion{
+        color: rgb(255, 200, 0);
+    }
+    #caneca:hover{
+        color: rgb(255, 255, 255);
+    }
+    
+    #actualizacion:hover{
+        color: rgb(255, 255, 255);
+    }
+    
+    #nuevoEmpleado{
+        font-weight: 500;
+        color: white;
+        background-color: #040b14;
+        border-color: #040b14;
+    }
+    
+    #volver{
+        margin: 1em;
+        padding: 0.2em;
+        font-size: 1.5em;
+        color: white;
+        background-image: url(/static/empleado/img/Volver.png);
+        width: 8em;
+        height: 2em;
+        border: 0;
+        border-radius: 2em;
+    }
+    .paginaciones label{
+        color: #fff;
+    }
+    
+    
+    .actualizar label{
+        margin-right: 15px;
+        width: 800px;
+    }
+    .actualizar button{
+        margin: 30px 0px 0px 25px;
+    }
+    .actualizar button.guardar{
+        padding: 10px;
+        background: blue;
+        border-radius: 20%;
+        color: #fff;
+    }
+    .actualizar button.cancelar{
+        padding: 8px;
+        background: red;
+        color: #fff;
+        border-radius: 20%;
+    
+    }
+    @media (max-width: 768px) {
+        .table-responsive {
+          overflow-x: auto;
+        }
+      }
+    }
+    
+    
