@@ -25,40 +25,28 @@ def historial(request):
     return render(request, 'historial_nomina.html', {'fechas': fechas, 'rol': rol})
 
 
-# Create your views here.
 def desprendible_nomina(request):
     usuario = request.user.cedula
+    nomina_periodo_pago = None  # Inicializar la variable nomina_periodo_pago
     if request.method == 'POST':
         nomina_periodo_pago = request.POST.get('nomina_periodo_pago')
-       
+
     # Aquí se trae información importante para acceder a los datos del desprendible
-    usuario = request.user.cedula
     datos_usuario = Usuario.objects.get(cedula=usuario)
-    
     datos_cargo = Cargo.objects.get(cargo_id=datos_usuario.usu_id_cargo_id)  # Obtener cargo del usuario
     valores_fijos = Valores_fijos.objects.first()
+
+    datos_devengado = Devengado.objects.filter(deveng_cedula_id=usuario, deveng_periodo_pago=nomina_periodo_pago).first()
+ 
+    
     
     sueldo = datos_cargo.cargo_sueldo_basico  # Obtener sueldo según el cargo
-    
-    
-    
+
     datos_nomina = Nomina.objects.get(nom_cedula_id=usuario, nom_periodo_pago=nomina_periodo_pago)
 
     fecha_nomina = datetime.strptime(nomina_periodo_pago, '%Y-%m-%d')
     nomina_year = fecha_nomina.year
     nomina_month = fecha_nomina.month
-    
-    devengado_subquery = Nomina.objects.filter(
-        nom_cedula_id=usuario,
-        nom_periodo_pago__year=ExtractYear(OuterRef('deveng_fecha')),
-        nom_periodo_pago__month=ExtractMonth(OuterRef('deveng_fecha'))
-    ).values('nom_id')
-
-    descuento_subquery = Nomina.objects.filter(
-        nom_cedula_id=usuario,
-        nom_periodo_pago__year=ExtractYear(OuterRef('desc_fecha_des')),
-        nom_periodo_pago__month=ExtractMonth(OuterRef('desc_fecha_des'))
-    ).values('nom_id')
 
     devengado_nomina = Devengado.objects.filter(
         deveng_cedula_id=usuario,
@@ -72,10 +60,8 @@ def desprendible_nomina(request):
         desc_fecha_des__month=nomina_month
     ).first()
 
-
-    
     # Calculos devengados
-    horas_diurnas = round(sueldo / 235) 
+    horas_diurnas = round(sueldo / 235)
     tot_horas_extra_diurnas = horas_diurnas * devengado_nomina.deveng_horas_extra_diur * 0.25
     tot_horas_extra_nocturnas = horas_diurnas * devengado_nomina.deveng_horas_extra_noct * 0.75
     tot_horas_extra_diur_domfest = horas_diurnas * devengado_nomina.deveng_horas_extra_diur_domfest * 1
@@ -83,41 +69,27 @@ def desprendible_nomina(request):
     horas_extra_diurnas = horas_diurnas * devengado_nomina.deveng_horas_extra_diur + round(tot_horas_extra_diurnas)
     horas_extra_nocturnas = horas_diurnas * devengado_nomina.deveng_horas_extra_noct + round(tot_horas_extra_nocturnas)
     horas_extra_diur_domfest = horas_diurnas * devengado_nomina.deveng_horas_extra_diur_domfest + round(tot_horas_extra_diur_domfest)
-    horas_extra_noct_domfest = horas_diurnas * devengado_nomina.deveng_horas_extra_noct_domfest + round(tot_horas_extra_noct_domfest)    
-    total_deveng = sueldo + devengado_nomina.deveng_subs_trans + devengado_nomina.deveng_subs_alim + horas_extra_diurnas + horas_extra_nocturnas + horas_extra_diur_domfest + horas_extra_noct_domfest + devengado_nomina.deveng_bonificacion
-    devengado_nomina.total_devengados = total_deveng
-    devengado_nomina.save()
-    
+    horas_extra_noct_domfest = horas_diurnas * devengado_nomina.deveng_horas_extra_noct_domfest + round(tot_horas_extra_noct_domfest)
+    total_deveng = sueldo + datos_devengado.deveng_subs_trans + datos_devengado.deveng_subs_alim + horas_extra_diurnas + horas_extra_nocturnas + horas_extra_diur_domfest + horas_extra_noct_domfest + datos_devengado.deveng_bonificacion
+    datos_devengado.total_devengados = total_deveng
+    datos_devengado.save()
+
     total_precio = 0
-    desc_precios = Descuento.objects.values_list('desc_precio', flat=True)
-    
-    # contar cuantas bonificaciones hay 
-    cantidad_bonificaciones = Devengado.objects.filter(deveng_cedula_id=usuario,deveng_periodo_pago=nomina_periodo_pago, deveng_bonificacion__isnull=False).count()
-    
-    cant_creditos_libranza = Descuento.objects.filter(desc_cedula_id=usuario, desc_periodo_pago=nomina_periodo_pago, desc_creditos_libranza__isnull=False).count()
+    desc_precios = Descuento.objects.filter(
+        desc_cedula_id=usuario,
+        desc_periodo_pago=nomina_periodo_pago,
+        desc_precio__isnull=False
+    ).values_list('desc_precio', flat=True)
 
-    cant_cuotas_sindicales = Descuento.objects.filter(desc_cedula_id=usuario, desc_periodo_pago=nomina_periodo_pago, desc_cuotas_sindicales__isnull=False).count()
-
-    cant_embargos_judiciales = Descuento.objects.filter(desc_cedula_id=usuario, desc_periodo_pago=nomina_periodo_pago, desc_embargos_judiciales__isnull=False).count()
-
-    cant_descuentos = Descuento.objects.filter(desc_cedula_id=usuario, desc_periodo_pago=nomina_periodo_pago, desc_precio__isnull=False).count()
-
-    
     for precio in desc_precios:
         total_precio += precio
 
+    bonificacion = devengado_nomina.deveng_bonificacion
 
-    bonificacion = 0
-    deveng_bonificacion  = Devengado.objects.values_list('deveng_bonificacion', flat=True)
-    
-    for bono in deveng_bonificacion:
-        bonificacion += bono
-        
-    
     # Calculos descuentos
     aporte_salud = round(sueldo * valores_fijos.valor_aport_salud)
     aporte_pension = round(sueldo * valores_fijos.valor_aport_pension)
-    aporte_sena = round(sueldo *  valores_fijos.valor_aport_sena)
+    aporte_sena = round(sueldo * valores_fijos.valor_aport_sena)
     aporte_icbf = round(sueldo * valores_fijos.valor_aport_icbf)
     total_desc = aporte_salud + aporte_pension + descuento_nomina.desc_creditos_libranza + descuento_nomina.desc_cuotas_sindicales + descuento_nomina.desc_embargos_judiciales + aporte_sena + aporte_icbf
     descuento_nomina.total_descuentos = total_desc
@@ -125,9 +97,15 @@ def desprendible_nomina(request):
     total_neto = total_deveng - total_desc
     datos_nomina.total_neto = total_neto
     datos_nomina.save()
-    
 
-    
+    # Verificar si el sueldo es mayor a 2,800,000 para asignar valores de transporte y alimentación
+    if sueldo > 2800000:
+        deveng_subs_trans = 0
+        deveng_subs_alim = 0
+    else:
+        deveng_subs_trans = valores_fijos.valor_trasporte
+        deveng_subs_alim = valores_fijos.valor_alimentacion
+
     return render(request, "desprendible_nomina.html", {
         'datos_usuario': datos_usuario,
         'datos_cargo': datos_cargo,
@@ -148,15 +126,9 @@ def desprendible_nomina(request):
         'total_neto': total_neto,
         'total_precio': total_precio,
         'bonificacion': bonificacion,
-        'cantidad_bonificaciones': cantidad_bonificaciones,
-        'cant_creditos_libranza': cant_creditos_libranza,
-        'cant_cuotas_sindicales': cant_cuotas_sindicales,
-        'cant_embargos_judiciales': cant_embargos_judiciales,
-        'cant_descuentos': cant_descuentos,
-        
+        'deveng_subs_trans': deveng_subs_trans,
+        'deveng_subs_alim': deveng_subs_alim,
     })
-
-
 
 
 

@@ -127,7 +127,6 @@ def login_view(request):
 
 
 @never_cache
-
 @csrf_protect
 @login_required(login_url='login/administrador/')
 def administrador(request):
@@ -223,3 +222,12 @@ def perfil_usuario(request):
 
 
 
+@login_required
+def mi_vista(request):
+    # Obtener el usuario actual
+    usuario = request.user
+    # Obtener el nombre de usuario desde el modelo Usuario
+    usuario_model = Usuario.objects.get(user=usuario)
+    nombre_usuario = usuario_model.usu_nombre
+    # Pasar el nombre de usuario a la plantilla en el contexto
+    return render(request, 'navbarAdministrador.html', {'nombre_usuario': nombre_usuario})

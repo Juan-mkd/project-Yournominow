@@ -280,6 +280,9 @@ def procesar_nomina(request):
     return render(request, 'registrar_nomina.html')
 
 
+
+
+
 # Novedades ----------------------------------------------------------------------------------------------
 
 @never_cache
