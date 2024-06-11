@@ -19,5 +19,6 @@ urlpatterns = [
     path("login/administrador/alertas",views.alertas,name="alertas"),
     path('login/administrador/edicion_novedades/', views.edicion_novedades, name='edicion_novedades'),
     path('devengados/<int:deveng_id>/actualizar/', views.actualizar_novedad, name='actualizar_novedad'),
+     path('pagar_nomina/', views.pagar_nomina, name='pagar_nomina'),
     
 ]

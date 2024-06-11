@@ -131,36 +131,20 @@ def login_view(request):
 @csrf_protect
 @login_required(login_url='login/administrador/')
 def administrador(request):
-    if request.user.is_authenticated and request.user.usu_id_rol_id == 1 :
-        # Obtener la instancia del usuario autenticado
+    if request.user.is_authenticated and request.user.usu_id_rol_id == 1:
         user = request.user
-
-        # Obtener los usuarios desde el modelo
         usuarios = Usuario.objects.filter(usu_nombre=user.usu_nombre)
-
-        
-        
-        
         usuario = usuarios.first()
-
         if request.method == 'POST':
-            # Obtener el archivo de la foto
             foto = request.FILES.get('foto')
-            
-            # Guardar la foto en el campo 'image'
             usuario.image = foto
             usuario.save()
-            # Depuración: Imprimir el valor del campo 'image'
             print(usuario.image)
-        # Pasar los datos del usuario como contexto a la plantilla
-        context = {
-            'usuario': usuario,
-        }
-
+        request.session['context'] = 'administrador'  # Establece el contexto en la sesión
+        context = {'usuario': usuario}
         return render(request, "administrador.html", context)
-
+    
     return redirect(settings.LOGIN_REDIRECT_URL)
-
 
 
 @never_cache
@@ -168,21 +152,12 @@ def administrador(request):
 def empleado(request):
     if request.user.is_authenticated and request.user.usu_id_rol_id == 2:
         user = request.user
-
-        # Obtener el empleado desde el modelo utilizando su cédula
         empleado = Usuario.objects.get(cedula=user.cedula)
-
-        # Pasar el nombre del empleado como contexto a la plantilla
-        context = {
-            'usuario':empleado,
-            
-        }
-
+        request.session['context'] = 'empleado'  # Establece el contexto en la sesión
+        context = {'usuario': empleado}
         return render(request, "empleado.html", context)
-
+    
     return redirect(settings.LOGIN_REDIRECT_URL)
-
-
 
 
 
@@ -242,3 +217,9 @@ def perfil_usuario(request):
                 messages.error(request, 'La contraseña actual es incorrecta.')
 
     return render(request, 'editar_usuario.html', {'usuario': usuario, 'rol': rol})
+
+
+
+
+
+

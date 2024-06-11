@@ -217,6 +217,129 @@
           overflow-x: auto;
         }
       }
-    }
+
+
+
+
+
+
+
+
+/* Estilos para el formulario */
+.actualizar {
+    background-color: black; /* Fondo negro */
+    color: white; /* Texto blanco */
+    padding: 20px; /* Espaciado interno */
+    border-radius: 10px; /* Bordes redondeados */
+}
+
+/* Estilos para los botones */
+.guardar, .cancelar {
+    background-color: #4CAF50; /* Verde */
+    color: white; /* Texto blanco */
+    padding: 10px 20px; /* Espaciado interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cursor de puntero */
+    margin-right: 10px; /* Margen derecho */
+}
+
+/* Estilos para el botón de cancelar */
+.cancelar {
+    background-color: #f44336; /* Rojo */
+}
+
+/* Estilos para las etiquetas */
+label {
+   
+    margin-bottom: 10px; /* Margen inferior */
+    display: block; /* Convertir en bloque */
+}
+div.actualizar label{
+    font-size: 15px;
+}
+/* Estilos para los campos de entrada */
+input[type="date"],
+input[type="number"] {
+    width: 200px; /* Ancho del campo */
+    padding: 10px; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+    border: 1px solid #ccc; /* Borde gris */
+    background-color: #f2f2f2; /* Fondo gris claro */
+    margin-bottom: 10px; /* Margen inferior */
+}
+
+/* Estilos para los botones de enviar */
+button[type="submit"] {
+    background-color: #008CBA; /* Azul */
+}
+
+
+
+
+
+/* estilos del form de usuarios(update) */
+
+#actualizar_usuario {
+    background-color: #333; /* Fondo negro */
+    color: #fff; /* Texto blanco */
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 400px;
+    margin: auto;
+}
+
+#actualizar_usuario .form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+#actualizar_usuario label {
+    width: 100px; /* Ancho fijo para las etiquetas */
+    margin-right: 10px; /* Espacio entre etiqueta y input */
+}
+
+#actualizar_usuario input,
+#actualizar_usuario select {
+    background-color: #444; /* Fondo de los inputs */
+    color: #fff; /* Texto de los inputs */
+    border: 1px solid #555; /* Borde de los inputs */
+    border-radius: 5px;
+    padding: 5px;
+    flex-grow: 1; /* Permite que el input ocupe el espacio restante */
+}
+
+#actualizar_usuario button.guardar {
+    background-color: #28a745; /* Verde para el botón guardar */
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#actualizar_usuario button.cancelar {
+    background-color: #dc3545; /* Rojo para el botón cancelar */
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 10px; /* Espacio entre los botones */
+}
+
+
+}
     
     

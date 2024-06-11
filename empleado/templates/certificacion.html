@@ -12,7 +12,8 @@
 
 <body>
 
-  <a class="btn btn-primary" href="{% url 'administrador' %}" role="button" id="volver">Volver</a>
+  <a class="btn btn-primary" href="{% if request.user.usu_id_rol_id == 1 %}{% url 'administrador' %}{% else %}{% url 'empleado' %}{% endif %}" role="button" id="volver">Volver</a>
+
   <div class="container">
     <div class="logo">
       

@@ -476,8 +476,8 @@ def informes(request):
     nominas = Nomina.objects.select_related('nom_cedula', 'nom_cedula__usu_id_cargo').all()
     devengados = Devengado.objects.select_related('deveng_cedula').all()
 
-    # Calcular el total de netos a pagar
-    total_neto_a_pagar = sum(nomina.total_neto for nomina in nominas)
+    # Calcular el total de netos a pagar solo para las nóminas pendientes
+    total_neto_a_pagar = sum(nomina.total_neto for nomina in nominas if nomina.estado == 'pendiente')
 
     context = {
         'total_usuarios': total_usuarios,
@@ -488,10 +488,24 @@ def informes(request):
         'nominas': nominas,
         'devengados': devengados,
         'total_nominas': total_nominas,
-        'total_neto_a_pagar': total_neto_a_pagar,  # Añadir el total al contexto
+        'total_neto_a_pagar': total_neto_a_pagar,
     }
 
     return render(request, "informes.html", context)
 
 
 
+
+from django.views.decorators.csrf import csrf_exempt
+
+
+@csrf_exempt
+def pagar_nomina(request):
+    if request.method == 'POST':
+        # Actualizar todas las nóminas en una sola operación
+        Nomina.objects.all().update(estado='pagado')
+        
+        # Redireccionar a la página de informes o a donde desees
+        return redirect('informes')  
+
+    return render(request, 'informes.html')

@@ -43,6 +43,7 @@ class Nomina(models.Model):
     nom_periodo_pago = models.DateField()
     nom_dias_trabajados = models.IntegerField()
     total_neto = models.IntegerField(null=True)
+    estado = models.CharField(max_length=50, default='pendiente')
     
     
 class Valores_fijos(models.Model):
