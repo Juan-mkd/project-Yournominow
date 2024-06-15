@@ -7,11 +7,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Constancia Laboral</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="{% static 'empleado/css/certificacion1.css' %}">
+  <link rel="stylesheet" href="{% static 'empleado/css/certificacion.css' %}">
 </head>
 
 <body>
-
+  {% load custom_filters %}
   <div class="container">
     <div class="logo">
       
@@ -21,7 +21,7 @@
       <p>Fecha: <span id="fecha">{{ fecha_actual }}</span></p>
       <p>Nombre: <span id="nombre">{{ usuario.usu_nombre }}</span></p>
       <p>Cargo: <span id="cargo">{{ usuario.usu_id_cargo }}</span></p>
-      <p>Sueldo: <span id="sueldo">{{ usuario.usu_id_cargo.cargo_sueldo_basico}}</span></p>
+      <p>Sueldo: <span id="sueldo">{{ usuario.usu_id_cargo.cargo_sueldo_basico |format_number}}</span></p>
       <p>Empresa: <span id="empresa">YourNominow</span></p>
     </div>
     <p>Por medio de la presente, hacemos constar que el(la) Sr(a). <span id="nombre">{{ usuario.usu_nombre }}</span> ha

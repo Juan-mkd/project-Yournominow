@@ -1,29 +1,83 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario de Registro</title>
+    <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
-    <link rel="stylesheet" href="{% static 'nomina.css' %}">
     <!-- Font Awesome CDN link for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'registrarNomi.css' %}">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'assets2/vendor/aos/aos.css' %}" rel="stylesheet">
+    <link href="{% static 'assets2/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets2/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'assets2/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets2/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets2/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+    <!-- Template Main CSS File -->
+    <link href="{% static 'assets2/css/style.css' %}" rel="stylesheet">
 </head>
 <body>
-    <form id="registroNomina" action="{% url 'procesar_nomina' %}" method="post">
-        {% csrf_token %}
-        <div class="container">
-            <h2>Registro de Nómina</h2>
-            <label for="nomina_periodo_pago">Periodo de pago:</label>
-            <input type="date" name="nomina_periodo_pago" id="nomina_periodo_pago" required>
-            <br><br>
-            <div class="buttons">
-                <button type="submit" class="btn botonDiv">Generar Nómina para Todos los Usuarios</button>
-                <a class="botonDiv" href="{% url 'registrar_novedad' %}">Reportar Novedades</a>
-                <a href="{% url 'administrador' %}" class="botonDiv">Volver</a>
-            </div>
-        </div>
-    </form>
+<!-- ======= Include Navbar ======= -->
+{% include 'navbarAdministrador.html' %}
+</header><!-- End Header -->
+
+<!-- ======= Formulario ======= -->
+<form id="registroNomina" action="{% url 'procesar_nomina' %}" method="post">
+  {% csrf_token %}
+  
+  <div class="container2">
+    <h2 id="registroH2">Registro Manual de Nómina</h2>
+    <hr>
+    <label id="etiquetaPeriodo" for="nomina_periodo_pago">Periodo de pago:</label>
+    <input type="date" name="nomina_periodo_pago" id="nomina_periodo_pago" required>
+    <br>
+    <div class="buttons">
+      <button type="submit" id="botonGenerar" class="btn btn-primary">Generar Nómina para Todos los Usuarios</button>
+      {% comment %} <a id="aDiv" href="{% url 'registrar_novedad' %}" class="btn btn-secondary">Reportar Novedades</a> {% endcomment %}
+    </div>
+  </div>
+</form>
+
+<!-- ======= Footer ======= -->
+<footer id="footer">
+  <div class="container">
+    <div class="copyright">
+      &copy; Copyright <strong><span>YourNomiNow</span></strong>
+    </div>
+  </div>
+</footer><!-- End Footer -->
+
+
+<!-- Vendor JS Files -->
+<script src="{% static 'assets2/vendor/aos/aos.js' %}"></script>
+<script src="{% static 'assets2/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'assets2/vendor/glightbox/js/glightbox.min.js' %}"></script>
+<script src="{% static 'assets2/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'assets2/vendor/swiper/swiper-bundle.min.js' %}"></script>
+<script src="{% static 'assets2/vendor/typed.js/typed.umd.js' %}"></script>
+<script src="{% static 'assets2/vendor/waypoints/noframework.waypoints.js' %}"></script>
+<script src="{% static 'assets2/vendor/php-email-form/validate.js' %}"></script>
+
+<!-- Template Main JS File -->
+<script src="{% static 'assets2/js/main.js' %}"></script>
+
+<script src="{% static 'js/alertasNomina.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+    var RegistrarNominaUrl = "{% url 'registrar_nomina' %}";
+</script>
+<script>
+    function cerrar() {
+        const baseUrl = window.location.origin;
+        window.location.href = `${baseUrl}/administrador/registrar_nomina/`;
+    }
+</script>
 </body>
 </html>

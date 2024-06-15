@@ -16,11 +16,11 @@
                     <img src="{% static 'img/forgot-image.jpg' %}" alt="img">
                 </div>
                 <div class="rectangulo2 col-md-7">
-                    <h3>Forgot <span>Password?</span></h3>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iste suscipit maxime rem numquam possimus ipsa dol</p>
+                    <h3>Olvido <span>su contraseña?</span></h3>
+                    <p>Ingrese su correo asociado a la empresa el cual le proporcionará las herramientas para cambiar su contraseña</p>
                     <form method="post">
                         {% csrf_token %}
-                        <input type="email" id="correo" name="correo"  placeholder="Enter Email"><br><br>
+                        <input type="email" id="correo" name="correo"  placeholder="Email"><br><br>
                         <a href="{% url 'login' %}">Volver</a>
                         <button type="submit">Enviar</button>
                     </form>

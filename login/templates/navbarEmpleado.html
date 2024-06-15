@@ -1,30 +1,25 @@
-{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="{% static 'navbarAdministrador.css' %}">
+</head>
+<body>
+  
+
+
 <!-- ======= Mobile nav toggle button ======= -->
 <i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
-
 <!-- ======= Header ======= -->
 <header id="header">
     <div class="d-flex flex-column">
 
       <div class="profile">
         <img src="{% static 'assets2/img/profile-img.jpg' %}" alt="" class="img-fluid rounded-circle">
-        <h1 class="text-light">Nombre Empleado</h1>
-          <!-- ======= Boton Configuración ======= -->
-        <div id="botonDiv">
-        <p>
-          <a id="botonConf" class="btn btn-danger" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-            configuración
-          </a>
-        </p>
-        <div class="collapse" id="collapseExample">
-          <div id="configurarUsuario" class="card card-body">
-              <a href="#">Configuración Usuario</a>
-          </div>
-          <div id="cerrarSesion" class="card card-body">
-            <a href="{% url 'logout' %}">Cerrar Sesion</a>
-        </div>
-        </div>
-      </div><!-- ======= Fin de Boton Configuración ======= -->
+        <h1 class="text-light">{{ user.usu_nombre}}</h1>
   
 
       <nav id="navbar" class="nav-menu navbar">
@@ -32,7 +27,17 @@
           <li><a href="{% url 'empleado' %}" class="nav-link scrollto"><i class="bx bx-home"></i> <span>Home</span></a></li>
           <li><a href="{% url 'historial_nomina' %}" class="nav-link scrollto"><i class="bx bx-file-blank"></i> <span>Historial de Nómina</span></a></li>
           <li><a href="{% url 'certificacion'  %}" class="nav-link scrollto"><i class="bx bx-book-content"></i> <span>Certificación</span></a></li>
+          <hr>
+          <div id="usuConf" >
+            <li><a href="{% url 'perfil_usuario' %}" class="nav-link scrollto"><i class="bi bi-person-gear"></i> <span>Configuración Usuario</span></a></li>
+          </div>
+          <div id="logout" >
+            <li><a href="{% url 'logout' %}" class="nav-link scrollto"><i class="bi bi-box-arrow-left"></i> <span>Cerrar Sesion</span></a></li>
+          </div>
         </ul>
       </nav><!-- .nav-menu -->
     </div>
   </header><!-- End Header -->
+
+</body>
+</html>

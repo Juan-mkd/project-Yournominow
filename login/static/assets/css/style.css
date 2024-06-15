@@ -29,6 +29,13 @@ body {
   color: #444444;
 }
 
+
+/* estilos foto J */
+
+.team .perfil2 .pic img{
+  height: 210px !important;
+  width: 333px !important;
+}
 a {
   color: #47b2e4;
   text-decoration: none;
@@ -1176,7 +1183,7 @@ section {
 }
 
 .contact .php-email-form .error-message {
-  display: none;
+  display: none !important;
   color: #fff;
   background: #ed3c0d;
   text-align: left;

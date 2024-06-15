@@ -9,7 +9,7 @@
     <!-- Agregar estilos de Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
-    <link rel="stylesheet" href="{% static 'registrar.css' %}">
+    <link rel="stylesheet" href="{% static 'registrar1.css' %}">
 </head>
 <body>
 
@@ -20,10 +20,10 @@
             {% csrf_token %}
             <div class="form-row">
                 <div class="form-group col-md-4 input-field">
-                    <label for="inputCedula">Cedula</label>
-                    <input type="number" class="form-control" name="cedula" id="inputCedula" required="required">
-                    
-                </div>
+                    <label for="inputCedula">Cédula</label>
+                    <input type="text" class="form-control" name="cedula" id="inputCedula" required="required">
+                    <div class="error-message" id="cedulaError"></div>
+                  </div>
                 <div class="form-group col-md-4 input-field">
                     <label for="inputNombre">Nombres</label>
                     <input type="text" class="form-control" name="name" id="inputNombre" required="required">
@@ -35,10 +35,11 @@
                     
                 </div>
                 <div class="form-group col-md-4 input-field">
-                    <label for="inputTelefono">Telefono</label>
-                    <input type="number" class="form-control" name="Telefono" id="inputTelefono" required="required">
-                    
+                    <label for="inputTelefono">Teléfono</label>
+                    <input type="text" class="form-control" name="Telefono" id="inputTelefono" required="required">
+                    <div class="error-message" id="telefonoError"></div>
                 </div>
+
                 <div class="form-group col-md-4 input-field">
                     <label for="inputCorreo">Correo</label>
                     <input type="email" class="form-control" name="correo" id="inputCorreo" required="required">
@@ -80,6 +81,75 @@
             window.location.href = `${baseUrl}/login/administrador/usuarios/`;
         }
     </script>
+    
+    <script>
+        const inputTelefono = document.getElementById('inputTelefono');
+        const telefonoError = document.getElementById('telefonoError');
+      
+        inputTelefono.addEventListener('input', function() {
+          let telefonoValue = this.value.trim();
+      
+          // Verificar si contiene la letra 'e' o 'E'
+          if (telefonoValue.includes('e') || telefonoValue.includes('E')) {
+            telefonoError.textContent = 'No se permite la letra "e".';
+            telefonoError.style.display = 'block'; // Mostrar mensaje de error
+            this.value = ''; // Limpiar el campo
+            return;
+          }
+      
+          // Validar longitud máxima de 10 caracteres
+          if (telefonoValue.length > 10) {
+            telefonoError.textContent = 'El número de teléfono no puede tener más de 10 dígitos.';
+            telefonoError.style.display = 'block'; // Mostrar mensaje de error
+            this.value = telefonoValue.slice(0, 10); // Limitar a 10 caracteres
+            return;
+          }
+      
+          // Validar solo números
+          let validChars = /^[0-9]*$/;
+          if (!validChars.test(telefonoValue)) {
+            telefonoError.textContent = 'Por favor, ingresa solo números válidos.';
+            telefonoError.style.display = 'block'; // Mostrar mensaje de error
+            this.value = telefonoValue.replace(/\D/g, ''); // Eliminar caracteres no numéricos
+            return;
+          }
+      
+          // Si pasa todas las validaciones, ocultar mensaje de error
+          telefonoError.textContent = '';
+          telefonoError.style.display = 'none';
+        });
+      </script>
+
+
+      <script>
+        const inputCedula = document.getElementById('inputCedula');
+        const cedulaError = document.getElementById('cedulaError');
+      
+        inputCedula.addEventListener('input', function() {
+          let cedulaValue = this.value.trim();
+      
+          // Validar si contiene caracteres no numéricos o la letra 'e'
+          if (!(/^\d+$/.test(cedulaValue))) {
+            cedulaError.textContent = 'Por favor, ingresa solo números válidos.';
+            cedulaError.style.display = 'block'; // Mostrar mensaje de error
+            this.value = cedulaValue.replace(/\D/g, ''); // Eliminar caracteres no numéricos
+            return;
+          }
+      
+          // Validar longitud máxima de 20 dígitos
+          if (cedulaValue.length > 20) {
+            cedulaError.textContent = 'La cédula no puede tener más de 20 dígitos.';
+            cedulaError.style.display = 'block'; // Mostrar mensaje de error
+            this.value = cedulaValue.slice(0, 20); // Limitar a 20 caracteres
+            return;
+          }
+      
+          // Si pasa todas las validaciones, ocultar mensaje de error
+          cedulaError.textContent = '';
+          cedulaError.style.display = 'none';
+        });
+      </script>
+      
 
 </body>
 </html>

@@ -22,9 +22,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 
-
-
-
 def home(request):
     return render(request,"index.html")
 
@@ -134,31 +131,21 @@ def administrador(request):
     if request.user.is_authenticated and request.user.usu_id_rol_id == 1 :
         # Obtener la instancia del usuario autenticado
         user = request.user
-
         # Obtener los usuarios desde el modelo
-        usuarios = Usuario.objects.filter(usu_nombre=user.usu_nombre)
-
-        
-        
-        
+        usuarios = Usuario.objects.filter(usu_nombre=user.usu_nombre) 
         usuario = usuarios.first()
-
         if request.method == 'POST':
             # Obtener el archivo de la foto
             foto = request.FILES.get('foto')
-            
             # Guardar la foto en el campo 'image'
             usuario.image = foto
             usuario.save()
             # Depuración: Imprimir el valor del campo 'image'
             print(usuario.image)
+        request.session['context'] = 'administrador'  # Establece el contexto en la sesión
         # Pasar los datos del usuario como contexto a la plantilla
-        context = {
-            'usuario': usuario,
-        }
-
+        context = {'usuario': usuario}
         return render(request, "administrador.html", context)
-
     return redirect(settings.LOGIN_REDIRECT_URL)
 
 
@@ -203,6 +190,9 @@ def logout_view1(request):
 @login_required
 def perfil_usuario(request):
     usuario = request.user
+    rol = request.user.usu_id_rol.rol_nombre
+    # Pasar los datos del usuario a la plantilla
+ 
     
     if request.method == 'POST':
         if 'submit_perfil' in request.POST:
@@ -238,4 +228,4 @@ def perfil_usuario(request):
             else:
                 messages.error(request, 'La contraseña actual es incorrecta.')
 
-    return render(request, 'editar_usuario.html', {'usuario': usuario})
+    return render(request, 'editar_usuario.html', {'usuario': usuario, 'rol': rol})

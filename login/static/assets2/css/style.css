@@ -1152,6 +1152,25 @@ section {
   color: #eaebf0;
 }
 
+/* Para ocultar en Chrome */
+input::-webkit-contacts-auto-fill-button {
+  visibility: hidden;
+  display: none !important;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+}
+
+/* Para ocultar en Firefox */
+input[type="password"]::-moz-eye {
+  display: none !important;
+}
+
+/* Para ocultar en Edge */
+input[type="password"]::-ms-reveal {
+  display: none !important;
+}
+
 @media (max-width: 1199px) {
   #footer {
     position: static;

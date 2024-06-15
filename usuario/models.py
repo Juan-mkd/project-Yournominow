@@ -69,10 +69,10 @@ def insertRol(sender, **kwargs):
                 Rol(rol_id="2", rol_nombre="Empleado")
         ])
             Cargo.objects.bulk_create([
-                Cargo(cargo_nombre="CEO", cargo_sueldo_basico="3000000", cargo_empresa="Globant"),
-                Cargo(cargo_nombre="Senior", cargo_sueldo_basico="5000000", cargo_empresa="Globant"),
-                Cargo(cargo_nombre="Junior", cargo_sueldo_basico="4000000", cargo_empresa="Globant"),
-                Cargo(cargo_nombre="Gerente", cargo_sueldo_basico="2000000", cargo_empresa="Globant")
+                Cargo(cargo_nombre="Gerente", cargo_sueldo_basico="2000000", cargo_empresa="YourNomiNow"),
+                Cargo(cargo_nombre="Ceo", cargo_sueldo_basico="3000000", cargo_empresa="YourNomiNow"),
+                Cargo(cargo_nombre="Junior", cargo_sueldo_basico="4000000", cargo_empresa="YourNomiNow"),
+                Cargo(cargo_nombre="Senior", cargo_sueldo_basico="5000000", cargo_empresa="YourNomiNow")
         ])
             Usuario.objects.bulk_create([
                 Usuario(usu_id='1', cedula='123', usu_nombre='Nicolas Martinez', usu_correo='nicolasmartinezf137@gmail.com', usu_telefono='123123', password=make_password(password), usu_direccion='calle 123', usu_fecha_ingreso="2024/03/28", usu_estado='activo', usu_id_cargo=Cargo.objects.get(pk=1), usu_id_rol=Rol.objects.get(pk=1)),

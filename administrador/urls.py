@@ -14,6 +14,16 @@ urlpatterns = [
     path("login/administrador/novedades/",views.registrar_novedad,name="registrar_novedad"),
     path("login/administrador/procesar_novedad/",views.procesar_novedad,name="procesar_novedad"),
     path("login/administrador/procesar_descuento/",views.procesar_descuento,name="procesar_descuento"),
+    path("login/administrador/procesar_retardo/",views.procesar_retardo,name="procesar_retardo"),
     path("login/administrador/informes",views.informes,name="informes"),
     path("login/administrador/alertas",views.alertas,name="alertas"),
+    path('login/administrador/edicion_novedades/', views.edicion_novedades, name='edicion_novedades'),
+    path('devengados/<int:deveng_id>/actualizar/', views.actualizar_novedad, name='actualizar_novedad'),
+        path('login/administrador/edicion_descuentos/', views.edicion_descuentos, name='edicion_descuentos'),
+    path('descuentos/<int:desc_id>/actualizar/', views.actualizar_descuentos, name='actualizar_descuentos'),
+    path('pagar_nomina/', views.pagar_nomina, name='pagar_nomina'),
+    path('eliminar_devengado/<int:devengado_id>/', views.eliminar_devengado, name='eliminar_devengado'),
+    
+    path('eliminar_descuento/<int:descuento_id>/', views.eliminar_descuento, name='eliminar_descuento'),
+    
 ]
