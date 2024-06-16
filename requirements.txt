@@ -1,7 +1,7 @@
 arabic-reshaper==3.0.0
 asgiref==3.8.1
 asn1crypto==1.5.1
-beautifulsoup4==4.12.3
+beautifulsoup4==4.10.0
 Brotli==1.1.0
 certifi==2024.2.2
 cffi==1.16.0
