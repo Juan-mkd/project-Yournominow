@@ -19,9 +19,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    '/home/ubuntu/project-Yournominow/static',  # Ruta al directorio estático
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
