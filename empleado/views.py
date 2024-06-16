@@ -79,6 +79,7 @@ def desprendible_nomina(request):
 
 
     
+    
     # Calculos devengados
     horas_diurnas = round(sueldo / 235) 
     tot_horas_extra_diurnas = horas_diurnas * devengado_nomina.deveng_horas_extra_diur * 0.25
@@ -93,8 +94,7 @@ def desprendible_nomina(request):
     devengado_nomina.total_devengados = total_deveng
     devengado_nomina.save()
     
-    total_precio = 0
-    desc_precios = Descuento.objects.values_list('desc_precio', flat=True)
+    
     
     # contar cuantas bonificaciones hay 
     cantidad_bonificaciones = Devengado.objects.filter(deveng_cedula_id=usuario,deveng_periodo_pago=nomina_periodo_pago, deveng_bonificacion__isnull=False).count()
@@ -107,10 +107,14 @@ def desprendible_nomina(request):
 
     cant_descuentos = Descuento.objects.filter(desc_cedula_id=usuario, desc_periodo_pago=nomina_periodo_pago, desc_precio__isnull=False).count()
 
-    
-    for precio in desc_precios:
-        total_precio += precio
+    total_precio = 0
+    desc_precios = Descuento.objects.values_list('des_time_retardo', flat=True)
 
+    for precio in desc_precios:
+        if precio is not None:
+            total_precio += precio
+
+    finally_precio = total_precio * 5531
 
     bonificacion = 0
     deveng_bonificacion  = Devengado.objects.values_list('deveng_bonificacion', flat=True)
@@ -124,12 +128,14 @@ def desprendible_nomina(request):
     aporte_pension = round(sueldo * valores_fijos.valor_aport_pension)
     aporte_sena = round(sueldo *  valores_fijos.valor_aport_sena)
     aporte_icbf = round(sueldo * valores_fijos.valor_aport_icbf)
-    total_desc = aporte_salud + aporte_pension + descuento_nomina.desc_creditos_libranza + descuento_nomina.desc_cuotas_sindicales + descuento_nomina.desc_embargos_judiciales + aporte_sena + aporte_icbf
+    total_desc = aporte_salud + aporte_pension + descuento_nomina.desc_creditos_libranza + descuento_nomina.desc_cuotas_sindicales + descuento_nomina.desc_embargos_judiciales + aporte_sena + aporte_icbf + finally_precio
     descuento_nomina.total_descuentos = total_desc
     descuento_nomina.save()
     total_neto = total_deveng - total_desc
     datos_nomina.total_neto = total_neto
     datos_nomina.save()
+    
+    
     
 
     
@@ -151,7 +157,7 @@ def desprendible_nomina(request):
         'aporte_icbf': aporte_icbf,
         'total_desc': total_desc,
         'total_neto': total_neto,
-        'total_precio': total_precio,
+        'finally_precio':  finally_precio,
         'bonificacion': bonificacion,
         'cantidad_bonificaciones': cantidad_bonificaciones,
         'cant_creditos_libranza': cant_creditos_libranza,
@@ -514,6 +520,15 @@ def generar_pdf(request, nomina_periodo_pago):
         logger.error(f"Error fetching Descuento records: {e}")
         return HttpResponse(f"Error fetching Descuento records: {e}", status=500)
     
+    
+    total_precio = 0
+    desc_precios = Descuento.objects.values_list('des_time_retardo', flat=True)
+
+    for precio in desc_precios:
+        if precio is not None:
+            total_precio += precio
+
+    finally_precio = total_precio * 5531
     sueldo = datos_cargo.cargo_sueldo_basico 
     horas_diurnas = round(sueldo / 235) 
     tot_horas_extra_diurnas = horas_diurnas * devengado_nomina.deveng_horas_extra_diur * 0.25
@@ -529,7 +544,7 @@ def generar_pdf(request, nomina_periodo_pago):
     aporte_pension = round(sueldo * valores_fijos.valor_aport_pension)
     aporte_sena = round(sueldo *  valores_fijos.valor_aport_sena)
     aporte_icbf = round(sueldo * valores_fijos.valor_aport_icbf)
-    total_desc = aporte_salud + aporte_pension + descuento_nomina.desc_creditos_libranza + descuento_nomina.desc_cuotas_sindicales + descuento_nomina.desc_embargos_judiciales + aporte_sena + aporte_icbf
+    total_desc = aporte_salud + aporte_pension + descuento_nomina.desc_creditos_libranza + descuento_nomina.desc_cuotas_sindicales + descuento_nomina.desc_embargos_judiciales + aporte_sena + aporte_icbf + finally_precio
     total_neto = total_deveng - total_desc
 
     # contar cuantas bonificaciones hay 
@@ -587,7 +602,7 @@ def generar_pdf(request, nomina_periodo_pago):
         'aporte_icbf': aporte_icbf,
         'total_desc': total_desc,
         'total_neto': total_neto,
-        'total_precio': total_precio,
+        'finally_precio': finally_precio,
         'bonificacion': bonificacion,
         'cantidad_bonificaciones': cantidad_bonificaciones,
         'cant_creditos_libranza': cant_creditos_libranza,

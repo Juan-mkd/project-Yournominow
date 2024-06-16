@@ -91,9 +91,9 @@
                 <td>
                     {{ datos_cargo.cargo_sueldo_basico|format_number}}
                     <br>
-                    {{ valores_fijos.valor_trasporte|format_number}}
+                    {{ devengado_nomina.deveng_subs_trans|format_number}}
                     <br>
-                    {{ valores_fijos.valor_alimentacion|format_number}}
+                    {{ devengado_nomina.deveng_subs_alim|format_number}}
                     <br>
                     {{ horas_extra_diurnas|format_number }}
                     <br>
@@ -171,7 +171,7 @@
                     <br>
                     {{ descuento_nomina.desc_embargos_judiciales|format_number }}
                     <br>
-                    {{  total_precio   }}
+                    {{   finally_precio   }}
                 </td>
             </tr>
         </tbody>

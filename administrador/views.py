@@ -250,7 +250,7 @@ def procesar_nomina(request):
                 deveng_subs_alim = 0
                 valores_fijos = Valores_fijos.objects.first()
                 # Verificar si el sueldo básico es menor o igual a 2,800,000
-                if sueldo_basico_cargo <= 2800000:
+                if sueldo_basico_cargo <= 2600000:
                     deveng_subs_trans = valores_fijos.valor_trasporte
                     deveng_subs_alim = valores_fijos.valor_alimentacion
 
@@ -264,7 +264,7 @@ def procesar_nomina(request):
                     # Crear devengado inicial para el usuario
                     devengado = Devengado(
                         deveng_cedula_id=cedula,
-                        deveng_subs_trans= 0,
+                        deveng_subs_trans= deveng_subs_trans,
                         deveng_subs_alim= 0,
                         deveng_horas_extra_diur= 0,
                         deveng_horas_extra_noct= 0,
