@@ -1,0 +1,71 @@
+
+@media only screen and (min-width: 1025px) {
+  h2 {
+    margin-top: 5vh;
+    font-size: 2em;
+    text-align: center;
+    color: black;
+  }
+  
+  body {
+    margin: 0.5em;
+    padding: 0.5em;
+    background: #071e29;
+    background-size: cover;
+  }
+  
+  #volver {
+    font-size: 1.5em;
+    color: white;
+    background-image: url(/static/empleado/img/Volver.png);
+    width: 8em;
+    height: 2em;
+    border: 0;
+    border-radius: 5vh;
+  }
+  
+  #tabla {
+    color: rgb(0, 0, 0);
+    font-size: 1em;
+    margin: 0em auto;
+    border: 0.2rem solid gray;
+    background-color: white;
+    max-width: 100%;
+    width: 90%;
+    height: 80%;
+  }
+
+  #tablaNomina{
+    border: 2px solid black;
+    background-color: white;
+    width: 60%;
+    height: 60em;
+    margin-left: 40vh;
+  }
+  
+  th{
+    background: rgb(216, 216, 216);
+    padding: 1vh;
+  }
+
+  td {
+    text-align: center;
+    border: 0.4vh solid gray;
+  }
+  
+  tr {
+    text-align: center;
+    border: 0.2vh solid gray;
+  }
+  
+  @media (max-width: 768px) {
+    #tabla {
+      font-size: 2vh;
+      margin: 0vh auto;
+      border: 0.5vh solid black;
+      background-color: white;
+      max-width: 100%;
+      width: 95%;
+    }
+  }
+}

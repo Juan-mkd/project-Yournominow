@@ -33,20 +33,21 @@ def historial(request):
 # Create your views here.
 def desprendible_nomina(request):
     usuario = request.user.cedula
+    nomina_periodo_pago = None  # Inicializar la variable nomina_periodo_pago
     if request.method == 'POST':
         nomina_periodo_pago = request.POST.get('nomina_periodo_pago')
-       
+
     # Aquí se trae información importante para acceder a los datos del desprendible
-    usuario = request.user.cedula
     datos_usuario = Usuario.objects.get(cedula=usuario)
-    
     datos_cargo = Cargo.objects.get(cargo_id=datos_usuario.usu_id_cargo_id)  # Obtener cargo del usuario
     valores_fijos = Valores_fijos.objects.first()
+
+    datos_devengado = Devengado.objects.filter(deveng_cedula_id=usuario, deveng_periodo_pago=nomina_periodo_pago).first()
+ 
+    
     
     sueldo = datos_cargo.cargo_sueldo_basico  # Obtener sueldo según el cargo
-    
-    
-    
+
     datos_nomina = Nomina.objects.get(nom_cedula_id=usuario, nom_periodo_pago=nomina_periodo_pago)
 
     fecha_nomina = datetime.strptime(nomina_periodo_pago, '%Y-%m-%d')
@@ -126,7 +127,7 @@ def desprendible_nomina(request):
     # Calculos descuentos
     aporte_salud = round(sueldo * valores_fijos.valor_aport_salud)
     aporte_pension = round(sueldo * valores_fijos.valor_aport_pension)
-    aporte_sena = round(sueldo *  valores_fijos.valor_aport_sena)
+    aporte_sena = round(sueldo * valores_fijos.valor_aport_sena)
     aporte_icbf = round(sueldo * valores_fijos.valor_aport_icbf)
     total_desc = aporte_salud + aporte_pension + descuento_nomina.desc_creditos_libranza + descuento_nomina.desc_cuotas_sindicales + descuento_nomina.desc_embargos_judiciales + aporte_sena + aporte_icbf + finally_precio
     descuento_nomina.total_descuentos = total_desc
@@ -159,15 +160,9 @@ def desprendible_nomina(request):
         'total_neto': total_neto,
         'finally_precio':  finally_precio,
         'bonificacion': bonificacion,
-        'cantidad_bonificaciones': cantidad_bonificaciones,
-        'cant_creditos_libranza': cant_creditos_libranza,
-        'cant_cuotas_sindicales': cant_cuotas_sindicales,
-        'cant_embargos_judiciales': cant_embargos_judiciales,
-        'cant_descuentos': cant_descuentos,
-        
+        'deveng_subs_trans': deveng_subs_trans,
+        'deveng_subs_alim': deveng_subs_alim,
     })
-
-
 
 
 
@@ -620,7 +615,6 @@ def generar_pdf(request, nomina_periodo_pago):
         font-size: 12px;
         line-height: 1.6;
     }
-
     h2 {
         text-align: center;
     }

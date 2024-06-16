@@ -17,6 +17,7 @@ function mostrarModalActualizar(devengId) {
 
 
 
+<<<<<<< HEAD
 // devengado.js
 function confirmarEliminar(devengadoId) {
     Swal.fire({
@@ -35,3 +36,6 @@ function confirmarEliminar(devengadoId) {
         }
     });
 }
+=======
+
+>>>>>>> eb879ece0a0e9cbf02f15f435b8c5bfecc592c0a

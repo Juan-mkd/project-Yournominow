@@ -531,6 +531,10 @@ def obtener_datos_novedad(request, deveng_id):
     }
     return JsonResponse(data)
 
+def edicion_novedades(request):
+    deveng_list = Devengado.objects.all()
+    page = request.GET.get('page', 1)  # Obtener el número de página desde la URL
+    page_size = request.GET.get('pageSize', 5)  # Obtener la cantidad de usuarios por página desde la URL
 
 def edicion_novedades(request):
     deveng_list = Devengado.objects.all()
@@ -642,7 +646,6 @@ def informes(request):
 
     nominas = Nomina.objects.select_related('nom_cedula', 'nom_cedula__usu_id_cargo').all()
     devengados = Devengado.objects.select_related('deveng_cedula').all()
-
 
     # Calcular el total de netos a pagar solo para las nóminas pendientes
     total_neto_a_pagar = sum(nomina.total_neto for nomina in nominas if nomina.estado == 'pendiente')
