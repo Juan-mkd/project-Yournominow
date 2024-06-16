@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+
+/* Estilos escritorio */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #071e29 !important;
+  background-size: cover;
+}
+
+.container2 {
+  font-size: 3vh;
+  display: flex;
+  align-items: center;
+  margin-left: 10%;
+  background: #040b14;
+  border: 0.1vh solid #040b14;
+  padding: 2vh;
+  border-radius: 5%;
+  box-shadow: 10px 10px 20px #040b14;
+  flex-direction: column;
+  width: 60vh;
+  height: 40vh;
+}
+
+.container2 select{
+  width: 100% !important;
+  margin-top: 1vh;
+}
+
+#historialH2 {
+  margin-top: 2vh;
+  font-size: 5vh;
+  text-align: center;
+  color: white;
+}
+
+#fecha{
+  font-size: 3vh;
+  width: 10vh;
+  height: 8vh;
+  border: 0;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10vh;
+}
+
+#boton{
+  font-size: 3vh;
+  height: 8vh !important;
+  width: 30vh;
+  color: white !important;
+  background-color: #2E2E2E !important;
+  border-radius: 20px !important;
+  border: 1px solid black !important;
+  padding: 1vh !important;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+}
+
+#boton:hover{
+  color: #000000 !important;
+  background-color: yellow !important;
+}
+
+
+
+@media only screen and (max-width: 600px){
+
+  footer{
+    display: none;
+  }
+
+}

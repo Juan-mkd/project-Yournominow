@@ -13,8 +13,22 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Media files (Uploaded by users)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # Quick-start development settings - unsuitable for production
@@ -130,25 +144,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [
-#     (os.path.join(BASE_DIR, 'empleado/static')),
-#     (os.path.join(BASE_DIR, 'login/static')),
-#     (os.path.join(BASE_DIR, 'usuario/static')),
-#     (os.path.join(BASE_DIR, 'administrador/static')),
-#     (os.path.join(BASE_DIR, 'desprendible/static')),
-    os.path.join(BASE_DIR, "static"),
-]
 
 
-MEDIA_ROOT = '/media/'
 
-MEDIA_ROOT =os.path.join(BASE_DIR, 'media')
-
-
-# STATICFILES_DIRS = [
-#     os.path.abspath(os.path.join(BASE_DIR, 'static')),
-# ]
 
 
 # Default primary key field type
@@ -181,5 +179,7 @@ AUTHENTICATION_BACKENDS = [
     'login.backends.CedulaBackend',  # Reemplaza 'myapp' con el nombre de tu aplicación
     'django.contrib.auth.backends.ModelBackend',  # Mantén el backend de autenticación predeterminado
 ]
+
+
 
 LOGIN_REDIRECT_URL = 'login'

@@ -1,0 +1,226 @@
+body {
+    background: #071e29 !important;
+    background-size: cover;
+    color: #3e3e3e; /* Color de texto principal */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+
+@media only screen and (min-width: 600px) {
+
+    .container2 {
+        padding: 0 20px; /* Espaciado interno */
+        margin-left: 49vh;
+        margin-top: 5vh;
+    }
+    
+ 
+    /* Estilos de la tabla de usuarios */
+    table {
+        font-size: 0.8rem;
+        width: 100%;
+        border-collapse: collapse;
+        overflow-x: auto; /* Permitir desplazamiento horizontal en dispositivos pequeños */
+    }
+    
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #040b14;
+        border-top: 1px solid #040b14 !important;/* Línea divisoria entre filas */
+    }
+    
+
+    div.actualizar label{
+        color: #fff;
+        display: inline-block;
+        width: 150px;
+        font-size: 20px;
+        font-weight: 600;
+    }
+    
+    
+    input[type="text"],
+    input[type="email"],
+    select { 
+        color: black;
+        border-radius: 2vh;
+        border: 0;
+        padding: 5px;
+        font-size: 16px;
+        margin-top: 2vh !important;
+    }
+    
+    select option {
+        background-color: #071e29;
+    }
+
+    #cedula {
+        color: white;
+    }
+
+    button[type="submit"],
+    button.btn-danger,
+    .button {
+        font-size: 16px;
+        padding: 5px 10px;
+        border: none;
+        cursor: pointer;
+    }
+    
+
+    
+    .modal-title {
+        font-weight: 500;
+        margin:  0 auto;
+        font-size: 24px;
+    }
+
+    
+    table td a{
+        font-size: 18px;
+        margin-left: 12px;
+    }
+    
+    
+    #contenidoModal {
+        background-color: #040b14;
+        border: 1px solid white;
+        display: flex;
+        text-align: center;
+    }
+
+    #contenidoModal h5{
+        color: rgba(255, 255, 255, 0.527);
+        margin-right: 4vh;
+    }
+
+    .actualizar label{
+        color: rgba(255, 255, 255, 0.527) !important;
+        font-size: large !important;
+        width: 800px;
+        height: 2vh;
+    }
+    
+    .actualizar button{
+        margin: 30px 0px 0px 25px;
+    }
+    
+    .actualizar button.guardar{
+        font-weight: 900 !important;
+        font-size: large;
+        padding: 10px;
+        background: rgb(255, 255, 255);
+        border-radius: 15vh;
+        color: green;
+        border: 1px solid green;
+    }
+
+    .actualizar button.guardar:hover{
+        font-weight: 900 !important;
+        font-size: large;
+        padding: 10px;
+        background: green;
+        border-radius: 15vh;
+        color: rgb(255, 255, 255);
+        border: 1px solid rgb(255, 255, 255);
+    }
+
+    .actualizar button.cancelar{
+        font-weight: 900 !important;
+        font-size: large;
+        padding: 8px;
+        background: rgb(255, 255, 255);
+        color: red;
+        border-radius: 15vh;
+        border: 1px solid red;
+    }
+
+    .actualizar button.cancelar:hover{
+        font-weight: 900 !important;
+        font-size: large;
+        padding: 8px;
+        background: red;
+        color: rgb(255, 255, 255);
+        border-radius: 15vh;
+        border: 1px solid rgb(255, 255, 255);
+    }
+}
+
+    #nuevoEmpleado{
+        font-weight: 500;
+        color: white;
+        background-color: #040b14;
+        border-color: #040b14;
+    }
+
+    .title {
+        color: #ffffff;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0 auto;
+        margin-bottom: 50px;
+        margin-top: 34px;
+    }
+
+    a {
+        color: #171818; /* Color de enlaces */
+        text-decoration: none; /* Quitar subrayado */
+    }
+    
+    #example_previous, #example_next {
+        color: white !important;
+    }
+    
+    #example td {
+        background-color: #333;
+        color: white;
+    }
+    
+    #example tr {
+        background-color: #040b14;
+    }
+    
+    #example_info {
+        color: white;
+    }
+    
+    label select {
+        color: white;
+    }
+    
+    label input {
+        color: white;
+    }
+    
+    label {
+        color: white;
+    }
+
+    #caneca{
+        color: rgb(255, 200, 0);
+    }
+    #actualizacion{
+        color: rgb(255, 200, 0);
+    }
+    #caneca:hover{
+        color: rgb(255, 255, 255);
+    }
+    
+    #actualizacion:hover{
+        color: rgb(255, 255, 255);
+    }
+
+    /* estilos tabla------------------------------------------------------------------------------------------------------- */
+
+    thead {
+        color: #fff; /* Color de texto en encabezado */
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #f2f2f2; /* Color de fondo de filas pares */
+    }
+
+

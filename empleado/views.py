@@ -27,7 +27,7 @@ def historial(request):
     fechas = Nomina.objects.filter(nom_cedula_id=usuario)
     for nomina in fechas:
         nomina.nom_periodo_pago = nomina.nom_periodo_pago.strftime("%Y-%m-%d")
-    return render(request, 'historial_nomina.html', {'fechas': fechas, 'rol': rol})
+    return render(request, 'empleado/historial_nomina.html', {'fechas': fechas, 'rol': rol})
 
 
 # Create your views here.
@@ -140,7 +140,7 @@ def desprendible_nomina(request):
     
 
     
-    return render(request, "desprendible_nomina.html", {
+    return render(request, "empleado/desprendible_nomina.html", {
         'datos_usuario': datos_usuario,
         'datos_cargo': datos_cargo,
         'devengado_nomina': devengado_nomina,
@@ -184,7 +184,7 @@ def certificacion(request):
         'fecha_actual': fecha_actual,
     }
 
-    return render(request, "certificacion.html", context)
+    return render(request, "empleado/certificacion.html", context)
 
 class ConstanciaPagadaPDFView(View):
     def get(self, request):
@@ -197,7 +197,7 @@ class ConstanciaPagadaPDFView(View):
         fecha_actual = timezone.now().strftime("%d/%m/%Y")
         
         # Renderizar la plantilla HTML con el contexto
-        template_path = 'certificacionSueldo.html'
+        template_path = 'empleado/certificacionSueldo.html'
         context = {
             'usuario': usuario,
             'fecha_actual': fecha_actual,
@@ -342,7 +342,7 @@ class ConstanciaLaboralPDFView(View):
         fecha_actual = timezone.now().strftime("%d/%m/%Y")
 
         # Renderizar la plantilla HTML con el contexto
-        template_path = 'certificacion.html'
+        template_path = 'empleado/certificacion.html'
         context = {
             'usuario': usuario,
             'fecha_actual': fecha_actual,
@@ -583,7 +583,7 @@ def generar_pdf(request, nomina_periodo_pago):
         total_precio += precio
         
     # Render HTML template
-    html_string = render_to_string('desprendible_nomina.html', {
+    html_string = render_to_string('empleado/desprendible_nomina.html', {
         'datos_usuario': datos_usuario,
         'datos_cargo': datos_cargo,
         'devengado_nomina': devengado_nomina,

@@ -23,7 +23,7 @@ from django.contrib import messages
 
 
 def home(request):
-    return render(request,"index.html")
+    return render(request, "login/index.html")
 
 
 
@@ -33,12 +33,12 @@ def recuperar_contraseña(request):
         try:
             usuario = Usuario.objects.get(usu_correo=correo)
         except Usuario.DoesNotExist:
-            return render(request, 'recuperar_contraseña.html', {'mensaje': 'El correo electrónico proporcionado no está asociado a ninguna cuenta.'})
+            return render(request, 'login/recuperar_contraseña.html', {'mensaje': 'El correo electrónico proporcionado no está asociado a ninguna cuenta.'})
 
         token = default_token_generator.make_token(usuario)
         uid = urlsafe_base64_encode(force_bytes(usuario.pk))
         reset_link = request.build_absolute_uri('/reset_password/{}/{}/'.format(uid, token))
-        correo_html = render_to_string('email/reset_password_email.html', {'reset_link': reset_link})
+        correo_html = render_to_string('login/email/reset_password_email.html', {'reset_link': reset_link})
 
         # Enviar el correo electrónico utilizando las configuraciones de settings.py
         send_mail(
@@ -49,9 +49,9 @@ def recuperar_contraseña(request):
             html_message=correo_html
         )
 
-        return render(request, 'recuperar_contraseña.html', {'mensaje': 'Se ha enviado un correo electrónico con instrucciones para restablecer tu contraseña.'})
+        return render(request, 'login/recuperar_contraseña.html', {'mensaje': 'Se ha enviado un correo electrónico con instrucciones para restablecer tu contraseña.'})
     else:
-        return render(request, 'recuperar_contraseña.html', {})
+        return render(request, 'login/recuperar_contraseña.html', {})
  
 
 
@@ -76,9 +76,9 @@ def reset_password(request, uidb64, token):
             # Redirigir al usuario a la página de inicio de sesión
             return redirect("login")  # Cambia 'login' por el nombre de tu vista de inicio de sesión
         else:
-            return render(request, 'reset_password.html', {'uidb64': uidb64, 'token': token})
+            return render(request, 'login/reset_password.html', {'uidb64': uidb64, 'token': token})
     else:
-        return render(request, 'reset_password_invalid.html')
+        return render(request, 'login/reset_password_invalid.html')
     
 
 
@@ -109,16 +109,16 @@ def login_view(request):
                     return redirect("empleado")
             else:
                 mensaje_error = "El usuario está inactivo."
-                return render(request, 'login.html', {'mensaje_error': mensaje_error})
+                return render(request, 'login/login.html', {'mensaje_error': mensaje_error})
         
         # Autenticación fallida
         if usuario is None:
             
             mensaje_error = "Cédula o contraseña incorrecta."
-            return render(request, 'login.html', {'mensaje_error': mensaje_error})
+            return render(request, 'login/login.html', {'mensaje_error': mensaje_error})
     
     # Redirigir al inicio de sesión
-    return render(request, 'login.html')
+    return render(request, 'login/login.html')
 
 
 
@@ -141,7 +141,7 @@ def administrador(request):
         request.session['context'] = 'administrador'  # Establece el contexto en la sesión
         # Pasar los datos del usuario como contexto a la plantilla
         context = {'usuario': usuario}
-        return render(request, "administrador.html", context)
+        return render(request, "login/administrador.html", context)
     return redirect(settings.LOGIN_REDIRECT_URL)
 
 
@@ -153,7 +153,7 @@ def empleado(request):
         empleado = Usuario.objects.get(cedula=user.cedula)
         request.session['context'] = 'empleado'  # Establece el contexto en la sesión
         context = {'usuario': empleado}
-        return render(request, "empleado.html", context)
+        return render(request, "login/empleado.html", context)
     
     return redirect(settings.LOGIN_REDIRECT_URL)
 
@@ -214,4 +214,4 @@ def perfil_usuario(request):
             else:
                 messages.error(request, 'La contraseña actual es incorrecta.')
 
-    return render(request, 'editar_usuario.html', {'usuario': usuario, 'rol': rol})
+    return render(request, 'login/editar_usuario.html', {'usuario': usuario, 'rol': rol})

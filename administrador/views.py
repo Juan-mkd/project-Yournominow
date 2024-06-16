@@ -17,13 +17,13 @@ from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 def alertas(request):
-    return render(request, "alerts.html")
+    return render(request, "administrador/alerts.html")
 
 @login_required
 def index(request):
     roles = Rol.objects.all()
     cargos = Cargo.objects.all()
-    return render(request, "register.html", {'roles': roles, 'cargos': cargos})
+    return render(request, "administrador/register.html", {'roles': roles, 'cargos': cargos})
 
 
 def registros(request):
@@ -130,7 +130,7 @@ def listar_usuarios(request):
     except EmptyPage:
         usuarios = paginator.page(paginator.num_pages)
 
-    return render(request, 'usuarios.html', {'usuarios': usuarios})
+    return render(request, 'administrador/usuarios.html', {'usuarios': usuarios})
  
  
  
@@ -166,7 +166,7 @@ def actualizar_usuario(request, usu_id):
 
     roles = Rol.objects.all()
     cargos = Cargo.objects.all()
-    return render(request, 'usuarios.html', {'usuario': usuario, 'roles': roles, 'cargos': cargos})
+    return render(request, 'administrador/usuarios.html', {'usuario': usuario, 'roles': roles, 'cargos': cargos})
 
 def obtener_datos_actualizar(request, usu_id):
     usuario = Usuario.objects.get(pk=usu_id)
@@ -215,7 +215,7 @@ def obtener_datos_usuario(request, usu_id):
 
 @login_required(login_url='login/administrador/')
 def registrar_nomina(request):
-    return render(request, "registrar_nomina.html")
+    return render(request, "administrador/registrar_nomina.html")
 
 
 
@@ -363,7 +363,7 @@ def procesar_nomina(request):
 
         return render(request, 'registrar_nomina.html', {'nomina_existente': nomina_existente})
 
-    return render(request, 'registrar_nomina.html')
+    return render(request, 'administrador/registrar_nomina.html')
 
 
 def obtener_datos_nomina(request, nom_id):
@@ -518,7 +518,7 @@ def procesar_retardo(request):
 
 @login_required(login_url='login/administrador/')
 def registrar_novedad(request):
-    return render (request, "novedades.html")
+    return render (request, "administrador/novedades.html")
 
 def obtener_datos_novedad(request, deveng_id):
     devengado = Devengado.objects.get(pk=deveng_id)
@@ -549,7 +549,7 @@ def edicion_novedades(request):
         devengados = paginator.page(1)
     except EmptyPage:
         devengados = paginator.page(paginator.num_pages)
-    return render (request, 'edicion_novedades.html', {'devengados': devengados})
+    return render (request, 'administrador/edicion_novedades.html', {'devengados': devengados})
 
 def actualizar_novedad(request, deveng_id):
     devengado = get_object_or_404(Devengado, deveng_id=deveng_id)
@@ -573,7 +573,7 @@ def actualizar_novedad(request, deveng_id):
 
         return redirect('edicion_novedades')
 
-    return render(request, 'edicion_novedades.html', {'devengado': devengado})
+    return render(request, 'administrador/edicion_novedades.html', {'devengado': devengado})
 
 def edicion_descuentos(request):
     desc_list = Descuento.objects.all()
@@ -586,7 +586,7 @@ def edicion_descuentos(request):
         descuentos = paginator.page(1)
     except EmptyPage:
         descuentos = paginator.page(paginator.num_pages)
-    return render (request, 'edicion_descuentos.html', {'descuentos': descuentos})
+    return render (request, 'administrador/edicion_descuentos.html', {'descuentos': descuentos})
 
 def actualizar_descuentos(request, desc_id):
     descuento = get_object_or_404(Descuento, desc_id=desc_id)
@@ -605,7 +605,7 @@ def actualizar_descuentos(request, desc_id):
 
         return redirect('edicion_descuentos')
 
-    return render(request, 'edicion_descuentos.html', {'descuento': descuento})
+    return render(request, 'administrador/edicion_descuentos.html', {'descuento': descuento})
 
 def obtener_datos_novedad(request, deveng_id):
     devengado = Devengado.objects.get(pk=deveng_id)
@@ -665,7 +665,7 @@ def informes(request):
         'total_neto_a_pagar': total_neto_a_pagar,
     }
 
-    return render(request, "informes.html", context)
+    return render(request, "administrador/informes.html", context)
 
 
 
@@ -682,7 +682,7 @@ def pagar_nomina(request):
         # Redireccionar a la página de informes o a donde desees
         return redirect('informes')  
 
-    return render(request, 'informes.html')
+    return render(request, 'administrador/informes.html')
 
 
 def eliminar_devengado(request, devengado_id):

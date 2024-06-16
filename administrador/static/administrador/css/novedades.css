@@ -1,0 +1,110 @@
+@media only screen and (min-width: 0px) {
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #0f0f10;
+    padding-top: 20px;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#tituloRegistro {
+    color: rgb(255, 255, 255);
+    margin-left: 50vh;
+}
+
+#contenedorPrincipal{
+    width: 160vh;
+    margin-left: 50vh;
+    display: flex;
+}
+
+#contenedorRetardos{
+    font-size: 1rem;
+    background-color: transparent;
+    padding: 0 15px; /* Agregar espacio en los lados */
+    text-align: center;
+}
+
+#contenedorHoras {
+    width: 170vh;
+    font-size: 1rem;
+    padding: 0.1rem; /* Agregar espacio en los lados */
+    text-align: center;
+}
+
+#contenedorDescuentos {
+    
+    font-size: 1rem;
+    text-align: center;
+    padding: 0 15px; /* Agregar espacio en los lados */
+}
+
+/* Estilos para los formularios */
+form {
+    border: 3px solid black;
+    background-color: #040b14;
+    color: #fff;
+    padding: 2vh;
+    border-radius: 8px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+}
+
+form label {
+    font-weight: bold;
+    color: #fff;
+    font-size: 0.8rem;
+}
+
+.horas{
+    background-color: rgb(107, 107, 107);
+    color: #fff;
+    height: 5vh;
+    width: 10vh;
+    text-align: center;
+    font-size: 1rem;
+}
+
+form input[type="number"],
+form input[type="date"],
+form select {
+    height: 5vh;
+    padding: 0.4rem;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    box-sizing: border-box; /* Incluir el padding y el borde en el ancho */
+}
+
+form input[type="submit"] {
+    padding: 0.4rem;
+    margin-top: 15px;
+    border: none;
+    border-radius: 6px;
+    background: #626259;
+    color: #fff;
+    cursor: pointer;
+}
+form input[type="submit"]:hover{
+    cursor: pointer;
+    color: #ffffff;
+    background-color: rgb(18, 77, 93);
+}
+
+/* Estilos para hacer que los formularios sean responsivos */
+@media only screen and (max-width: 768px) {
+    form {
+        padding: 20px;
+    }
+}
+
+@media only screen and (max-width: 576px) {
+    form {
+        padding: 15px;
+    }
+}
+
+}
