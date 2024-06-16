@@ -41,7 +41,8 @@ DEBUG = True
 
 # ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'yourdomain.com']
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['arn:aws:ec2:us-east-1:730335506884:instance/i-05835ad8ba6372e52', '3.91.9.201']
+
 
 
 # Application definition
