@@ -91,7 +91,7 @@ def desprendible_nomina(request):
     horas_extra_nocturnas = horas_diurnas * devengado_nomina.deveng_horas_extra_noct + round(tot_horas_extra_nocturnas)
     horas_extra_diur_domfest = horas_diurnas * devengado_nomina.deveng_horas_extra_diur_domfest + round(tot_horas_extra_diur_domfest)
     horas_extra_noct_domfest = horas_diurnas * devengado_nomina.deveng_horas_extra_noct_domfest + round(tot_horas_extra_noct_domfest)    
-    total_deveng = sueldo + valores_fijos.valor_trasporte + devengado_nomina.deveng_subs_alim + horas_extra_diurnas + horas_extra_nocturnas + horas_extra_diur_domfest + horas_extra_noct_domfest + devengado_nomina.deveng_bonificacion
+    total_deveng = sueldo + devengado_nomina.deveng_subs_trans + devengado_nomina.deveng_subs_alim + horas_extra_diurnas + horas_extra_nocturnas + horas_extra_diur_domfest + horas_extra_noct_domfest + devengado_nomina.deveng_bonificacion
     devengado_nomina.total_devengados = total_deveng
     devengado_nomina.save()
     
@@ -158,10 +158,14 @@ def desprendible_nomina(request):
         'aporte_icbf': aporte_icbf,
         'total_desc': total_desc,
         'total_neto': total_neto,
-        'finally_precio':  finally_precio,
+        'finally_precio': finally_precio,
         'bonificacion': bonificacion,
-        'deveng_subs_trans': deveng_subs_trans,
-        'deveng_subs_alim': deveng_subs_alim,
+        'cantidad_bonificaciones': cantidad_bonificaciones,
+        'cant_creditos_libranza': cant_creditos_libranza,
+        'cant_cuotas_sindicales': cant_cuotas_sindicales,
+        'cant_embargos_judiciales': cant_embargos_judiciales,
+        'cant_descuentos': cant_descuentos,
+        
     })
 
 

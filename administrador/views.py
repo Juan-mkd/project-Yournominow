@@ -11,6 +11,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
+
 
 # Create your views here.
 
@@ -668,7 +670,7 @@ def informes(request):
 
 
 
-from django.views.decorators.csrf import csrf_exempt
+
 
 
 @csrf_exempt
