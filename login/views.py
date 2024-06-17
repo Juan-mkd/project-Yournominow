@@ -23,7 +23,7 @@ from django.contrib import messages
 
 
 def home(request):
-    return render(request, "login/home.html")
+    return render(request, "login/index.html")
 
 
 
