@@ -27,9 +27,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Media files (Uploaded by users)
 MEDIA_URL = '/media/'
-
-
-MEDIA_ROOT = os.path.join(BASE_DIR, '/static/')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # Quick-start development settings - unsuitable for production
@@ -41,7 +39,12 @@ SECRET_KEY = 'django-insecure--yv@emsjzu0edu)q@@9@(=+)1h3cd4)3q_x3#w@j009g13$jz)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['3.91.9.201', 'localhost',]
+
+
+ALLOWED_HOSTS = ['*']
+
+
+# ALLOWED_HOSTS = ['3.91.9.201', 'localhost',]
 
 
 
