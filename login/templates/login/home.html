@@ -1,31 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  {% load static %}
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
   <title>YourNomiNow</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
-    {% load static %}
+    
   <!-- Favicons -->
-  <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
-  <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+  <link href="{% static 'login/assets/img/favicon.png' %}" rel="icon">
+  <link href="{% static 'login/assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-  <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css'%}" rel="stylesheet">
+  <link href="{% static 'login/assets/vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'login/assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'login/assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'login/assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'login/assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'login/assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+  <link href="{% static 'login/assets/vendor/swiper/swiper-bundle.min.css'%}" rel="stylesheet">
 
   <!-- Template Main CSS File -->
-  <link href="{% static 'assets/css/style.css '%}" rel="stylesheet">
+  <link href="{% static 'login/assets/css/style.css '%}" rel="stylesheet">
 
   <!-- =======================================================
   * Template Name: Arsha
@@ -77,7 +78,7 @@
           <h2>Bienvenido a YourNomiNow la plataforma cuya funcionalidad se dirige a facilitar el control de pagos de empleados dando la facilidad tanto a empleador como a empleado de llevar un control de cuentas mas eficiente..</h2>
         </div>
         <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-in" data-aos-delay="200">
-          <img src="{% static 'assets/img/nomina.jfif' %}" class="img-fluid animated" alt="nomina">
+          <img src="{% static 'login/assets/img/nomina.jfif' %}" class="img-fluid animated" alt="nomina">
         </div>
       </div>
     </div>
@@ -183,12 +184,12 @@
 
         <div class="row">
           <div class="col-lg-12  card-1" data-aos="zoom-in" data-aos-delay="100">
-            <div class="member d-flex align-items-center  perfil1">
-              <div class="pic"><img src="{% static 'assets/img/team/team-1.jpg' %}" class="img-fluid" alt=""></div>
+            <div class="member d-flex align-items-center  perfil1 perfil2">
+              <div class="pic"><img src="{% static 'login/assets/img/team/team-J.jpeg' %}" class="img-fluid" alt=""></div>
               <div class="member-info">
                 <h4>Juan Esteban Calderon Ovalle</h4>
                 <span>Python developer</span>
-                <p>Cumpliendo con el deber</p>
+                <p>Back-end. Transformando ideas en realidad, una línea de código a la vez.</p>
                 <div class="social">
                   <a href=""><i class="ri-twitter-fill"></i></a>
                   <a href=""><i class="ri-facebook-fill"></i></a>
@@ -201,11 +202,11 @@
 
           <div class="col-lg-12  card-1" data-aos="zoom-in" data-aos-delay="100">
             <div class="member d-flex align-items-center  perfil1">
-              <div class="pic"><img src="{% static 'assets/img/team/team-1.jpg' %}" class="img-fluid" alt=""></div>
+              <div class="pic"><img src="{% static 'login/assets/img/team/team-n.jpg' %}" class="img-fluid" alt=""></div>
               <div class="member-info">
                 <h4>Nicolas Steven Martinez Fonseca</h4>
                 <span>Python developer</span>
-                <p>Llevando la inovación al siguiente nivel</p>
+                <p>Front-end, Back-end, Tester.</p>
                 <div class="social">
                   <a href=""><i class="ri-twitter-fill"></i></a>
                   <a href=""><i class="ri-facebook-fill"></i></a>
@@ -329,29 +330,29 @@
           </div>
 
           <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
-            <form action="forms/contact.php" method="post" role="form" class="php-email-form">
+            <form method="post" role="form" class="php-email-form" id="contactForm">
               <div class="row">
                 <div class="form-group col-md-6">
                   <label for="name">Tu Nombre</label>
                   <input type="text" name="name" class="form-control" id="name" required>
                 </div>
                 <div class="form-group col-md-6">
-                  <label for="name">Tu Correo</label>
+                  <label for="email">Tu Correo</label>
                   <input type="email" class="form-control" name="email" id="email" required>
                 </div>
               </div>
               <div class="form-group">
-                <label for="name">Asunto</label>
+                <label for="subject">Asunto</label>
                 <input type="text" class="form-control" name="subject" id="subject" required>
               </div>
               <div class="form-group">
-                <label for="name">Mensaje</label>
+                <label for="message">Mensaje</label>
                 <textarea class="form-control" name="message" rows="10" required></textarea>
               </div>
               <div class="my-3">
                 <div class="loading">Loading</div>
                 <div class="error-message"></div>
-                <div class="sent-message">Your message has been sent. Thank you!</div>
+                <div class="sent-message">Mensaje enviado, pronto te daremos respuesta.</div>
               </div>
               <div class="text-center"><button type="submit">Send Message</button></div>
             </form>
@@ -375,29 +376,33 @@
 
 
   <!-- Vendor JS Files -->
-  <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
-  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-  <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js ' %}"></script>
-  <script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
-  <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
-  <script src="{% static 'assets/vendor/waypoints/noframework.waypoints.js' %}"></script>
-  <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+  <script src="{% static 'login/assets/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'login/assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'login/assets/vendor/glightbox/js/glightbox.min.js ' %}"></script>
+  <script src="{% static 'login/assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'login/assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'login/assets/vendor/waypoints/noframework.waypoints.js' %}"></script>
+  <script src="{% static 'login/assets/vendor/php-email-form/validate.js' %}"></script>
 
   <!-- Template Main JS File -->
-  <script src="{% static 'assets/js/main.js' %}"></script>
+  <script src="{% static 'login/assets/js/main.js' %}"></script>
 
-  <script src="{% static 'js/Typed.js' %}"></script>
+  <script src="{% static 'login/js/Typed.js' %}"></script>
   <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
   
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <script>
-    var typed = new Typed(".auto-type", {
-      strings: ["YourNomiNow"],
-      typeSpeed: 150, // Ajusta el valor para ralentizar la velocidad de escritura
-      backSpeed: 150,
-      backDelay: 1000,
-      loop: true
-    });
+  var typed = new Typed(".auto-type", {
+    strings: ["YourNomiNow"],
+    typeSpeed: 150, // Ajusta el valor para ralentizar la velocidad de escritura
+    backSpeed: 150,
+    backDelay: 1000,
+    loop: true
+  });
   </script>
+
+  
+  
 </body>
 
 </html>

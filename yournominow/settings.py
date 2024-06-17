@@ -19,9 +19,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-# STATICFILES_DIRS = [
-#     '/home/ubuntu/project-Yournominow/static',  # Ruta al directorio estático
-# ]
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'empleado', 'static'),
+    os.path.join(BASE_DIR, 'login', 'static'),
+    os.path.join(BASE_DIR, 'usuario', 'static'),
+    os.path.join(BASE_DIR, 'administrador', 'static'),
+    
+]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
@@ -41,10 +46,10 @@ DEBUG = True
 
 
 
-ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['*']
 
 
-# ALLOWED_HOSTS = ['3.91.9.201', 'localhost',]
+ALLOWED_HOSTS = ['3.91.9.201', 'localhost',]
 
 
 
