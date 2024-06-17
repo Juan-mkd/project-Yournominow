@@ -23,11 +23,15 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Header */
 #header {
-  background-color: #071e29;
+  background-color: #071e29 !important;
   height: 80px;
   line-height: 80px;
   transition: all 0.5s;
   z-index: 997;
+}
+
+.bg-body-tertiary{
+  background: #071e29 !important;
 }
 
 #header .logo a {
@@ -45,15 +49,25 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
   padding: 0;
   list-style: none;
+  margin-left: 156px;
+}
+.navbar div a{
+  margin-left: 45px;
+  color: #fff;
 }
 
+[type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled), button:not(:disabled){
+  background: #fff;
+}
 #header .navbar ul li {
   display: inline-block;
   padding: 0 10px;
+ margin: 0px 20px;
+ color: #fff;
 }
 
 #header .navbar ul li a {
-  color: #fff;
+  color: #ffffff;
   font-size: 16px;
   font-weight: 600;
   text-transform: uppercase;
@@ -65,7 +79,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #header .mobile-nav-toggle {
-  color: #fff;
+  color: #071e29;
   font-size: 24px;
   cursor: pointer;
   display: none;
@@ -138,6 +152,7 @@ h1, h2, h3, h4, h5, h6 {
   text-align: center;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease-in-out;
+  margin: 0 auto;
 }
 
 .services .icon-box:hover {
@@ -412,3 +427,4 @@ h1, h2, h3, h4, h5, h6 {
 #footer span {
   color: #47b2e4;
 }
+
