@@ -1,14 +1,14 @@
 
 function abrirModal() {
     
-    window.location.href = "http://http://3.91.9.201:8000/login/administrador/register/";
+    window.location.href = "http://3.91.9.201:8000/login/administrador/register/";
     // Abrir el modal
-    let myModal = new bootstrap.Modal(document.getElementById('myModal'));
+    let myModal = new bootstrap.Modal(document.getElementById('nuevoEmpleado'));
     myModal.show();
 }
 
 function abrirModal2() {
-    window.location.href = "http://127.0.0.1:8000/administrador/registrar_nomina/";
+    window.location.href = "http://3.91.9.201:8000/administrador/registrar_nomina/";
     // Abrir el modal
     let myModal = new bootstrap.Modal(document.getElementById('myModal'));
     myModal.show();

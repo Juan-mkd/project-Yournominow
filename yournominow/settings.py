@@ -49,7 +49,7 @@ DEBUG = True
 # ALLOWED_HOSTS = ['*']
 
 
-ALLOWED_HOSTS = ['3.91.9.201', 'localhost',]
+ALLOWED_HOSTS = ['3.91.9.201', 'localhost']
 
 
 
