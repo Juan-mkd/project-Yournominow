@@ -171,20 +171,65 @@ def desprendible_nomina(request):
 
 
 
+# def certificacion(request):
+#     # Recuperar el usuario autenticado
+#     usuario = request.user
+#     rol = request.user.usu_id_rol.rol_nombre
+#     # Pasar los datos del usuario a la plantilla
+#     fecha_actual = timezone.now().strftime("%d/%m/%Y")
+#     # Pasar los datos del usuario a la plantilla
+#     context = {
+#         'usuario': usuario,
+#         'rol': rol,
+#         'fecha_actual': fecha_actual,
+#     }
+
+#     return render(request, "empleado/certificacion.html", context)
+
+
+
 def certificacion(request):
     # Recuperar el usuario autenticado
     usuario = request.user
     rol = request.user.usu_id_rol.rol_nombre
-    # Pasar los datos del usuario a la plantilla
     fecha_actual = timezone.now().strftime("%d/%m/%Y")
-    # Pasar los datos del usuario a la plantilla
-    context = {
-        'usuario': usuario,
-        'rol': rol,
-        'fecha_actual': fecha_actual,
-    }
 
-    return render(request, "empleado/certificacion.html", context)
+    # Verificar si se ha solicitado el PDF
+    if 'pdf' in request.GET:
+        # Crear un buffer para el nuevo PDF
+        buffer = io.BytesIO()
+        pdf_writer = PdfWriter()
+
+        # Crear el documento PDF
+        pdf_writer.add_page()
+        pdf_writer.set_page_layout(PdfReader().get_page_layout(0))
+        pdf_writer.add_text("Usuario: {0}\nRol: {1}\nFecha: {2}".format(usuario.username, rol, fecha_actual), x=100, y=100)
+
+        # Guardar el PDF en el buffer
+        pdf_writer.write(buffer)
+
+        # Mover el buffer al principio del archivo
+        buffer.seek(0)
+
+        # Crear una respuesta HTTP con el PDF
+        response = HttpResponse(buffer, content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="certificacion.pdf"'
+
+        return response
+    else:
+        # Pasar los datos del usuario a la plantilla
+        context = {
+            'usuario': usuario,
+            'rol': rol,
+            'fecha_actual': fecha_actual,
+        }
+        return render(request, "empleado/certificacion.html", context)
+
+
+
+
+
+
 
 class ConstanciaPagadaPDFView(View):
     def get(self, request):
