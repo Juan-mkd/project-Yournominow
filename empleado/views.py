@@ -187,16 +187,18 @@ def desprendible_nomina(request):
 #     return render(request, "empleado/certificacion.html", context)
 
 
-def constancia_pdf(request):
-    # Recuperar datos del usuario o cualquier otro contexto necesario
+def certificacion(request):
+    # Recuperar datos necesarios (por ejemplo, usuario autenticado y roles)
     usuario = request.user
-    # Otras operaciones para obtener datos necesarios para la constancia
+    rol = request.user.usu_id_rol.rol_nombre
+    fecha_actual = timezone.now().strftime("%d/%m/%Y")
 
     # Renderizar la plantilla HTML a PDF
     template_path = 'empleado/certificacion.html'
     context = {
         'usuario': usuario,
-        # Otros datos necesarios para la constancia
+        'rol': rol,
+        'fecha_actual': fecha_actual,
     }
 
     # Renderizar la plantilla
@@ -204,18 +206,24 @@ def constancia_pdf(request):
     html = template.render(context)
 
     # Crear un archivo PDF usando pisa
-    buffer = io.BytesIO()
-    pisa_status = pisa.CreatePDF(html, dest=buffer)
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="certificacion.pdf"'
 
-    # Si la constancia PDF se generó correctamente, devolverlo como respuesta
-    if not pisa_status.err:
-        buffer.seek(0)
-        response = HttpResponse(buffer, content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="constancia.pdf"'
-        return response
+    # Generar PDF
+    pisa_status = pisa.CreatePDF(
+        html, dest=response, encoding='utf-8', link_callback=fetch_resources
+    )
 
-    # Manejar el error si no se pudo generar el PDF correctamente
-    return HttpResponse('Error al generar la constancia PDF', status=400)
+    # Manejar errores si hay algún problema en la generación del PDF
+    if pisa_status.err:
+        return HttpResponse('Error al generar PDF: {}'.format(pisa_status.err), status=400)
+
+    return response
+
+def fetch_resources(uri, rel):
+    # Función para manejar recursos externos (como archivos CSS) al renderizar HTML a PDF
+    # Aquí se puede implementar la lógica para cargar recursos externos
+    return uri
 
 
 
