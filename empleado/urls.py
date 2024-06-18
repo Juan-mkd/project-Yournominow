@@ -11,7 +11,7 @@ from .views import desprendible_nomina, generar_pdf
 urlpatterns = [
     path("historial_nomina/",views.historial,name="historial_nomina"),
     # path("desprendible_nomina/",views.desprendible_nomina,name="desprendible_nomina"),
-    path("certificacion/",views.constancia_pdf, name="certificacion"),
+    path("certificacion/",views.certificacion, name="certificacion"),
     path('constancia_pdf/', ConstanciaLaboralPDFView.as_view(), name='constancia_pdf'),
     path('constancia_pagada_pdf/', ConstanciaPagadaPDFView.as_view(), name='constancia_pagada_pdf'),
     path('desprendible_nomina/', desprendible_nomina, name='desprendible_nomina'),
