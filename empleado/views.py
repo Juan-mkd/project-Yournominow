@@ -187,45 +187,35 @@ def desprendible_nomina(request):
 #     return render(request, "empleado/certificacion.html", context)
 
 
-
-def certificacion(request):
-    # Recuperar el usuario autenticado
+def constancia_pdf(request):
+    # Recuperar datos del usuario o cualquier otro contexto necesario
     usuario = request.user
-    rol = request.user.usu_id_rol.rol_nombre
-    fecha_actual = timezone.now().strftime("%d/%m/%Y")
+    # Otras operaciones para obtener datos necesarios para la constancia
 
-    # Verificar si se ha solicitado el PDF
-    if 'pdf' in request.GET:
-        # Crear un buffer para el nuevo PDF
-        buffer = io.BytesIO()
-        pdf_writer = PdfWriter()
+    # Renderizar la plantilla HTML a PDF
+    template_path = 'empleado/constancia_template.html'
+    context = {
+        'usuario': usuario,
+        # Otros datos necesarios para la constancia
+    }
 
-        # Crear el documento PDF
-        pdf_writer.add_page()
-        pdf_writer.set_page_layout(PdfReader().get_page_layout(0))
-        pdf_writer.add_text("Usuario: {0}\nRol: {1}\nFecha: {2}".format(usuario.username, rol, fecha_actual), x=100, y=100)
+    # Renderizar la plantilla
+    template = get_template(template_path)
+    html = template.render(context)
 
-        # Guardar el PDF en el buffer
-        pdf_writer.write(buffer)
+    # Crear un archivo PDF usando pisa
+    buffer = io.BytesIO()
+    pisa_status = pisa.CreatePDF(html, dest=buffer)
 
-        # Mover el buffer al principio del archivo
+    # Si la constancia PDF se generó correctamente, devolverlo como respuesta
+    if not pisa_status.err:
         buffer.seek(0)
-
-        # Crear una respuesta HTTP con el PDF
         response = HttpResponse(buffer, content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="certificacion.pdf"'
-
+        response['Content-Disposition'] = 'attachment; filename="constancia.pdf"'
         return response
-    else:
-        # Pasar los datos del usuario a la plantilla
-        context = {
-            'usuario': usuario,
-            'rol': rol,
-            'fecha_actual': fecha_actual,
-        }
-        return render(request, "empleado/certificacion.html", context)
 
-
+    # Manejar el error si no se pudo generar el PDF correctamente
+    return HttpResponse('Error al generar la constancia PDF', status=400)
 
 
 
