@@ -171,59 +171,22 @@ def desprendible_nomina(request):
 
 
 
-# def certificacion(request):
-#     # Recuperar el usuario autenticado
-#     usuario = request.user
-#     rol = request.user.usu_id_rol.rol_nombre
-#     # Pasar los datos del usuario a la plantilla
-#     fecha_actual = timezone.now().strftime("%d/%m/%Y")
-#     # Pasar los datos del usuario a la plantilla
-#     context = {
-#         'usuario': usuario,
-#         'rol': rol,
-#         'fecha_actual': fecha_actual,
-#     }
-
-#     return render(request, "empleado/certificacion.html", context)
-
-
 def certificacion(request):
-    # Recuperar datos necesarios (por ejemplo, usuario autenticado y roles)
+    # Recuperar el usuario autenticado
     usuario = request.user
     rol = request.user.usu_id_rol.rol_nombre
+    # Pasar los datos del usuario a la plantilla
     fecha_actual = timezone.now().strftime("%d/%m/%Y")
-
-    # Renderizar la plantilla HTML a PDF
-    template_path = 'empleado/certificacion.html'
+    # Pasar los datos del usuario a la plantilla
     context = {
         'usuario': usuario,
         'rol': rol,
         'fecha_actual': fecha_actual,
     }
 
-    # Renderizar la plantilla
-    template = get_template(template_path)
-    html = template.render(context)
+    return render(request, "empleado/certificacion.html", context)
 
-    # Crear un archivo PDF usando pisa
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="certificacion.pdf"'
 
-    # Generar PDF
-    pisa_status = pisa.CreatePDF(
-        html, dest=response, encoding='utf-8', link_callback=fetch_resources
-    )
-
-    # Manejar errores si hay algún problema en la generación del PDF
-    if pisa_status.err:
-        return HttpResponse('Error al generar PDF: {}'.format(pisa_status.err), status=400)
-
-    return response
-
-def fetch_resources(uri, rel):
-    # Función para manejar recursos externos (como archivos CSS) al renderizar HTML a PDF
-    # Aquí se puede implementar la lógica para cargar recursos externos
-    return uri
 
 
 
@@ -394,76 +357,19 @@ class ConstanciaLaboralPDFView(View):
 
         # Utilizar BeautifulSoup para eliminar los botones de impresión del PDF del HTML
         soup = BeautifulSoup(html_template, 'html.parser')
-        
+
         # Eliminar elementos específicos que no deben aparecer en el PDF
-        volver_button = soup.find('a', {'id': 'volver'})
-        if volver_button:
-            volver_button.decompose()
-
-        enlace_pdf = soup.find('div', {'id': 'enlace-pdf'})
-        if enlace_pdf:
-            enlace_pdf.decompose()
-
-        enlace_pdf2 = soup.find('div', {'id': 'enlace-pdf2'})
-        if enlace_pdf2:
-            enlace_pdf2.decompose()
+        elements_to_remove = soup.select('#volver, #enlace-pdf, #enlace-pdf2')
+        for element in elements_to_remove:
+            element.extract()
 
         html = str(soup)
 
-        # Agregar los estilos CSS al HTML
-        css = '''
-        <style>
-        /* Agrega aquí tus estilos CSS */
-        /* Por ejemplo: */
-        body {
-            font-family: "Arial", sans-serif;
-            font-size: 16px;
-            line-height: 1.6;
-        }
-
-        .container {
-            margin: 50px auto;
-            max-width: 600px;
-            padding: 20px;
-        }
-
-        .logo {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        h1 {
-            text-align: center;
-            font-size: 24px;
-            margin-bottom: 30px;
-        }
-
-        .info {
-            margin-bottom: 20px;
-        }
-
-        .info p {
-            margin-bottom: 10px;
-        }
-
-        .footer {
-            margin-top: 30px;
-            text-align: left;
-        }
-
-        .btn-certificacion {
-            display: none; /* Ocultar los botones de impresión */
-        }
-
-        </style>
-        '''
-        html = css + html
-
         # Crear un archivo PDF en memoria
-        result = io.BytesIO()
+        result = BytesIO()
 
-        # Convertir la plantilla HTML en un archivo PDF
-        pdf = pisa.CreatePDF(io.BytesIO(html.encode("UTF-8")), dest=result)
+        # Convertir la plantilla HTML en un archivo PDF usando xhtml2pdf (pisa)
+        pdf = pisa.CreatePDF(BytesIO(html.encode("UTF-8")), dest=result)
 
         # Verificar si la conversión fue exitosa
         if not pdf.err:
@@ -472,7 +378,7 @@ class ConstanciaLaboralPDFView(View):
             total_pages = pdf_reader.getNumPages()
 
             # Crear un archivo PDF en memoria para almacenar el PDF resultante con marca de agua
-            pdf_output = io.BytesIO()
+            pdf_output = BytesIO()
 
             # Crear una instancia del escritor de PDF
             pdf_writer = PdfFileWriter()
