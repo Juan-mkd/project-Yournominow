@@ -193,7 +193,7 @@ def constancia_pdf(request):
     # Otras operaciones para obtener datos necesarios para la constancia
 
     # Renderizar la plantilla HTML a PDF
-    template_path = 'empleado/constancia_template.html'
+    template_path = 'empleado/certificacion.html'
     context = {
         'usuario': usuario,
         # Otros datos necesarios para la constancia
