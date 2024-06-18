@@ -340,13 +340,14 @@ class ConstanciaPagadaPDFView(View):
 
 class ConstanciaLaboralPDFView(View):
     def get(self, request):
+        # Obtener el usuario que ha iniciado sesión
         usuario = request.user
         if not usuario.is_authenticated:
             return HttpResponse('No se ha iniciado sesión', status=401)
-
+        
         # Obtener la fecha actual
         fecha_actual = timezone.now().strftime("%d/%m/%Y")
-
+        
         # Renderizar la plantilla HTML con el contexto
         template_path = 'empleado/certificacion.html'
         context = {
@@ -355,45 +356,103 @@ class ConstanciaLaboralPDFView(View):
         }
         html_template = render_to_string(template_path, context)
 
-        # Utilizar BeautifulSoup para eliminar los botones de impresión del PDF del HTML
-        soup = BeautifulSoup(html_template, 'html.parser')
+        # Agregar los estilos CSS al HTML
+        css = '''
+        <style>
+        /* Agrega aquí tus estilos CSS */
+        body {
+            font-family: "Arial", sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            position: relative; /* Posición relativa para el body */
+        }
 
-        # Eliminar elementos específicos que no deben aparecer en el PDF
-        elements_to_remove = soup.select('#volver, #enlace-pdf, #enlace-pdf2')
-        for element in elements_to_remove:
-            element.extract()
+        .container {
+            margin: 50px auto;
+            max-width: 600px;
+            padding: 20px;
+        }
 
-        html = str(soup)
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+
+        .info {
+            margin-bottom: 20px;
+        }
+
+        .info p {
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        /* Marca de agua */
+        .watermark {
+            position: absolute;
+            width: 100%; /* Asegura que la marca de agua ocupe toda la página */
+            height: 100%;
+            text-align: center; /* Centra el texto horizontalmente */
+            vertical-align: middle; /* Centra el texto verticalmente */
+            font-size: 80px; /* Ajusta el tamaño del texto de la marca de agua */
+            color: rgba(0, 0, 0, 0.1); /* Color de la marca de agua */
+            z-index: -1; /* Coloca la marca de agua detrás del contenido */
+        }
+        </style>
+        '''
+
+        # Combinar CSS con el HTML
+        html = css + html_template
+
+        # Utilizar BeautifulSoup para eliminar los botones y el enlace del PDF del HTML
+        soup = BeautifulSoup(html, 'html.parser')
+        enlaces_pdf = soup.find_all('div', {'class': 'pdf-hidden'})
+        for enlace_pdf in enlaces_pdf:
+            enlace_pdf.decompose()
+        enlaces_volver = soup.find_all('a', {'id': 'volver'})
+        for enlace_volver in enlaces_volver:
+            enlace_volver.decompose()
+        html_final = str(soup)
 
         # Crear un archivo PDF en memoria
         result = BytesIO()
 
-        # Convertir la plantilla HTML en un archivo PDF usando xhtml2pdf (pisa)
-        pdf = pisa.CreatePDF(BytesIO(html.encode("UTF-8")), dest=result)
+        # Convertir la plantilla HTML en un archivo PDF
+        pdf = pisa.pisaDocument(BytesIO(html_final.encode("UTF-8")), result)
 
         # Verificar si la conversión fue exitosa
         if not pdf.err:
             # Crear una instancia del lector de PDF
             pdf_reader = PdfFileReader(result)
             total_pages = pdf_reader.getNumPages()
-
-            # Crear un archivo PDF en memoria para almacenar el PDF resultante con marca de agua
+            
+            # Crear un archivo PDF en memoria para almacenar el PDF resultante
             pdf_output = BytesIO()
-
+            
             # Crear una instancia del escritor de PDF
             pdf_writer = PdfFileWriter()
-
+            
             # Agregar la marca de agua a cada página del PDF
             marca_de_agua = "yournominow"
             for page_number in range(total_pages):
                 # Leer la página actual
                 page = pdf_reader.getPage(page_number)
-
+                
                 # Crear un lienzo para agregar la marca de agua
                 c = canvas.Canvas(pdf_output, pagesize=letter)
                 c.setFont("Helvetica", 80)  # Ajustar el tamaño de la fuente aquí
                 c.setFillColorRGB(0.5, 0.5, 0.5, 0.2)  # Color de la marca de agua (gris con transparencia)
-
+                
                 # Calcular el centro de la página
                 width, height = letter
                 c.saveState()
@@ -402,26 +461,25 @@ class ConstanciaLaboralPDFView(View):
                 c.drawString(-c.stringWidth(marca_de_agua) / 2, -40, marca_de_agua)  # Posicionar el texto
                 c.restoreState()
                 c.save()
-
+                
                 # Leer el lienzo y combinarlo con la página actual
-                pdf_watermark = PdfFileReader(pdf_output)
+                pdf_watermark = PdfFileReader(BytesIO(pdf_output.getvalue()))
                 watermark_page = pdf_watermark.getPage(0)
                 page.mergeTranslatedPage(watermark_page, 0, 0)
-
+                
                 # Agregar la página combinada al escritor de PDF
                 pdf_writer.addPage(page)
-
+            
             # Guardar el PDF con la marca de agua en el archivo de salida
             pdf_writer.write(pdf_output)
             pdf_output.seek(0)
-
+            
             # Establecer las cabeceras adecuadas para descargar el archivo PDF
             response = HttpResponse(pdf_output.getvalue(), content_type='application/pdf')
             response['Content-Disposition'] = 'attachment; filename="constancia.pdf"'
             return response
 
         return HttpResponse('Error al generar el PDF', status=500)
-
 
 
 
