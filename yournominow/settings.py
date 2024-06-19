@@ -15,7 +15,14 @@ import os
 
 
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+# BASE_DIR = Path(__file__).resolve().parent.parent
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+# Ruta donde se almacenarán los archivos estáticos recogidos por collectstatic
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
