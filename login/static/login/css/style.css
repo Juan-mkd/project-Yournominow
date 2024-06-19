@@ -32,6 +32,13 @@ h1, h2, h3, h4, h5, h6 {
   transition: all 0.5s;
   z-index: 997;
 }
+.pt-lg-0 {
+  margin: 0 auto;
+  display: flex;
+
+}
+
+
 
 .bg-body-tertiary{
   background: #071e29 !important;
@@ -161,6 +168,7 @@ header div h1.logo a{
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease-in-out;
   margin: 0 auto;
+  width: 300px;
 }
 
 .services .icon-box:hover {
@@ -195,6 +203,10 @@ header div h1.logo a{
   margin-bottom: 30px;
   text-align: center;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  justify-content: center;
+ 
+  margin:  0 auto;
+  margin-top: 36px;
 }
 
 .team .member .pic img {
@@ -202,6 +214,7 @@ header div h1.logo a{
   height: 100px;
   border-radius: 50%;
   margin-bottom: 15px;
+  margin-right: 70px;
 }
 
 .team .member h4 {

@@ -92,3 +92,51 @@ button.btn-certificacion{
 }
 
 }
+
+/* Estilos para tablet */
+@media only screen and (max-width: 768px) {
+  body {
+    overflow: hidden;
+  }
+
+  .container {
+    padding: 10px;
+    max-height: calc(100vh - 20px);
+    overflow-y: auto;
+  }
+
+  h1 {
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+
+  p {
+    font-size: 14px;
+  }
+
+  .btn {
+    font-size: 14px;
+  }
+}
+
+/* Estilos para dispositivos móviles */
+@media only screen and (max-width: 576px) {
+  .container {
+    padding: 5px;
+    max-height: calc(100vh - 10px);
+    overflow-y: auto;
+  }
+
+  h1 {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 12px;
+  }
+
+  .btn {
+    font-size: 12px;
+  }
+}

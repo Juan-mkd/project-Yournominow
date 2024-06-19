@@ -163,6 +163,7 @@ body {
         margin: 0 auto;
         margin-bottom: 50px;
         margin-top: 34px;
+        margin-left: 70px;
     }
 
     a {
@@ -232,4 +233,193 @@ body {
       }
 
 
+#paymentForm{
+    background-color: #171818;
+    color: #fff;
+}
+.btn-pagar{
+    background: #157347;
+    color: #eceef1;
+    border-radius: 5px;
+}
 
+@media only screen and (max-width: 600px) {
+    .container2 {
+      padding: 0 20px;
+      margin-left: 0;
+      margin-top: 5vh;
+    }
+  
+    table {
+      font-size: 0.8rem;
+      width: 100%;
+      border-collapse: collapse;
+      overflow-x: auto;
+    }
+  
+    th,
+    td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #040b14;
+      border-top: 1px solid #040b14 !important;
+    }
+  
+    div.actualizar label {
+      color: #fff;
+      display: inline-block;
+      width: 150px;
+      font-size: 16px;
+      font-weight: 500;
+    }
+  
+    input[type="text"],
+    input[type="email"],
+    select {
+      color: black;
+      border-radius: 2vh;
+      border: 0;
+      padding: 5px;
+      font-size: 14px;
+      margin-top: 2vh !important;
+    }
+  
+    select option {
+      background-color: #071e29;
+    }
+  
+    #cedula {
+      color: white;
+    }
+  
+    button[type="submit"],
+    button.btn-danger,
+    .button {
+      font-size: 14px;
+      padding: 5px 10px;
+      border: none;
+      cursor: pointer;
+    }
+  
+    .modal-title {
+      font-weight: 500;
+      margin: 0 auto;
+      font-size: 20px;
+    }
+  
+    table td a {
+      font-size: 16px;
+      margin-left: 12px;
+    }
+  
+    #contenidoModal {
+      background-color: #040b14;
+      border: 1px solid white;
+      display: flex;
+      text-align: center;
+    }
+  
+    #contenidoModal h5 {
+      color: rgba(255, 255, 255, 0.527);
+      margin-right: 4vh;
+    }
+  
+    .actualizar label {
+      color: rgba(255, 255, 255, 0.527) !important;
+      font-size: 14px !important;
+      width: 800px;
+      height: 2vh;
+    }
+  
+    .actualizar button {
+      margin: 30px 0px 0px 25px;
+    }
+  
+    .actualizar button.guardar {
+      font-weight: 900 !important;
+      font-size: 14px;
+      padding: 10px;
+      background: rgb(255, 255, 255);
+      border-radius: 15vh;
+      color: green;
+      border: 1px solid green;
+    }
+  
+    .actualizar button.guardar:hover {
+      font-weight: 900 !important;
+      font-size: 14px;
+      padding: 10px;
+      background: green;
+      border-radius: 15vh;
+      color: rgb(255, 255, 255);
+      border: 1px solid rgb(255, 255, 255);
+    }
+  
+    .actualizar button.cancelar {
+      font-weight: 900 !important;
+      font-size: 14px;
+      padding: 8px;
+      background: rgb(255, 255, 255);
+      color: red;
+      border-radius: 15vh;
+      border: 1px solid red;
+    }
+  
+    .actualizar button.cancelar:hover {
+      font-weight: 900 !important;
+      font-size: 14px;
+      padding: 8px;
+      background: red;
+      color: rgb(255, 255, 255);
+      border-radius: 15vh;
+      border: 1px solid rgb(255, 255, 255);
+    }
+  }
+
+
+
+
+
+
+/* estilos edicion novedades */
+/* Estilos para tablet */
+@media only screen and (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+  
+  .container2 {
+    padding: 0 20px;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  .table-responsive table {
+    min-width: 100%;
+  }
+
+  .actualizar input[type="number"] {
+    width: 100%;
+  }
+}
+
+/* Estilos para dispositivos móviles */
+@media only screen and (max-width: 576px) {
+  .container2 {
+    padding: 0 15px;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  .table-responsive table {
+    min-width: 100%;
+  }
+
+  .actualizar input[type="number"] {
+    width: 100%;
+  }
+}

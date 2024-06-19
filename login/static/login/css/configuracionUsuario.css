@@ -42,3 +42,81 @@ button:hover{
     }
   
   }
+
+
+
+  @media only screen and (max-width: 992px) {
+    .container2 {
+        margin: 5vh auto;
+        padding: 2rem;
+    }
+
+    .container2 h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .container2 .form-control {
+        font-size: 1rem;
+    }
+
+    .container2 .boton {
+        font-size: 1rem;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .container2 {
+        margin: 2vh auto;
+        padding: 1rem;
+    }
+
+    .container2 h2 {
+        font-size: 1.6rem;
+        margin-bottom: 1rem;
+    }
+
+    .container2 .form-control {
+        margin-bottom: 1rem;
+        font-size: 1rem;
+    }
+
+    .container2 .boton {
+        margin-top: 1rem;
+        font-size: 1rem;
+    }
+    .input-group>:not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback){
+        height: 52px !important;
+    }
+}
+
+@media only screen and (max-width: 576px) {
+    .container2 {
+        margin: 2vh auto;
+        padding: 1rem;
+    }
+
+    .container2 h2 {
+        font-size: 1.4rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .container2 .form-label {
+        font-size: 1.2rem;
+    }
+
+    .container2 .form-control {
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+        padding: 0.8rem;
+    }
+
+    .container2 .boton {
+        margin-top: 0.5rem;
+        font-size: 1rem;
+        padding: 0.8rem 1.6rem;
+    }
+    .input-group>:not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback){
+        height: 42px !important;
+    }
+}

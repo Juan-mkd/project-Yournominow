@@ -1176,5 +1176,6 @@ input[type="password"]::-ms-reveal {
     position: static;
     width: auto;
     padding-right: 20px 15px;
+    display: none;
   }
 }
