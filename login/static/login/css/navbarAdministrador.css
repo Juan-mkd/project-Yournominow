@@ -38,3 +38,12 @@
 .navbarDiv a{
     height: 6vh;
 }
+
+
+@media only screen and (max-width: 600px){
+
+    footer{
+      display: none;
+    }
+  
+  }

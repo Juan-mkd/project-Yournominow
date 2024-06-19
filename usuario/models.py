@@ -58,7 +58,7 @@ class Usuario(models.Model):
     def get_email_field_name(cls):
         return 'usu_correo'
 
-password= '123'
+password= 'yournomi1033'
 @receiver(post_migrate)
 def insertRol(sender, **kwargs):
     if kwargs.get('app_config'):
@@ -71,7 +71,7 @@ def insertRol(sender, **kwargs):
             Cargo.objects.bulk_create([
                 Cargo(cargo_nombre="Gerente", cargo_sueldo_basico="2000000", cargo_empresa="YourNomiNow"),
                 Cargo(cargo_nombre="Ceo", cargo_sueldo_basico="3000000", cargo_empresa="YourNomiNow"),
-                Cargo(cargo_nombre="Junior", cargo_sueldo_basico="4000000", cargo_empresa="YourNomiNow"),
+                Cargo(cargo_nombre="Junior", cargo_sueldo_basico="1300000", cargo_empresa="YourNomiNow"),
                 Cargo(cargo_nombre="Senior", cargo_sueldo_basico="5000000", cargo_empresa="YourNomiNow")
         ])
             Usuario.objects.bulk_create([

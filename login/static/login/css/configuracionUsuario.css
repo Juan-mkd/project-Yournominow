@@ -33,3 +33,12 @@ button:hover{
     background: #95ddff !important;
     color: black !important;
 }
+
+
+@media only screen and (max-width: 600px){
+
+    footer{
+      display: none;
+    }
+  
+  }
