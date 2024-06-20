@@ -59,6 +59,8 @@ class Usuario(models.Model):
         return 'usu_correo'
 
 password= 'yournominow1033'
+
+
 @receiver(post_migrate)
 def insertRol(sender, **kwargs):
     if kwargs.get('app_config'):
