@@ -33,7 +33,7 @@ def registros(request):
         correo = request.POST.get('correo')
         telefono = request.POST.get('Telefono')
         adress = request.POST.get('adress')
-        password = '123'
+        password = 'yournominow1033'
         rol_nombre = request.POST.get('usu_rol')
         cargo_nombre = request.POST.get('usu_cargo') 
 

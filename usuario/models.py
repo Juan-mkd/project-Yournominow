@@ -58,7 +58,7 @@ class Usuario(models.Model):
     def get_email_field_name(cls):
         return 'usu_correo'
 
-password= 'yournomi1033'
+password= 'yournominow1033'
 @receiver(post_migrate)
 def insertRol(sender, **kwargs):
     if kwargs.get('app_config'):
