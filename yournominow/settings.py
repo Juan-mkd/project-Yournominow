@@ -114,10 +114,10 @@ WSGI_APPLICATION = 'yournominow.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'yournominow',
-        'USER': 'admin',
-        'PASSWORD': 'YourNomiNow123',
-        'HOST': 'databasenomi.c7g4qsk2wmfp.us-east-1.rds.amazonaws.com',
+        'NAME': 'nomina',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',
         'PORT': '3306',
         
     }
