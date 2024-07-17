@@ -15,8 +15,6 @@ import os
 
 
 
-# BASE_DIR = Path(__file__).resolve().parent.parent
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -113,13 +111,8 @@ WSGI_APPLICATION = 'yournominow.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'yournominow',
-        'USER': 'admin',
-        'PASSWORD': 'YourNomiNow123',
-        'HOST': 'databasenomi.c7g4qsk2wmfp.us-east-1.rds.amazonaws.com',
-        'PORT': '3306',
-        
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),  # Ruta al archivo de base de datos SQLite
     }
 }
 
